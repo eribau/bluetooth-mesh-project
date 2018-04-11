@@ -9,7 +9,7 @@
 
 int main(int argc , char * *argv)
 {
-    struct sockaddr_rc addr = { 0 }, rem_addr = { 0 };
+    struct sockaddr_rc loc_addr = { 0 }, rem_addr = { 0 };
     char buf[1024] = { 0 };
     int s , client, bytes_read;
     fd_set readfds, writefds;
