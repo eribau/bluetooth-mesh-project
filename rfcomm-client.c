@@ -29,10 +29,10 @@ int main(int argc, char **argv)
         status = write(s, "herro!", 6);
     }
     
-    bytes_read = read(s, buf, sizeof(buf));
+    /*bytes_read = read(s, buf, sizeof(buf));
 		if( bytes_read > 0 ) {
 			printf("received [%s]\n", buf);
-		}
+		}*/
 
     if( status < 0 ) perror("uh oh");
 
