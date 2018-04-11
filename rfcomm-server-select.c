@@ -10,27 +10,27 @@
 int main(int argc , char * *argv)
 {
     struct sockaddr_rc addr = { 0 }, rem_addr = { 0 };
-    char buf[1024] = {0};
+    char buf[1024] = { 0 };
     int s , client, bytes_read;
     fd_set readfds, writefds;
     int maxfd, sock_flags;
     
-    socklen_t opt = sizeof(rem_addr);
+    unsigned int opt = sizeof(rem_addr);
     
 	// allocate a socket
     s = socket(AF_BLUETOOTH, SOCK_STREAM, BTPROTO_RFCOMM);
 	
 	// set the connection parameters (who to connect to)
-    addr.rc_family = AF_BLUETOOTH;
-    addr.rc_bdaddr = *BDADDR_ANY;
-    addr.rc_channel = (uint8_t) 1;
+    loc_addr.rc_family = AF_BLUETOOTH;
+    loc_addr.rc_bdaddr = *BDADDR_ANY;
+    loc_addr.rc_channel = (uint8_t) 1;
     //str2ba(dest, &addr.rc_bdaddr);
 	
 	// put socket in non-blocking mode
     sock_flags = fcntl ( s , F_GETFL , 0 );
     fcntl ( s , F_SETFL , sock_flags | O_NONBLOCK ) ;
 	
-	bind(s, (struct sockaddr *)&addr, sizeof(addr));
+	bind(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
 	
 	listen(s, 1);
 	
@@ -43,7 +43,7 @@ int main(int argc , char * *argv)
 			perror( "connect" ) ;
 			return 1;
 		}
-		
+			
 		// wait for connection to complete or fail
 		FD_ZERO(&readfds);
 		FD_ZERO(&writefds);
