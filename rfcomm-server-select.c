@@ -14,6 +14,7 @@ int main(int argc , char * *argv)
     int s , client, bytes_read;
     fd_set readfds, writefds;
     int maxfd, sock_flags;
+    
     socklen_t opt = sizeof(rem_addr);
     
 	// allocate a socket
