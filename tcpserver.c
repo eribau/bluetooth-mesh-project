@@ -5,6 +5,8 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <string.h>
+#include "iocontroller.h"												// Responsible for GPIO
+#include "inputprocessing.h"											// Responsible for processing user's inputs
 
 #define BUFFER_SIZE 1024
 #define on_error(...) { fprintf(stderr, __VA_ARGS__); fflush(stderr); exit(1); }
@@ -56,6 +58,9 @@ int main (int argc, char *argv[]) {
 
 		  if (!read) break; 											// Reading client's message
 		  if (read < 0) on_error("Client read failed\n");
+		  printf(buf);
+
+		  process(buf);
 
 		  err = send(client_fd, buf, read, 0);							// Echoing the message
 		  if (err < 0) on_error("Client write failed\n");
@@ -64,7 +69,7 @@ int main (int argc, char *argv[]) {
 		  err = send(client_fd, message, strlen(message), 0);
 		  if (err < 0) on_error("Client write failed\n");
 		  
-		  printf(buf);													// Printing out client's message (debugging)
+		  //printf(buf);													// Printing out client's message (debugging)
 		}
 	  }
 	
