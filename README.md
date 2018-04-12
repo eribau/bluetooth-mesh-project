@@ -1,17 +1,19 @@
-## Welcome to GitHub Pages
+## Bluetooth-mesh-project
 
-You can use the [editor on GitHub](https://github.com/eribau/bluetooth-mesh-project/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This project is about creating a mesh-network using bluetooth low energy (BLE). We are using Raspberry PI's which have inbuilt support for BLE.
+
+### Currently working on
+
+We are working on creating a simple BLE connection between two devices.
+
+### Project backlog
+
 
 ```markdown
 int = hi
 ```
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
 Syntax highlighted code block
 
 # Header 1
@@ -27,7 +29,7 @@ Syntax highlighted code block
 **Bold** and _Italic_ and `Code` text
 
 [Link](url) and ![Image](src)
-```
+
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
