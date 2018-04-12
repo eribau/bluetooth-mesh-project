@@ -1,51 +1,48 @@
 #include <wiringPi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/socket.h>
 #include "iocontroller.h"												// Responsible for GPIO
 
-void turn_on()															// Turn on LED at a specific pin
-{
-  int pin = 7;															// LED's pin number
-  printf("Turning on led");
+typedef enum {false, true} bool;
 
-  if (wiringPiSetup() == -1)											// Initialization of wiringPi pin numbering scheme
-    exit (1);
+extern bool connection_check;
 
-  pinMode(pin, OUTPUT);													// Setting pin as the output
-
+// Turn on LED at a specific pin
+void turn_on() {														
+    int pin = 7;														// LED's pin number
+    printf("Turning on led");
+    if (wiringPiSetup() == -1) exit (1);								// Initialization of wiringPi pin numbering scheme
+    pinMode(pin, OUTPUT);												// Setting pin as the output
     printf("LED On\n");
     digitalWrite(pin, 1);												// Sending signal to the pin
-  
 }
 
-void turn_off()															// Responsible for GPIO
-{																		// Code below follows the turn_on documentation
-  int pin = 7;
-	printf("Turning off led");
-
-  if (wiringPiSetup() == -1)
-    exit (1);
-
-  pinMode(pin, OUTPUT);
-  
+// Turn off LED at a specific pin
+void turn_off() {														// Code for this method follows the turn_on documentation
+    int pin = 7;														
+    printf("Turning off led");
+    if (wiringPiSetup() == -1) exit (1);
+    pinMode(pin, OUTPUT);
     printf("LED Off\n");
     digitalWrite(pin, 0);
-  
 }
 
-void button() {
-	
-	//bool phase = false;
-	
-	int pin = 2;															// LED's pin number
-	//printf("Button pressed");
-
-	if (wiringPiSetup() == -1)											// Initialization of wiringPi pin numbering scheme
-	exit (1);
-
-	pinMode(pin, INPUT);													// Setting pin as the output
-
-	//printf("Button On\n");
-	if (digitalRead(pin) == HIGH)
-		printf("Pressed\n");												// Sending signal to the pin
+// Responsible for processing censor input (button in this case)
+void button(int client_fd) {											
+    wiringPiSetup();
+    pinMode (2, INPUT);
+    int prev_button = HIGH;												// Last state of the pull-up circuit
+    while (1) {
+        if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
+        if(prev_button == HIGH && digitalRead(2) == LOW) {				// A falling edge
+            prev_button = LOW;
+            send(client_fd, "Client message\n", 6, 0);					// [Debugging] Send message to client
+            printf("Server message\n");									// [Debugging] Send message to server
+        }
+        else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
+            prev_button = HIGH;
+        }
+        delay(100);
+    }
 }
