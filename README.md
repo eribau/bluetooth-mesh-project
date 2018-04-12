@@ -12,9 +12,6 @@ Creating a simple BLE connection between two devices and controlling a PI device
 3. Configure a mesh network with more than seven devices.
 4. Implement routing algorithm developed at KTH.
 
-[Link](url) and ![Image](src)
-
-
 ### Contact
 Mandar Joshi - mandarj@kth.se
 
@@ -27,3 +24,11 @@ Albert Gunneström - albertg@kth.se
 Rifat Kazi - rifat@kth.se
 
 Robin Dahlkvist - robindah@kth.se
+
+html { 
+  background: url(https://upload.wikimedia.org/wikipedia/commons/6/6f/Raspberry_Pi_B%2B_top.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
