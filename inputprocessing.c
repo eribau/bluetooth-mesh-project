@@ -6,9 +6,12 @@
 
 typedef enum {false, true} bool;
 
-bool toggle = false;
-
-// Responsible for processing user input
+bool toggle = false;													// First state of the LED (off)
+ 
+/** Responsible for processing user input
+ *  If the input is equal to the preset
+ *  keyword, toggle on/off lights,
+ *  depending on the current state.  **/
 void process(char buf[]) {
 	int i = strcmp(buf, "toggle\n");									// [Debugging] Comparing the input string to the keyword.
 	printf("%d\n", i);													

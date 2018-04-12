@@ -18,16 +18,20 @@ typedef enum {false, true} bool;
 void delay(int);
 static int *global_variable;
 bool connection_check = false;
-
-// Client should initiate connection by entering:
-// nc IPADRESS PORTNUMBER
-// where IPADRESS is the IP adress of the server and PORTNUMBER is the portnumber that the server has opened a socket at
-
+ 
+/** 
+ TCP RPi server that has a LED and a button connected to it.
+ Able to send and receive messages from a remote client.
+  
+ Client should initiate connection by entering:
+ nc IPADRESS PORTNUMBER
+ where IPADRESS is the IP adress of the server;
+ PORTNUMBER is the portnumber that the server has opened a socket at. **/
 int main (int argc, char *argv[]) {
 
 	
 	global_variable = mmap(NULL, sizeof *global_variable, PROT_READ | PROT_WRITE, 
-                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);					// Creating shareable meory for all of the child processes
 
     *global_variable = 1;
 	
@@ -50,8 +54,8 @@ int main (int argc, char *argv[]) {
 	server.sin_port = htons(port);
 	server.sin_addr.s_addr = htonl(INADDR_ANY);
 	
-	//int opt_val = 1;
-	//setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
+	int opt_val = 1;
+	setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt_val, sizeof opt_val);
 	
 	err = bind(server_fd, (struct sockaddr *) &server, sizeof(server));
 	if (err < 0) on_error("Could not bind socket\n");
@@ -61,8 +65,6 @@ int main (int argc, char *argv[]) {
 	
 	printf("Server is listening on %d\n", port);
 	
-	
-	
 	while (1) {
 		socklen_t client_len = sizeof(client);
 		
@@ -71,33 +73,29 @@ int main (int argc, char *argv[]) {
 		connection_check = true;
 		
 		if ((childpid = fork()) == 0) {
-
 			while (1) {
-				memset(&buf[0], 0, sizeof(buf));								// Clearing the buffer before receiving the next message
-				int read = recv(client_fd, buf, BUFFER_SIZE, 0);				// Reading the message sent by client
+				memset(&buf[0], 0, sizeof(buf));						// Clearing the buffer before receiving the next message
+				int read = recv(client_fd, buf, BUFFER_SIZE, 0);		// Reading the message sent by client
 
-				if (!read) break; 											// Reading client's message
+				if (!read) break; 										// Reading client's message
 				if (read < 0) on_error("Client read failed\n");
 				printf(buf);
 
 				process(buf);
 
-				err = send(client_fd, buf, read, 0);							// Echoing the message
+				err = send(client_fd, buf, read, 0);					// Echoing the message
 				if (err < 0) on_error("Client write failed\n");
 			  
-				char message[] = "Server's response\n";						// Sending a static response
+				char message[] = "Server's response\n";					// Sending a static response
 				err = send(client_fd, message, strlen(message), 0);
 				if (err < 0) on_error("Client write failed\n");
-			  
-				//printf(buf);												// Printing out client's message (debugging)
 			}
 		}
 		else {
 			printf("CHECK\n");
-			close(client_fd);
-			button(client_fd);
+			button(client_fd);											// Calls the button method for turning lights on/off
 		}
 		connection_check = false;
 	}
 	return 0;
-	}
+}

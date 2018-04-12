@@ -8,7 +8,7 @@ typedef enum {false, true} bool;
 
 extern bool connection_check;
 
-// Turn on LED at a specific pin
+/** Turns on LED at a specific preprogrammed pin **/
 void turn_on() {														
     int pin = 7;														// LED's pin number
     printf("Turning on led");
@@ -18,7 +18,7 @@ void turn_on() {
     digitalWrite(pin, 1);												// Sending signal to the pin
 }
 
-// Turn off LED at a specific pin
+/** Turns off LED at a specific preprogrammed pin **/
 void turn_off() {														// Code for this method follows the turn_on documentation
     int pin = 7;														
     printf("Turning off led");
@@ -28,7 +28,8 @@ void turn_off() {														// Code for this method follows the turn_on docum
     digitalWrite(pin, 0);
 }
 
-// Responsible for processing censor input (button in this case)
+/** Responsible for processing sensor input (button in this case).
+ *  When button pressed, send messages to server and client **/
 void button(int client_fd) {											
     wiringPiSetup();
     pinMode (2, INPUT);
