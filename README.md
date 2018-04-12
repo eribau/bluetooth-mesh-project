@@ -24,11 +24,3 @@ Albert Gunneström - albertg@kth.se
 Rifat Kazi - rifat@kth.se
 
 Robin Dahlkvist - robindah@kth.se
-
-html { 
-  background: url(https://upload.wikimedia.org/wikipedia/commons/6/6f/Raspberry_Pi_B%2B_top.jpg) no-repeat center center fixed; 
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
