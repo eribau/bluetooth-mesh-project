@@ -5,11 +5,16 @@
 #include <sys/socket.h>
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
+#include <bluetooth/hci.h>
+#include <bluetooth/hci_lib.h>
+
+#define ATT_CID 4
 
 int main(int argc, char **argv)
 {
-    struct sockaddr_l2 addr = { 0 };
-    int s, status;
+    struct sockaddr_l2 loc_addr = { 0 }, rem_addr = { 0 };
+    int s, status, hci_socket;
+    int hci_device_id = 0;
     char *message = "hello!";
     char dest[18] = "B8:27:EB:9B:D4:87";
 
@@ -24,13 +29,27 @@ int main(int argc, char **argv)
     // allocate a socket
     s = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
 
-    // set the connection parameters (who to connect to)
-    addr.l2_family = AF_BLUETOOTH;
-    addr.l2_psm = htobs(0x1001);
-    str2ba( dest, &addr.l2_bdaddr );
-
+    // Set up source address
+    //hci_device_id = hci_get_route(NULL);
+    //hci_socket = hci_open_dev(hci_device_id);
+    loc_addr.l2_family = AF_BLUETOOTH;
+    loc_addr.l2_bdaddr = *BDADDR_ANY;
+    //loc_addr.l2_psm = htobs(0x1001);
+    loc_addr.l2_cid = htobs(ATT_CID);
+    loc_addr.l2_bdaddr_type = 0;
+    
+    bind(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
+    
+    // Set up destination address
+    rem_addr.l2_family = AF_BLUETOOTH;
+    //rem_addr.l2_bdaddr = dest;
+    rem_addr.l2_cid = htobs(ATT_CID);
+    rem_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;
+    str2ba( dest, &rem_addr.l2_bdaddr );
+    
+    
     // connect to server
-    status = connect(s, (struct sockaddr *)&addr, sizeof(addr));
+    status = connect(s, (struct sockaddr *)&rem_addr, sizeof(rem_addr));
 
     // send a message
     if( status == 0 ) {
