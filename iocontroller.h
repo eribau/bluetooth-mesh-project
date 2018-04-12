@@ -3,5 +3,6 @@
 
 void turn_on();
 void turn_off();
+void button();
 
 #endif

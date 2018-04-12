@@ -50,9 +50,11 @@ int main (int argc, char *argv[]) {
 		client_fd = accept(server_fd, (struct sockaddr *) &client, &client_len);
 
 		if (client_fd < 0) on_error("Could not establish new connection\n");
+		
+		button();
+		//printf("whatever\n");
 
 		while (1) {
-		
 		  memset(&buf[0], 0, sizeof(buf));								// Clearing the buffer before receiving the next message
 		  int read = recv(client_fd, buf, BUFFER_SIZE, 0);				// Reading the message sent by client
 

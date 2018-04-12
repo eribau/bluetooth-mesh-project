@@ -32,3 +32,20 @@ void turn_off()															// Responsible for GPIO
     digitalWrite(pin, 0);
   
 }
+
+void button() {
+	
+	//bool phase = false;
+	
+	int pin = 2;															// LED's pin number
+	//printf("Button pressed");
+
+	if (wiringPiSetup() == -1)											// Initialization of wiringPi pin numbering scheme
+	exit (1);
+
+	pinMode(pin, INPUT);													// Setting pin as the output
+
+	//printf("Button On\n");
+	if (digitalRead(pin) == HIGH)
+		printf("Pressed\n");												// Sending signal to the pin
+}
