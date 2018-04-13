@@ -46,12 +46,14 @@ int main(int argc, char **argv)
 
     if( status == 0 ) {																		// Send a message
         status = write(connection_socket, "hello!", 6);
+    }
+    
+    memset(buf, 0, sizeof(buf));
         
 		bytes_read = read(connection_socket, buf, sizeof(buf));								// Read a message
 		if( bytes_read > 0 ) {
 			printf("received [%connection_socket]\n", buf);
 		}
-    }
 
     if( status < 0 ) perror("uh oh");
 
