@@ -18,35 +18,23 @@ int main(int argc, char **argv)
     char *message = "hello!";
     char dest[18] = "B8:27:EB:9B:D4:87";
 
-    if(argc < 2)
-    {
-        fprintf(stderr, "usage: %s <bt_addr>\n", argv[0]);
-        exit(2);
-    }
-
-    strncpy(dest, argv[1], 18);
-
     // allocate a socket
     s = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
 
     // Set up source address
-    //hci_device_id = hci_get_route(NULL);
-    //hci_socket = hci_open_dev(hci_device_id);
     loc_addr.l2_family = AF_BLUETOOTH;
     loc_addr.l2_bdaddr = *BDADDR_ANY;
-    //loc_addr.l2_psm = htobs(0x1001);
-    loc_addr.l2_cid = htobs(ATT_CID);
+    loc_addr.l2_cid = htobs(ATT_CID);                                   //ATT_CID = 4, For l2cap to use BLE
     loc_addr.l2_bdaddr_type = 0;
     
+    //Bind local bluetooth adapter
     bind(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
     
     // Set up destination address
     rem_addr.l2_family = AF_BLUETOOTH;
-    //rem_addr.l2_bdaddr = dest;
     rem_addr.l2_cid = htobs(ATT_CID);
     rem_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;
     str2ba( dest, &rem_addr.l2_bdaddr );
-    
     
     // connect to server
     status = connect(s, (struct sockaddr *)&rem_addr, sizeof(rem_addr));
