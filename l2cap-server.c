@@ -46,6 +46,7 @@ int main(int argc, char **argv)
 		bytes_read = read(client, buf, sizeof(buf));
 		if( bytes_read > 0 ) {
 			printf("received [%s]\n", buf);
+			write(client, "hi", 2);
 		}
 
 		// close connection

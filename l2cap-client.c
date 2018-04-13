@@ -14,6 +14,7 @@ int main(int argc, char **argv)
 {
     struct sockaddr_l2 loc_addr = { 0 }, rem_addr = { 0 };
     int s, status, hci_socket;
+    char buf[1024] = { 0 };
     int hci_device_id = 0;
     char *message = "hello!";
     char dest[18] = "B8:27:EB:9B:D4:87";
@@ -43,6 +44,12 @@ int main(int argc, char **argv)
     if( status == 0 ) {
         status = write(s, "hello!", 6);
     }
+    
+    // read a message
+    bytes_read = read(status, buf, sizeof(buf));
+		if( bytes_read > 0 ) {
+			printf("received [%s]\n", buf);
+		}
 
     if( status < 0 ) perror("uh oh");
 
