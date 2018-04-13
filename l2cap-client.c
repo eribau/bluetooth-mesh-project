@@ -25,6 +25,7 @@ int main(int argc, char **argv)
     struct sockaddr_l2 rem_addr = { 0 };													// Remote bluetooth address
     int connection_socket;
     int status; 
+    int bytes_read;
     char buf[1024] = { 0 };
     char dest[18] = "B8:27:EB:9B:D4:87";													// Destination address
 
