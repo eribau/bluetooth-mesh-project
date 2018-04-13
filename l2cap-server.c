@@ -42,13 +42,13 @@ int main(int argc, char **argv)
 		client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
 
 		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the client 
-		fprintf(stderr, "accepted connection from %connection_socket\n", buf);
+		fprintf(stderr, "accepted connection from %s\n", buf);
 
 		memset(buf, 0, sizeof(buf));
 
 		bytes_read = read(client, buf, sizeof(buf));									// Read data from the client
 		if( bytes_read > 0 ) {
-			printf("received [%connection_socket]\n", buf);
+			printf("received [%s]\n", buf);
 			write(client, "hi", 2);
 		}
 		

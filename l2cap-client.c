@@ -52,7 +52,7 @@ int main(int argc, char **argv)
         
 		bytes_read = read(connection_socket, buf, sizeof(buf));								// Read a message
 		if( bytes_read > 0 ) {
-			printf("received [%connection_socket]\n", buf);
+			printf("received [%s]\n", buf);
 		}
 
     if( status < 0 ) perror("uh oh");
