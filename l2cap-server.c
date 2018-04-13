@@ -1,56 +1,58 @@
 #include <stdio.h>
 #include <string.h>
-#include <sys/socket.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/socket.h>
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#define ATT_CID 4 
+#define ATT_CID 4 																		// ATT_CID = 4, For l2cap socket to use BLE
 
+/**
+  This method first opens a socket, and then binds it to the first 
+  available physical bluetooth adapter on the chip. After, it listens 
+  for a connection, and creates a connection when a client connects. 
+  It can then read and write data in the connection with the client. 
+  **/
 int main(int argc, char **argv)
 {
-    struct sockaddr_l2 loc_addr = { 0 }, rem_addr = { 0 };
-    char buf[1024] = { 0 };
-    int s, client, bytes_read, hci_socket;
-    int hci_device_id = 0;
+    struct sockaddr_l2 loc_addr = { 0 }; 												// Local bluetooth address
+    struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
+    char buf[1024] = { 0 };																// Buffer for reading data
+    int connection_socket; 																
+    int client; 
+    int bytes_read;
     socklen_t opt = sizeof(rem_addr);
 
-    // allocate socket
-    s = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);
+    connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);            // Allocate socket
 
-    // bind socket to the first available 
-    // bluetooth adapter
-    loc_addr.l2_family = AF_BLUETOOTH; 
-    loc_addr.l2_bdaddr = *BDADDR_ANY;
-    loc_addr.l2_cid = htobs(ATT_CID);                                   //ATT_CID = 4, For l2cap to use BLE
-	loc_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;
+    loc_addr.l2_family = AF_BLUETOOTH; 									
+    loc_addr.l2_bdaddr = *BDADDR_ANY;													// Bind socket to the first available bluetooth adapter
+    loc_addr.l2_cid = htobs(ATT_CID);                                   				// ATT_CID = 4, For l2cap to use BLE
+	loc_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;											// Tell the adapter to use low energy		
 
-    bind(s, (struct sockaddr *)&loc_addr, sizeof(loc_addr));
+    bind(connection_socket, (struct sockaddr *)&loc_addr, sizeof(loc_addr));            // Bind socket
 
-    // put socket into listening mode
-    listen(s, 1);
+    listen(connection_socket, 1);														// Put socket into listening mode
 	
 	while(1) {
-		// accept one connection
-		client = accept(s, (struct sockaddr *)&rem_addr, &opt);
+		
+		client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
 
-		ba2str( &rem_addr.l2_bdaddr, buf );
-		fprintf(stderr, "accepted connection from %s\n", buf);
+		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the client 
+		fprintf(stderr, "accepted connection from %connection_socket\n", buf);
 
 		memset(buf, 0, sizeof(buf));
 
-		// read data from the client
-		bytes_read = read(client, buf, sizeof(buf));
+		bytes_read = read(client, buf, sizeof(buf));									// Read data from the client
 		if( bytes_read > 0 ) {
-			printf("received [%s]\n", buf);
+			printf("received [%connection_socket]\n", buf);
 			write(client, "hi", 2);
 		}
-
-		// close connection
-		close(client);
+		
+		close(client);																	// Close connection
 	}
-    close(s);
+    close(connection_socket);
 }
