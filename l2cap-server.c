@@ -15,8 +15,8 @@
   available physical bluetooth adapter on the chip. After, it listens 
   for a connection, and creates a connection when a client connects. 
   It can then read and write data in the connection with the client. 
-  **/argc
-void ble_server(
+  **/
+void ble_server()
 {
     struct sockaddr_l2 loc_addr = { 0 }; 												// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
