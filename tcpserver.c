@@ -9,6 +9,7 @@
 #include <string.h>
 #include "iocontroller.h"												// Responsible for GPIO
 #include "inputprocessing.h"											// Responsible for processing user's inputs
+#include "l2cap-server.h"												// l2cap bluetooth low energy server
 
 #define BUFFER_SIZE 1024
 #define on_error(...) { fprintf(stderr, __VA_ARGS__); fflush(stderr); exit(1); }
@@ -68,7 +69,7 @@ int main (int argc, char *argv[]) {
 	while (1) {
 		socklen_t client_len = sizeof(client);
 		
-		client_fd = accept(server_fd, (struct sockaddr *) &client, &client_len);
+		client_fd = accept(server_fd, (struct sockaddr *) &client, &client_len); // This is a blocking line, waits until a socket is accepted
 		if (client_fd < 0) on_error("Could not establish new connection\n");
 		connection_check = true;
 		
@@ -81,7 +82,7 @@ int main (int argc, char *argv[]) {
 				if (read < 0) on_error("Client read failed\n");
 				printf(buf);
 
-				process(buf);
+				process(buf);											// This one toggles the led (Function is in inputprocessing.c)
 
 				err = send(client_fd, buf, read, 0);					// Echoing the message
 				if (err < 0) on_error("Client write failed\n");

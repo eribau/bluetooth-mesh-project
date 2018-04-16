@@ -32,7 +32,7 @@ void turn_off() {														// Code for this method follows the turn_on docum
  *  When button pressed, send messages to server and client **/
 void button(int client_fd) {											
     wiringPiSetup();
-    pinMode (2, INPUT);
+    pinMode (2, INPUT);													// Sets button as an input
     int prev_button = HIGH;												// Last state of the pull-up circuit
     while (1) {
         if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
