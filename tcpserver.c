@@ -31,7 +31,7 @@ int main (int argc, char *argv[]) {
 
 	
 	global_variable = mmap(NULL, sizeof *global_variable, PROT_READ | PROT_WRITE, 
-                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);					// Creating shareable meory for all of the child processes
+                    MAP_SHARED | MAP_ANONYMOUS, -1, 0);					// Creating shareable memory for all of the child processes
 
     *global_variable = 1;
 	
