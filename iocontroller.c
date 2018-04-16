@@ -6,7 +6,7 @@
 
 typedef enum {false, true} bool;
 
-extern bool connection_check;
+//extern bool connection_check;
 
 /** Turns on LED at a specific preprogrammed pin **/
 void turn_on() {														
@@ -29,7 +29,7 @@ void turn_off() {														// Code for this method follows the turn_on docum
 }
 
 /** Responsible for processing sensor input (button in this case).
- *  When button pressed, send messages to server and client **/
+ *  When button pressed, send messages to server and client
 void button(int client_fd) {											
     wiringPiSetup();
     pinMode (2, INPUT);													// Sets button as an input
@@ -47,4 +47,6 @@ void button(int client_fd) {
         }
         delay(100);
     }
+    *  
 }
+*  **/

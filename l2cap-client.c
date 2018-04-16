@@ -7,6 +7,7 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include "inputprocessing.h"
 
 #define ATT_CID 4																			// ATT_CID = 4, For l2cap socket to use BLE
 
@@ -28,6 +29,8 @@ int main(int argc, char **argv)
     int bytes_read;
     char buf[1024] = { 0 };
     char dest[18] = "B8:27:EB:9B:D4:87";													// Destination address
+    char test[] = "toggle\n";
+    process(test);
 
     connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);				// Allocate a socket
     
@@ -44,6 +47,14 @@ int main(int argc, char **argv)
     str2ba( dest, &rem_addr.l2_bdaddr );
    
     status = connect(connection_socket, (struct sockaddr *)&rem_addr, sizeof(rem_addr));	// Connect to server
+    
+    while(1){
+		memset(buf, 0, sizeof(buf));
+		bytes_read = read(connection_socket, buf, sizeof(buf));	
+		process(buf);
+	
+	
+	}
 
     if( status == 0 ) {																		// Send a message
         status = write(connection_socket, "hello!", 6);
