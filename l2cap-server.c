@@ -16,7 +16,7 @@
   for a connection, and creates a connection when a client connects. 
   It can then read and write data in the connection with the client. 
   **/
-  int client; 
+  int ble_client; 
   
 void ble_server()
 {
@@ -50,20 +50,21 @@ void ble_server()
 		
 		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
 		printf("%d\n" , testings);
-		client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
+		ble_client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
 
-		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the client 
+		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the ble_client 
 		fprintf(stderr, "accepted connection from %s\n", buf);
 
 		memset(buf, 0, sizeof(buf));
-
-		bytes_read = read(client, buf, sizeof(buf));									// Read data from the client
+		while(1){
+		bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the ble_client
 		if( bytes_read > 0 ) {
 			printf("received [%s]\n", buf);
-			write(client, "hi", 2);														// Message over ble to other pi
+			write(ble_client, "toggle\n", 7);														// Message over ble to other pi
 		}
+	}
 		
-		close(client);																	// Close connection
+		close(ble_client);																	// Close connection
 	}
     close(connection_socket);
 }

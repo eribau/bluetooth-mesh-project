@@ -58,6 +58,7 @@ int main(int argc, char **argv)
     while(1){
 		memset(buf, 0, sizeof(buf));
 		bytes_read = read(connection_socket, buf, sizeof(buf));	
+		printf("[%s]\n", buf);
 		process(buf);
 	
 	
