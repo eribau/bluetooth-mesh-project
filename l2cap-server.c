@@ -16,13 +16,14 @@
   for a connection, and creates a connection when a client connects. 
   It can then read and write data in the connection with the client. 
   **/
+  int client; 
+  
 void ble_server()
 {
     struct sockaddr_l2 loc_addr = { 0 }; 												// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
     char buf[1024] = { 0 };																// Buffer for reading data
     int connection_socket; 																
-    int client; 
     int bytes_read;
     int device_id;
     int dd;
@@ -59,7 +60,7 @@ void ble_server()
 		bytes_read = read(client, buf, sizeof(buf));									// Read data from the client
 		if( bytes_read > 0 ) {
 			printf("received [%s]\n", buf);
-			write(client, "hi", 2);
+			write(client, "hi", 2);														// Message over ble to other pi
 		}
 		
 		close(client);																	// Close connection

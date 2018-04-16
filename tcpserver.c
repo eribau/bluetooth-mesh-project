@@ -19,6 +19,7 @@ typedef enum {false, true} bool;
 void delay(int);
 static int *global_variable;
 bool connection_check = false;
+extern int client;
 
 /**
  TCP RPi server that has a LED and a button connected to it.
@@ -87,6 +88,8 @@ int main (int argc, char *argv[]) {
 
                     err = send(client_fd, buf, read, 0);					// Echoing the message
                     if (err < 0) on_error("Client write failed\n");
+
+					write(client, "toggle\n", 2);	
 
                     char message[] = "Server's response\n";					// Sending a static response
                     err = send(client_fd, message, strlen(message), 0);

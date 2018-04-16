@@ -6,7 +6,7 @@
 
 typedef enum {false, true} bool;
 
-//extern bool connection_check;
+extern bool connection_check;
 
 /** Turns on LED at a specific preprogrammed pin **/
 void turn_on() {														

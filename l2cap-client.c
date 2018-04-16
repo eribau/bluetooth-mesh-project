@@ -19,6 +19,8 @@
   It then attemps to connect to the destination address specified. 
   It can then read and write data in the connection with the server. 
   **/
+  typedef enum {false, true} bool;
+  bool connection_check;																	// Temporary variable so we can compile
 
 int main(int argc, char **argv)
 {
@@ -29,8 +31,7 @@ int main(int argc, char **argv)
     int bytes_read;
     char buf[1024] = { 0 };
     char dest[18] = "B8:27:EB:9B:D4:87";													// Destination address
-    char test[] = "toggle\n";
-    process(test);
+	
 
     connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);				// Allocate a socket
     
@@ -48,6 +49,12 @@ int main(int argc, char **argv)
    
     status = connect(connection_socket, (struct sockaddr *)&rem_addr, sizeof(rem_addr));	// Connect to server
     
+    
+
+    if( status == 0 ) {																		// Send a message
+        status = write(connection_socket, "hello!", 6);
+    }
+    
     while(1){
 		memset(buf, 0, sizeof(buf));
 		bytes_read = read(connection_socket, buf, sizeof(buf));	
@@ -55,10 +62,6 @@ int main(int argc, char **argv)
 	
 	
 	}
-
-    if( status == 0 ) {																		// Send a message
-        status = write(connection_socket, "hello!", 6);
-    }
     
     memset(buf, 0, sizeof(buf));
         
