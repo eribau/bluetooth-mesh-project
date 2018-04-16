@@ -24,9 +24,16 @@ void ble_server()
     int connection_socket; 																
     int client; 
     int bytes_read;
+    int device_id;
+    int dd;
     socklen_t opt = sizeof(rem_addr);
+    
+    device_id = hci_get_route(NULL);
+    dd = hci_open_dev(device_id);
 
     connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);            // Allocate socket
+    
+    
 
     loc_addr.l2_family = AF_BLUETOOTH; 									
     loc_addr.l2_bdaddr = *BDADDR_ANY;													// Bind socket to the first available bluetooth adapter
@@ -39,6 +46,9 @@ void ble_server()
 	
 	while(1) {
 		
+		
+		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
+		printf("%d\n" , testings);
 		client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
 
 		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the client 

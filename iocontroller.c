@@ -38,7 +38,8 @@ void button(int client_fd) {
         if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
         if(prev_button == HIGH && digitalRead(2) == LOW) {				// A falling edge
             prev_button = LOW;
-            send(client_fd, "Client message\n", 6, 0);					// [Debugging] Send message to client
+            char reply[] = "button pressed\n";
+            send(client_fd, reply, sizeof(reply), 0);					// [Debugging] Send message to client
             printf("Server message\n");									// [Debugging] Send message to server
         }
         else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
