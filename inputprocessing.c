@@ -8,10 +8,10 @@ typedef enum {false, true} bool;
 
 bool toggle = false;													// First state of the LED (off)
  
-/** Responsible for processing user input
- *  If the input is equal to the preset
- *  keyword, toggle on/off lights,
- *  depending on the current state.  **/
+/** Responsible for processing user input.
+	If the input is equal to the preset keyword, toggle on/off lights,
+	depending on the current state.  
+**/
 void toggle_led(char buf[]) {
 	int i = strcmp(buf, "toggle\n");									// [Debugging] Comparing the input string to the keyword.
 	printf("%d\n", i);													
