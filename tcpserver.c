@@ -99,8 +99,7 @@ int main (int argc, char *argv[]) {
                 err = send(client_fd, message, strlen(message), 0);
                 if (err < 0) on_error("Client write failed\n");
             }
-        }
-        else {
+        } else {
             printf("CHECK\n");
             if ((childpid = fork()) == 0) {
                 char *pimessage;
@@ -111,16 +110,13 @@ int main (int argc, char *argv[]) {
                     send(client_fd, message, strlen(message), 0);
                     free(pimessage);
                 }
-            }
+            } else{
             button(client_fd);											// Calls the button method for turning lights on/off
-
+			}
 
         }
         connection_check = false;
     }
-
-
-
 
     return 0;
 }

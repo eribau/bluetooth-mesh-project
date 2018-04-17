@@ -57,15 +57,21 @@ int ble_server()
 	
 }
 
+
+/**
+ * This method is called from tcpserver and it reads a message from 
+ * a l2cap-client and 
+ **/ 
+
 char* ble_read(int ble_client){															// Returns pointer to message from ble_client
 	int bytes_read;
 	char buf[32] = { 0 };
 	char *message;
-		memset(buf, 0, sizeof(buf));
-		bytes_read = read(ble_client, buf, sizeof(buf));								// Read data from the client
-		message = malloc (sizeof (char) * 32);											// Allocate data and store pointer
-		strcpy(message, buf);															// Copies message from ble to the allocated memory
-		if( bytes_read > 0 ) {
+	memset(buf, 0, sizeof(buf));														// Initializes buf memory
+	bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the client
+	message = malloc (sizeof (char) * 32);												// Allocate data and store pointer
+	strcpy(message, buf);																// Copies message from ble to the allocated memory
+	if( bytes_read > 0 ) {
 			printf("received %s\n", buf);
 	}
 	return message;

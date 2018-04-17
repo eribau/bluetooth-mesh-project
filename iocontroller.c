@@ -43,8 +43,7 @@ void button(int client_fd) {
             char reply[] = "button pressed\n";
             send(client_fd, reply, sizeof(reply), 0);					// [Debugging] Send message to client
             printf("Server message\n");									// [Debugging] Send message to server
-        }
-        else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
+        }else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
             prev_button = HIGH;
         }
         delay(100);
