@@ -91,7 +91,7 @@ int main (int argc, char *argv[]) {
                     
                     //
 					printf("ble_client : %d\n", ble_client);
-					write(ble_client, "toggle\n", 7);	
+					write(ble_client, buf, sizeof(buf));	
 					//
                     char message[] = "Server's response\n";					// Sending a static response
                     err = send(client_fd, message, strlen(message), 0);
@@ -104,8 +104,9 @@ int main (int argc, char *argv[]) {
             }
             connection_check = false;
         }
-    }
+	
+    
 		
-    }
+    
     return 0;
 }

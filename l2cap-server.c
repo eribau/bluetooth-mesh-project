@@ -49,7 +49,7 @@ int ble_server()
 		
 		
 		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
-		printf("%d\n" , testings);
+		printf("leadv on %d\n" , testings);
 		ble_client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
 
 		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the ble_client 

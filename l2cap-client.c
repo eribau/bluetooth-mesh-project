@@ -59,7 +59,10 @@ int main(int argc, char **argv)
 		memset(buf, 0, sizeof(buf));
 		bytes_read = read(connection_socket, buf, sizeof(buf));	
 		printf("[%s]\n", buf);
-		process(buf);
+		
+		if(strcmp("togglePi2\n", buf)){
+		process("toggle\n");
+		}
 	
 	
 	}
