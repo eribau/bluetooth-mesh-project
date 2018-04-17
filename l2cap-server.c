@@ -11,26 +11,24 @@
 #define ATT_CID 4 																		// For l2cap socket to use BLE
 
 /**
-	This method first opens a ble sock
-	* et, and then binds it to the first 
+	This method first opens a ble socket, and then binds it to the first 
 	available physical bluetooth adapter on the chip. It then listens 
 	for a connection and creates a connection when a client connects. 
 	It can then read and write data over the connection with the client. 
 **/
-int ble_server()
-{
+int ble_server(){
     struct sockaddr_l2 loc_addr = { 0 };												// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
     char buf[1024] = { 0 };																// Buffer for reading data
     int connection_socket;																
     int bytes_read;
     int device_id;
-    int local_ble_adapter;
+    int dd;//find better name?
     socklen_t opt = sizeof(rem_addr);
-    int ble_client; 
+    int ble_client;
     
     device_id = hci_get_route(NULL);
-    local_ble_adapter = hci_open_dev(device_id);										// 
+    dd = hci_open_dev(device_id);										
     connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);            // Initialize socket
     
     loc_addr.l2_family = AF_BLUETOOTH; 									
@@ -62,8 +60,8 @@ char* ble_read(int ble_client){															// Returns pointer to message from
 	bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the client
 	message = malloc (sizeof (char) * 32);												// Allocate data and store pointer
 	strcpy(message, buf);																// Copies message from ble to the allocated memory
-	if( bytes_read > 0 ) {
-			printf("received %s\n", buf);
+	if (0 < bytes_read) {
+		printf("received %s\n", buf);
 	}
 	return message;
 }

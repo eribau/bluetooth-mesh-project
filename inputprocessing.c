@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "iocontroller.h"												// Responsible for GPIO
 #include "inputprocessing.h"											// Responsible for processing user's inputs
-
-typedef enum {false, true} bool;
 
 bool toggle = false;													// First state of the LED (off)
  

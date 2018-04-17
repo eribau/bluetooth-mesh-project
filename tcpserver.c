@@ -1,5 +1,9 @@
-#include <stdio.h>														// Code based on the https://github.com/mafintosh/echo-servers.c/blob/master/tcp-echo-server.c
-#include <stdlib.h>														// Open license
+/*
+	Code based on the https://github.com/mafintosh/echo-servers.c/blob/master/tcp-echo-server.c
+	Open license
+*/
+#include <stdio.h>														 
+#include <stdlib.h>														
 #include <sys/socket.h>
 #include <sys/mman.h>
 #include <sys/types.h>
