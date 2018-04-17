@@ -12,7 +12,7 @@ bool toggle = false;													// First state of the LED (off)
  *  If the input is equal to the preset
  *  keyword, toggle on/off lights,
  *  depending on the current state.  **/
-void process(char buf[]) {
+void toggle_led(char buf[]) {
 	int i = strcmp(buf, "toggle\n");									// [Debugging] Comparing the input string to the keyword.
 	printf("%d\n", i);													
 	if (strcmp(buf, "toggle\n") == 0) {									// If the input matches the preset keyword, turn on/off, depending on the state of the LED.

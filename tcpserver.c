@@ -84,7 +84,7 @@ int main (int argc, char *argv[]) {
                     if (read < 0) on_error("Client read failed\n");
                     printf(buf);
 
-                    process(buf);											// This one toggles the led (Function is in inputprocessing.c)
+                    toggle_led(buf);											// This one toggles the led (Function is in inputprocessing.c)
 
                     err = send(client_fd, buf, read, 0);					// Echoing the message
                     if (err < 0) on_error("Client write failed\n");

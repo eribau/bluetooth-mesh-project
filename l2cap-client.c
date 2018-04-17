@@ -60,8 +60,8 @@ int main(int argc, char **argv)
 		bytes_read = read(connection_socket, buf, sizeof(buf));	
 		printf("[%s]\n", buf);
 		
-		if(strcmp("togglePi2\n", buf)){
-		process("toggle\n");
+		if(strcmp("togglePi2\n", buf) == 0){
+		toggle_led("toggle\n");
 		}
 	
 	
