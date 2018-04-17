@@ -16,7 +16,7 @@
   for a connection, and creates a connection when a client connects. 
   It can then read and write data in the connection with the client. 
   **/
-  int ble_client; 
+ 
   
 int ble_server()
 {
@@ -28,6 +28,7 @@ int ble_server()
     int device_id;
     int dd;
     socklen_t opt = sizeof(rem_addr);
+    int ble_client; 
     
     device_id = hci_get_route(NULL);
     dd = hci_open_dev(device_id);
@@ -44,9 +45,6 @@ int ble_server()
     bind(connection_socket, (struct sockaddr *)&loc_addr, sizeof(loc_addr));            // Bind socket
 
     listen(connection_socket, 1);														// Put socket into listening mode
-	
-	
-		
 		
 		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
 		printf("leadv on %d\n" , testings);
@@ -54,10 +52,22 @@ int ble_server()
 
 		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the ble_client 
 		fprintf(stderr, "accepted connection from %s\n", buf);
-
-		memset(buf, 0, sizeof(buf));
 		
 		return ble_client;
 	
+}
+
+char* ble_read(int ble_client){
+	int bytes_read;
+	char buf[32] = { 0 };
+	char *message;
+		memset(buf, 0, sizeof(buf));
+		bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the client
+		message = malloc (sizeof (char) * 32);
+		strcpy(message, buf);
+		if( bytes_read > 0 ) {
+			printf("received %s\n", buf);
+	}
+	return message;
 }
 

@@ -19,7 +19,7 @@ typedef enum {false, true} bool;
 void delay(int);
 static int *global_variable;
 bool connection_check = false;
-extern int ble_client;
+int ble_client;
 
 /**
  TCP RPi server that has a LED and a button connected to it.
@@ -37,7 +37,8 @@ int main (int argc, char *argv[]) {
     pid_t childpid;
     
     	ble_client = ble_server();
-
+    	
+    	 
         if (argc < 2) on_error("Usage: %s [port]\n", argv[0]);				// The port used
 
         int port = atoi(argv[1]);											// Converts the 2nd argument to int
@@ -101,7 +102,19 @@ int main (int argc, char *argv[]) {
             }
             else {
                 printf("CHECK\n");
+                if ((childpid = fork()) == 0) {
+			 char *pimessage;
+			 while(1){
+			 pimessage = ble_read(ble_client);
+			 printf("Pi2 Button Pressed: %s\n", pimessage);
+             char message[] = "Pi2 says hi 	\n";					// Sending a static response
+             send(client_fd, message, strlen(message), 0);
+             free(pimessage);
+			}
+		 }
                 button(client_fd);											// Calls the button method for turning lights on/off
+                
+                
             }
             connection_check = false;
         }
