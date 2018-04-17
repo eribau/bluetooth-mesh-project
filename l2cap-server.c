@@ -18,7 +18,7 @@
   **/
   int ble_client; 
   
-void ble_server()
+int ble_server()
 {
     struct sockaddr_l2 loc_addr = { 0 }; 												// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
@@ -45,7 +45,7 @@ void ble_server()
 
     listen(connection_socket, 1);														// Put socket into listening mode
 	
-	while(1) {
+	
 		
 		
 		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
@@ -56,15 +56,8 @@ void ble_server()
 		fprintf(stderr, "accepted connection from %s\n", buf);
 
 		memset(buf, 0, sizeof(buf));
-		while(1){
-		bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the ble_client
-		if( bytes_read > 0 ) {
-			printf("received [%s]\n", buf);
-			write(ble_client, "toggle\n", 7);														// Message over ble to other pi
-		}
-	}
 		
-		close(ble_client);																	// Close connection
-	}
-    close(connection_socket);
+		return ble_client;
+	
 }
+

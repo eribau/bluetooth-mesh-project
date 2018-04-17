@@ -35,8 +35,8 @@ int main (int argc, char *argv[]) {
 
     *global_variable = 1;
     pid_t childpid;
-
-    if ((childpid = fork()) == 0) {
+    
+    	ble_client = ble_server();
 
         if (argc < 2) on_error("Usage: %s [port]\n", argv[0]);				// The port used
 
@@ -88,9 +88,11 @@ int main (int argc, char *argv[]) {
 
                     err = send(client_fd, buf, read, 0);					// Echoing the message
                     if (err < 0) on_error("Client write failed\n");
-
-					//write(ble_client, "toggle\n", 7);	
-
+                    
+                    //
+					printf("ble_client : %d\n", ble_client);
+					write(ble_client, "toggle\n", 7);	
+					//
                     char message[] = "Server's response\n";					// Sending a static response
                     err = send(client_fd, message, strlen(message), 0);
                     if (err < 0) on_error("Client write failed\n");
@@ -102,8 +104,7 @@ int main (int argc, char *argv[]) {
             }
             connection_check = false;
         }
-    } else {
-		ble_server();
+    }
 		
     }
     return 0;
