@@ -48,7 +48,7 @@ int ble_server()
 		
 		int testings = hci_le_set_advertise_enable(dd, 1, 10000);
 		printf("leadv on %d\n" , testings);
-		ble_client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);			// Accept one connection
+		ble_client = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);		// Accept one connection
 
 		ba2str( &rem_addr.l2_bdaddr, buf );												// Print bluetooth address of the ble_client 
 		fprintf(stderr, "accepted connection from %s\n", buf);
@@ -57,14 +57,14 @@ int ble_server()
 	
 }
 
-char* ble_read(int ble_client){
+char* ble_read(int ble_client){															// Returns pointer to message from ble_client
 	int bytes_read;
 	char buf[32] = { 0 };
 	char *message;
 		memset(buf, 0, sizeof(buf));
-		bytes_read = read(ble_client, buf, sizeof(buf));									// Read data from the client
-		message = malloc (sizeof (char) * 32);
-		strcpy(message, buf);
+		bytes_read = read(ble_client, buf, sizeof(buf));								// Read data from the client
+		message = malloc (sizeof (char) * 32);											// Allocate data and store pointer
+		strcpy(message, buf);															// Copies message from ble to the allocated memory
 		if( bytes_read > 0 ) {
 			printf("received %s\n", buf);
 	}

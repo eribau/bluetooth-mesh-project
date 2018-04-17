@@ -85,13 +85,13 @@ int main(int argc, char **argv)
 } else {
 	wiringPiSetup();
     pinMode (2, INPUT);													// Sets button as an input
-    int prev_button = HIGH;												// Last state of the pull-up circuit
+    int prev_button = LOW;												// Last state of the pull-up circuit
     while (1) {
         if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
         if(prev_button == HIGH && digitalRead(2) == LOW) {				// A falling edge
             prev_button = LOW;
             char reply[] = "button pressed\n";
-            write(connection_socket, reply, sizeof(reply));					// [Debugging] Send message to client
+            write(connection_socket, reply, sizeof(reply));				// [Debugging] Send message to client (Maxsize 32)
             printf("Server message\n");									// [Debugging] Send message to server
         }
         else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
