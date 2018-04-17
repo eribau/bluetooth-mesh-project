@@ -91,7 +91,8 @@ int main (int argc, char *argv[]) {
                     
                     //
 					printf("ble_client : %d\n", ble_client);
-					write(ble_client, buf, sizeof(buf));	
+					printf("buffer: %s\n", buf);
+					write(ble_client, buf, read);	
 					//
                     char message[] = "Server's response\n";					// Sending a static response
                     err = send(client_fd, message, strlen(message), 0);

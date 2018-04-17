@@ -7,6 +7,7 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include <wiringPi.h>
 #include "inputprocessing.h"
 
 #define ATT_CID 4																			// ATT_CID = 4, For l2cap socket to use BLE
@@ -20,7 +21,7 @@
   It can then read and write data in the connection with the server. 
   **/
   typedef enum {false, true} bool;
-  bool connection_check;																	// Temporary variable so we can compile
+  bool connection_check = true;																	// Temporary variable so we can compile
 
 int main(int argc, char **argv)
 {
@@ -31,6 +32,7 @@ int main(int argc, char **argv)
     int bytes_read;
     char buf[1024] = { 0 };
     char dest[18] = "B8:27:EB:9B:D4:87";													// Destination address
+    pid_t childpid;
 	
 
     connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);				// Allocate a socket
@@ -49,6 +51,8 @@ int main(int argc, char **argv)
    
     status = connect(connection_socket, (struct sockaddr *)&rem_addr, sizeof(rem_addr));	// Connect to server
     
+    if ((childpid = fork()) == 0) {
+    
     
 
     if( status == 0 ) {																		// Send a message
@@ -59,6 +63,7 @@ int main(int argc, char **argv)
 		memset(buf, 0, sizeof(buf));
 		bytes_read = read(connection_socket, buf, sizeof(buf));	
 		printf("[%s]\n", buf);
+		
 		
 		if(strcmp("togglePi2\n", buf) == 0){
 		toggle_led("toggle\n");
@@ -77,4 +82,22 @@ int main(int argc, char **argv)
     if( status < 0 ) perror("uh oh");
 
     close(connection_socket);
+} else {
+	wiringPiSetup();
+    pinMode (2, INPUT);													// Sets button as an input
+    int prev_button = HIGH;												// Last state of the pull-up circuit
+    while (1) {
+        if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
+        if(prev_button == HIGH && digitalRead(2) == LOW) {				// A falling edge
+            prev_button = LOW;
+            char reply[] = "button pressed\n";
+            write(connection_socket, reply, sizeof(reply));					// [Debugging] Send message to client
+            printf("Server message\n");									// [Debugging] Send message to server
+        }
+        else if(prev_button == LOW && digitalRead(2) == HIGH) {			// a rising edge, do nothing
+            prev_button = HIGH;
+        }
+        delay(100);
+    }
+}
 }
