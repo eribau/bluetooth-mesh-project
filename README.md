@@ -4,12 +4,12 @@ This project is about creating a mesh-network using bluetooth low energy (BLE). 
 
 ### Currently working on
 
-Configuring a BLE network with 7 bluetooth devices and have this network also connected to the internet via a TCP-server. The TCP-server is running on one of the devices.
+Configuring a static BLE network with 7 bluetooth devices and implement a dynamic meshed network.
 
 ### Project backlog
 1. Connect to a PI over bluetooth low energy to another PI connected to the internet, and vice versa. (FINISHED)
 2. Configure a static piconet of seven devices. (WORKING ON)
-3. Configure a mesh network with more than seven devices.
+3. Configure a mesh network with more than seven devices. (WORKING ON)
 4. Implement routing algorithm developed at KTH.
 
 ### Contact
