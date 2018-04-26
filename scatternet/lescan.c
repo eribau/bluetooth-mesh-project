@@ -12,11 +12,12 @@
 #include <signal.h>
 #include <time.h>
 
-
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+
+#include "ll.h"
 
 #define FLAGS_AD_TYPE 0x01
 #define FLAGS_LIMITED_MODE_BIT 0x01
@@ -147,6 +148,12 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 	struct timeval tv;												//Timeout for socket options for read() to be nonblocking
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
+	//char **neighbours = NULL;
+	struct {
+		char *addr_p;
+	} *neighbours = NULL;
+	char [][] array = 0;
+	
 	
 	olen = sizeof(of);
 	if (getsockopt(dd, SOL_HCI, HCI_FILTER, &of, &olen) < 0) {
@@ -173,6 +180,7 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 		evt_le_meta_event *meta;
 		le_advertising_info *info;
 		char addr[18];
+		//char *addr_pointer[18];
 		
 		
 		while ((len = read(dd, buf, sizeof(buf))) < 0) {
@@ -208,13 +216,27 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 			eir_parse_name(info->data, info->length,
 							name, sizeof(name) - 1);
 	
-			printf("%s %s\n", addr, name);
+			//printf("%s %s\n", addr, name);
+			//neighbours = ll_new(neighbours);
+			//*neighbours = addr;
+			
+			neighbours = ll_new(neighbours);
+			neighbours->addr_p = addr;
+			
+			//*addr_pointer = addr;
+			//*(neighbours = ll_new(neighbours)) = *addr_pointer;
 		}
 		
 	}
 
 done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
+	ll_foreach(neighbours, addr_p){
+		printf("%s\n", *addr_p);
+	}
+	/*for (addr = neighbours; addr; addr = ll_next(addr)) {
+		printf("%s\n", *addr);
+	}*/
 
 	if (len < 0)
 		return -1;
