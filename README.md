@@ -8,7 +8,7 @@ Configuring a static BLE network with 7 bluetooth devices and implement a dynami
 
 ### Project backlog
 1. Connect to a PI over bluetooth low energy to another PI connected to the internet, and vice versa. (FINISHED)
-2. Configure a static piconet of seven devices. (WORKING ON)
+2. Configure a static piconet of seven devices. (FINISHED)
 3. Configure a mesh network with more than seven devices. (WORKING ON)
 4. Implement routing algorithm developed at KTH.
 
