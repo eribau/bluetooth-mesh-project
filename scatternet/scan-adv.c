@@ -6,18 +6,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <signal.h>
+#include <time.h>
+
 #include <sys/param.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
-#include <signal.h>
-#include <time.h>
 
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#include "list.h"
+#include "ll.h"
 
 #define FLAGS_AD_TYPE 0x01
 #define FLAGS_LIMITED_MODE_BIT 0x01
@@ -34,6 +35,51 @@
 #define EIR_NAME_COMPLETE           0x09  /* complete local name */
 #define EIR_TX_POWER                0x0A  /* transmit power level */
 #define EIR_DEVICE_ID               0x10  /* device ID */
+
+struct neighbour {
+	char addr_bt[18];
+	char addr_data[300];
+	};
+
+struct neighbour *neighbours = NULL;
+
+// Functions for advertise
+
+struct hci_request ble_hci_request(uint16_t ocf, int clen, void * status, void * cparam)
+{
+	struct hci_request rq;
+	memset(&rq, 0, sizeof(rq));
+	rq.ogf = OGF_LE_CTL;
+	rq.ocf = ocf;
+	rq.cparam = cparam;
+	rq.clen = clen;
+	rq.rparam = status;
+	rq.rlen = 1;
+	return rq;
+}
+
+le_set_advertising_data_cp ble_hci_params_for_set_adv_data(char * name, char * btaddr)
+{
+	int name_len = strlen(name);
+
+	le_set_advertising_data_cp adv_data_cp;
+	memset(&adv_data_cp, 0, sizeof(adv_data_cp));
+
+	adv_data_cp.data[0] = 0x02; // Length.
+	adv_data_cp.data[1] = 0x01; // Flags field.
+	adv_data_cp.data[2] = 0x01; // LE Limited Discoverable Flag set
+
+	adv_data_cp.data[3] = name_len + 1; // Length.
+	adv_data_cp.data[4] = 0x09; // Name field.
+	memcpy(adv_data_cp.data + 5, name, name_len);
+	memcpy(adv_data_cp.data + 5 + name_len, btaddr, strlen(btaddr));
+
+	adv_data_cp.length = strlen(adv_data_cp.data);
+
+	return adv_data_cp;
+}
+
+// Functions for scan from hcitool.c 
 
 static volatile int signal_received = 0;
 
@@ -138,7 +184,7 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 	return 0;
 }
 
-list_t* print_advertising_devices(int dd, uint8_t filter_type) {
+int print_advertising_devices(int dd, uint8_t filter_type) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
 	struct hci_filter nf, of;
 	struct sigaction sa;
@@ -148,10 +194,11 @@ list_t* print_advertising_devices(int dd, uint8_t filter_type) {
 	struct timeval tv;												//Timeout for socket options for read() to be nonblocking
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
-	list_t *neighbours = list_new();
 	char arr [100][18];
 	char addr_table[1000][18];
-	int addr_counter = 0;	
+	int addr_counter = 0;
+	
+	
 	
 	olen = sizeof(of);
 	if (getsockopt(dd, SOL_HCI, HCI_FILTER, &of, &olen) < 0) {
@@ -191,6 +238,7 @@ list_t* print_advertising_devices(int dd, uint8_t filter_type) {
 				continue;
 			goto done;
 		}
+
 		if (time(0) - start >= 20) {
 			goto done;
 		}
@@ -217,15 +265,24 @@ list_t* print_advertising_devices(int dd, uint8_t filter_type) {
 			char rssi;
 			//printf("%d\n", rssi);
 			
+			if (strcmp("Pi", name) == 0) {
+				neighbours = ll_new(neighbours);
+				strcpy(neighbours->addr_bt, addr);
+				for (int i = 0; i < info->length; i++) {
+					neighbours->addr_data[i] = info->data[i];
+					//printf("%d ", rssi); 
+				}
+			}
+		
 			printf("%s %s ", addr, name);
 			for (int i = 0; i < info->length; i++) {
 				rssi = info->data[i];
-				printf("%d ", rssi);
+				printf("%d ", rssi); 
 			}
 			printf("\n");
 	
 			//printf("%s %d %s\n", addr, rssi, name);
-
+			/*
 			addr_exists = 0; 
 			for (int i = 0; i < sizeof(addr_table)/sizeof(addr_table[0]); i++) {
 				if (strcmp(addr, addr_table[i]) == 0) {
@@ -235,78 +292,154 @@ list_t* print_advertising_devices(int dd, uint8_t filter_type) {
 			if (addr_exists == 0) {strcpy(addr_table[addr_counter], addr);
 				list_node_t *a = list_node_new(addr_table[addr_counter]);
 				list_rpush(neighbours, a);
-			}
+			}*/
 			
 			addr_counter++;
 			if (addr_counter == (sizeof(addr_table)/sizeof(addr_table[0]) - 1)) addr_counter = 0;
 				
-		}
+		
 	}
 
+	}
 done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
 
-	list_node_t *node;
+	ll_foreach(neighbours, nan) {
+		printf("%s\n", nan->addr_bt);
+	}
+	/*list_node_t *node;
 			list_iterator_t *it = list_iterator_new(neighbours, LIST_HEAD);
 			while ((node = list_iterator_next(it))) {
 				//puts(node->val);
-			}
+			}*/
 
 	if (len < 0) exit(-1);
 
-	return neighbours;
+	return 0;
 }
 
 int main(int argc, char *argv[]){
-	int err, opt, dd, dev_id;
-	uint8_t own_type = LE_PUBLIC_ADDRESS;
-	uint8_t scan_type = 0x01;
-	uint8_t filter_type = 0;
-	uint8_t filter_policy = 0x00;
-	uint16_t interval = htobs(0x0010);
-	uint16_t window = htobs(0x0010);
-	uint8_t filter_dup = 0x01;
 	
-	
-	// Might break comparisons because of the size/actual size
-	int address_dec [] = {66, 56, 58, 50, 55, 58, 69, 66, 58, 52, 70, 58, 68, 54, 58, 53, 54};
-	char address_ascii [18] = {0};
-	for (int i = 0; i < 17; i++) {
-				address_ascii[i] = address_dec[i];
-				printf("%c\n", address_ascii[i]);
-			}
-	printf("%s\n", address_ascii);
-	printf("%c\n", address_ascii[17]);
-	printf("xd\n");
-	
-	
-	dev_id = hci_get_route(NULL);
 
-	dd = hci_open_dev(dev_id);
-	
-	err = hci_le_set_scan_parameters(dd, scan_type, interval, window,
-						own_type, filter_policy, 10000);
-	if (err < 0) {
-		perror("Set scan parameters failed");
-		exit(1);
+	while (1) {
+		//-----------------------------------------SCAN---------------------------
+		
+		int err, opt, dd, dev_id;
+		uint8_t own_type = LE_PUBLIC_ADDRESS;
+		uint8_t scan_type = 0x01;
+		uint8_t filter_type = 0;
+		uint8_t filter_policy = 0x00;
+		uint16_t interval = htobs(0x0010);
+		uint16_t window = htobs(0x0010);
+		uint8_t filter_dup = 0x01;
+		
+		
+		// Might break comparisons because of the size/actual size
+		int address_dec [] = {66, 56, 58, 50, 55, 58, 69, 66, 58, 52, 70, 58, 68, 54, 58, 53, 54};
+		char address_ascii [18] = {0};
+		for (int i = 0; i < 17; i++) {
+					address_ascii[i] = address_dec[i];
+					printf("%c\n", address_ascii[i]);
+				}
+		printf("%s\n", address_ascii);
+		printf("%c\n", address_ascii[17]);
+		printf("xd\n");
+		
+		dev_id = hci_get_route(NULL);
+
+		dd = hci_open_dev(dev_id);
+		
+		err = hci_le_set_scan_parameters(dd, scan_type, interval, window,
+							own_type, filter_policy, 10000);
+		if (err < 0) {
+			perror("Set scan parameters failed");
+			exit(1);
+		}
+
+		err = hci_le_set_scan_enable(dd, 0x01, filter_dup, 10000);
+		if (err < 0) {
+			perror("Enable scan failed");
+			exit(1);
+		}
+
+		printf("LE Scan ...\n");
+
+		print_advertising_devices(dd, filter_type);
+		
+		err = hci_le_set_scan_enable(dd, 0x00, filter_dup, 10000);
+		if (err < 0) {
+			perror("Disable scan failed");
+			exit(1);
+		}
+
+		hci_close_dev(dd);
+		
+		//------------------------ADVERTISE------------------------
+		
+		int ret, status;
+		char neighbour [] = "B8:27:EB:4F:D6:56";
+
+		const int device = hci_open_dev(hci_get_route(NULL));
+		if ( device < 0 ) { 
+			perror("Failed to open HC device.");
+			return 0; 
+		}
+
+		// Set BLE advertisement parameters.
+		
+		le_set_advertising_parameters_cp adv_params_cp;
+		memset(&adv_params_cp, 0, sizeof(adv_params_cp));
+		adv_params_cp.min_interval = htobs(0x0800);
+		adv_params_cp.max_interval = htobs(0x0800);
+		adv_params_cp.chan_map = 7;
+		
+		struct hci_request adv_params_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISING_PARAMETERS,
+			LE_SET_ADVERTISING_PARAMETERS_CP_SIZE, &status, &adv_params_cp);
+		
+		ret = hci_send_req(device, &adv_params_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to set advertisement parameters data.");
+			return 0;
+		}
+
+		// Set BLE advertisement data.
+		
+		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour);
+		
+		struct hci_request adv_data_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISING_DATA,
+			LE_SET_ADVERTISING_DATA_CP_SIZE, &status, &adv_data_cp);
+
+		ret = hci_send_req(device, &adv_data_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to set advertising data.");
+			return 0;
+		}
+
+		// Enable advertising.
+
+		le_set_advertise_enable_cp advertise_cp;
+		memset(&advertise_cp, 0, sizeof(advertise_cp));
+		advertise_cp.enable = 0x01;
+
+		struct hci_request enable_adv_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISE_ENABLE,
+			LE_SET_ADVERTISE_ENABLE_CP_SIZE, &status, &advertise_cp);
+
+		ret = hci_send_req(device, &enable_adv_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to enable advertising.");
+			return 0;
+		}
+
+		hci_close_dev(device);
+		
+
 	}
-
-	err = hci_le_set_scan_enable(dd, 0x01, filter_dup, 10000);
-	if (err < 0) {
-		perror("Enable scan failed");
-		exit(1);
-	}
-
-	printf("LE Scan ...\n");
-
-	print_advertising_devices(dd, filter_type);
-	
-	err = hci_le_set_scan_enable(dd, 0x00, filter_dup, 10000);
-	if (err < 0) {
-		perror("Disable scan failed");
-		exit(1);
-	}
-
-	hci_close_dev(dd);
 	return 0;
 }
+

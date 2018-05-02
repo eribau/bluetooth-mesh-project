@@ -38,7 +38,7 @@ le_set_advertising_data_cp ble_hci_params_for_set_adv_data(char * name)
 
 	adv_data_cp.data[3] = name_len + 1; // Length.
 	adv_data_cp.data[4] = 0x09; // Name field.
-	memcpy(adv_data_cp.data + 5, name, name_len);
+	memcpy(adv_data_cp.data + 5, "Hi", name_len);
 
 	adv_data_cp.length = strlen(adv_data_cp.data);
 
