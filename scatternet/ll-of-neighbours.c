@@ -4,56 +4,60 @@
 
 #define MAX_ARR_LENGTH 16
 
-int i = 0;
+// Global variables
+int nmb_arr_entries = 0;
 
-// Nb is neighbour, nb_nb is nb's neighbour
+// nb_bdaddr is neighbour bluetooth address, nb_nb is nb's neighbour address
 struct nb_object {
  	char nb_bdaddr[18];
 	char nb_nb_bdaddr[18];
 };
 
-// Adds LL to array element
+// Adds a LL to an entry in the array
 void add_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
   struct nb_object *nb_object = NULL;
   nb_object = ll_new(nb_object);
   strcpy(nb_object->nb_bdaddr, nb_bdaddr);
   strcpy(nb_object->nb_nb_bdaddr, nb_nb_bdaddr);
-  ptr[i] = nb_object;
-  i++;
+  ptr[nmb_arr_entries] = nb_object;
+  printf("Neighbour %s is now neigbour with %s\n", nb_bdaddr, nb_nb_bdaddr);
+  nmb_arr_entries++;
 }
 
+// Adds new nb_nb. If nb not found it runs add_nb and then adds nb_nb.
 void add_nb_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
-	for(int j = 0; j < i; j++){
+	for(int j = 0; j < nmb_arr_entries; j++){
 		if(0 == strcmp(ptr[j]->nb_bdaddr, nb_bdaddr)){	
 			ll_foreach(ptr[j], it){
-				printf("this will print all nb_nb: %s\n",it->nb_nb_bdaddr);
 				if(0 == strcmp(it->nb_nb_bdaddr, nb_nb_bdaddr)){
-					printf("duplicate\n");
+					printf("Duplicate\n");
 					return;
 				}
 			}
 			ptr[j] = ll_new(ptr[j]);
 			strcpy(ptr[j]->nb_bdaddr, nb_bdaddr);
 			strcpy(ptr[j]->nb_nb_bdaddr, nb_nb_bdaddr);
-			printf("%s == %s\n", ptr[j]->nb_bdaddr, nb_bdaddr);
+			printf("Neighbour %s is now neigbour with %s\n", ptr[j]->nb_bdaddr, nb_nb_bdaddr);
 			return;
 		} else {
 			continue;
 		}
 	}
-	printf("adding new nb_bdaddr\n");
+	printf("Added %s to the array\n", nb_bdaddr);
 	add_nb(ptr, nb_bdaddr, nb_nb_bdaddr);
 
 }
 
+// Prints all neighbours
 void print_nb(struct nb_object **ptr){
-	for(int j; j < i; j++){
+	for(int j; j < nmb_arr_entries; j++){
 		printf("%s\n", ptr[j]->nb_bdaddr);
 	}
 }
 
+// Prints all the neigbours of nb_bdaddr
 void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
-	for(int j = 0; j < i; j++){
+	for(int j = 0; j < nmb_arr_entries; j++){
 		if(0 == strcmp(ptr[j]->nb_bdaddr, nb_bdaddr)){	
 			ll_foreach(ptr[j], it){
 				printf("%s: %s\n", nb_bdaddr, it->nb_nb_bdaddr);
@@ -64,7 +68,6 @@ void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
 
 int main()
 {
-	printf("a\n");
 	struct nb_object *ptr[16] = { 0 };
 	add_nb_nb(ptr, "pi3", "pi1");
 	add_nb_nb(ptr, "pi3", "pi3");
