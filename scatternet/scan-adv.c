@@ -38,7 +38,7 @@
 
 struct neighbour {
 	char addr_bt[18];
-	char addr_data[300];
+	char addr_data[30];
 	};
 
 struct neighbour *neighbours = NULL;
@@ -296,23 +296,21 @@ int print_advertising_devices(int dd, uint8_t filter_type) {
 			
 			addr_counter++;
 			if (addr_counter == (sizeof(addr_table)/sizeof(addr_table[0]) - 1)) addr_counter = 0;
-				
-		
+		}
 	}
-
-	}
+	
 done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
 
 	ll_foreach(neighbours, nan) {
-		printf("%s\n", nan->addr_bt);
+		printf("GOOD PRINT: %s\n", nan->addr_bt);
+		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
+		for (int i = 5 + 2; i < sizeof(nan->addr_data)-1; i++) {
+			printf("%c", nan->addr_data[i]);
+		}
+		printf("\n");
 	}
-	/*list_node_t *node;
-			list_iterator_t *it = list_iterator_new(neighbours, LIST_HEAD);
-			while ((node = list_iterator_next(it))) {
-				//puts(node->val);
-			}*/
-
+	
 	if (len < 0) exit(-1);
 
 	return 0;
@@ -339,9 +337,9 @@ int main(int argc, char *argv[]){
 		char address_ascii [18] = {0};
 		for (int i = 0; i < 17; i++) {
 					address_ascii[i] = address_dec[i];
-					printf("%c\n", address_ascii[i]);
+					printf("hardcoded %c\n", address_ascii[i]);
 				}
-		printf("%s\n", address_ascii);
+		printf("hardcoded %s\n", address_ascii);
 		printf("%c\n", address_ascii[17]);
 		printf("xd\n");
 		
@@ -377,7 +375,7 @@ int main(int argc, char *argv[]){
 		//------------------------ADVERTISE------------------------
 		
 		int ret, status;
-		char neighbour [] = "B8:27:EB:4F:D6:56";
+		char neighbour_1 [] = "boi_next_D00R";
 
 		const int device = hci_open_dev(hci_get_route(NULL));
 		if ( device < 0 ) { 
@@ -406,7 +404,7 @@ int main(int argc, char *argv[]){
 
 		// Set BLE advertisement data.
 		
-		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour);
+		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour_1);
 		
 		struct hci_request adv_data_rq = ble_hci_request(
 			OCF_LE_SET_ADVERTISING_DATA,
@@ -442,4 +440,3 @@ int main(int argc, char *argv[]){
 	}
 	return 0;
 }
-
