@@ -403,8 +403,8 @@ int main(int argc, char *argv[]){
 		}
 
 		// Set BLE advertisement data.
-		
-		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbours->addr_bt);
+		struct neighbour *next = ll_next(neighbours);
+		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", next->addr_bt);
 		
 		struct hci_request adv_data_rq = ble_hci_request(
 			OCF_LE_SET_ADVERTISING_DATA,
