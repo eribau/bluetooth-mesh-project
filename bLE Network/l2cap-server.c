@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 
 #include <sys/socket.h>
 #include <sys/wait.h>
@@ -91,7 +92,7 @@ int main(int argc, char *argv[]) {
     bool single_message = false;
     bool single_pi_message = false;
     pid_t childpid;
-    
+    char temp [1024];
     char arr [8][18] = {
 		"B8:27:EB:9B:D4:87", 	// pi1 
 		"B8:27:EB:E4:D7:BF", 	// pi2
@@ -118,7 +119,7 @@ int main(int argc, char *argv[]) {
 	
 	if ((childpid = fork()) == 0) {										// Fork for reading and writing to the clients
 		while(1) {
-			printf("Type in the BT address or the message to every connection: \n");
+			printf(BOLD KCYN "Type in the BT address or the message to every connection: \n" UNBOLD KNRM);
 			memset(buf_input, 0, sizeof(buf_input));					// Empty the buffer
 			fgets(buf_input, sizeof(buf_input), stdin);					// Input
 			strtok(buf_input, "\n");
@@ -141,17 +142,19 @@ int main(int argc, char *argv[]) {
 			single_message = false;
 		}
 	} else {
-		
+		bool jankyaf = false;
 		while(1) {
 			for(int i = 0; i < 8; i++){
 				memset(buf, 0, sizeof(buf));
 				bytes_read = read(connections[i], buf, sizeof(buf));				//Non blocking read from all clients
 				if(0 < bytes_read){
-					printf(KWHT "%s\n" KNRM,buf);
+					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
 					strtok(buf, "\n");
+					jankyaf = true;
 					for (int j = 0; j < 8; j++) {			
 						if (strcmp(buf, arr[j]) == 0) {								// Check if message is for a specific client
 							printf("Writing to: %s \n", arr[j]);
+							jankyaf = false;
 							while(1){
 								memset(buf, 0, sizeof(buf));
 								bytes_read = read(connections[i], buf, sizeof(buf));
@@ -159,9 +162,25 @@ int main(int argc, char *argv[]) {
 								if(0 < bytes_read)break;
 							}
 							
-							write(connections[j], buf, strlen(buf));				// Send the message to the specific client
-						}
+							memset(temp, 0, sizeof(temp));
+							strcat(temp, arr[i]);
+							strcat(temp, ": ");
+							strcat(temp, buf);
+							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
+						} 
 					}
+					if(jankyaf==true){
+						memset(temp, 0, sizeof(temp));
+						strcat(temp, arr[i]);
+						strcat(temp, ": ");
+						strcat(temp, buf);
+						for (int j = 0; j < 8; j++) {	
+							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
+						}
+						
+					
+					}
+					jankyaf=false;
 				}
 			}
 		}

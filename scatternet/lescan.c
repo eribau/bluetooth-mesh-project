@@ -17,7 +17,7 @@
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
 
-#include "ll.h"
+#include "list.h"
 
 #define FLAGS_AD_TYPE 0x01
 #define FLAGS_LIMITED_MODE_BIT 0x01
@@ -138,7 +138,7 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 	return 0;
 }
 
-static int print_advertising_devices(int dd, uint8_t filter_type) {
+list_t* print_advertising_devices(int dd, uint8_t filter_type) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
 	struct hci_filter nf, of;
 	struct sigaction sa;
@@ -148,17 +148,15 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 	struct timeval tv;												//Timeout for socket options for read() to be nonblocking
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
-	//char **neighbours = NULL;
-	struct {
-		char *addr_p;
-	} *neighbours = NULL;
-	char [][] array = 0;
-	
+	list_t *neighbours = list_new();
+	char arr [100][18];
+	char addr_table[1000][18];
+	int addr_counter = 0;	
 	
 	olen = sizeof(of);
 	if (getsockopt(dd, SOL_HCI, HCI_FILTER, &of, &olen) < 0) {
 		printf("Could not get socket options\n");
-		return -1;
+		exit(-1);
 	}
 
 	hci_filter_clear(&nf);
@@ -167,7 +165,7 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 
 	if (setsockopt(dd, SOL_HCI, HCI_FILTER, &nf, sizeof(nf)) < 0) {
 		printf("Could not set socket options\n");
-		return -1;
+		//return -1;
 	}
 
 	memset(&sa, 0, sizeof(sa));
@@ -180,8 +178,8 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 		evt_le_meta_event *meta;
 		le_advertising_info *info;
 		char addr[18];
-		//char *addr_pointer[18];
-		
+		int addr_exists;
+	
 		
 		while ((len = read(dd, buf, sizeof(buf))) < 0) {
 			if (errno == EINTR && signal_received == SIGINT) {
@@ -215,33 +213,48 @@ static int print_advertising_devices(int dd, uint8_t filter_type) {
 			ba2str(&info->bdaddr, addr);
 			eir_parse_name(info->data, info->length,
 							name, sizeof(name) - 1);
+			//uint8_t *dat = info->data;
+			char *rssi;
+			//printf("%d\n", rssi);
+			
+			printf("%s %s ", addr, name);
+			for (int i = 0; i < info->length; i++) {
+				rssi = info->data[i];
+				printf("%d ", rssi);
+			}
+			printf("\n");
 	
-			//printf("%s %s\n", addr, name);
-			//neighbours = ll_new(neighbours);
-			//*neighbours = addr;
+			//printf("%s %d %s\n", addr, rssi, name);
+
+			addr_exists = 0; 
+			for (int i = 0; i < sizeof(addr_table)/sizeof(addr_table[0]); i++) {
+				if (strcmp(addr, addr_table[i]) == 0) {
+					addr_exists = 1;
+				}
+			}
+			if (addr_exists == 0) {strcpy(addr_table[addr_counter], addr);
+				list_node_t *a = list_node_new(addr_table[addr_counter]);
+				list_rpush(neighbours, a);
+			}
 			
-			neighbours = ll_new(neighbours);
-			neighbours->addr_p = addr;
-			
-			//*addr_pointer = addr;
-			//*(neighbours = ll_new(neighbours)) = *addr_pointer;
+			addr_counter++;
+			if (addr_counter == (sizeof(addr_table)/sizeof(addr_table[0]) - 1)) addr_counter = 0;
+				
 		}
-		
 	}
 
 done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
-	ll_foreach(neighbours, addr_p){
-		printf("%s\n", *addr_p);
-	}
-	/*for (addr = neighbours; addr; addr = ll_next(addr)) {
-		printf("%s\n", *addr);
-	}*/
 
-	if (len < 0)
-		return -1;
+	list_node_t *node;
+			list_iterator_t *it = list_iterator_new(neighbours, LIST_HEAD);
+			while ((node = list_iterator_next(it))) {
+				//puts(node->val);
+			}
 
-	return 0;
+	if (len < 0) exit(-1);
+
+	return neighbours;
 }
 
 int main(int argc, char *argv[]){
@@ -273,11 +286,7 @@ int main(int argc, char *argv[]){
 
 	printf("LE Scan ...\n");
 
-	err = print_advertising_devices(dd, filter_type);
-	if (err < 0) {
-		perror("Could not receive advertising events");
-		exit(1);
-	}
+	print_advertising_devices(dd, filter_type);
 	
 	err = hci_le_set_scan_enable(dd, 0x00, filter_dup, 10000);
 	if (err < 0) {
