@@ -318,6 +318,7 @@ done:
 
 int main(int argc, char *argv[]){
 	
+	//strcpy(neighbours->addr_bt, "0"); 
 
 	while (1) {
 		//-----------------------------------------SCAN---------------------------
@@ -401,10 +402,15 @@ int main(int argc, char *argv[]){
 			perror("Failed to set advertisement parameters data.");
 			return 0;
 		}
-
+		
+		printf("DEBUG 1\n");
 		// Set BLE advertisement data.
-		struct neighbour *next = ll_next(neighbours);
-		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", next->addr_bt);
+		//struct neighbour *next = ll_next(neighbours);
+		printf("s\n", neighbours->addr_bt);
+
+		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour_1);
+		printf("DEBUG 2\n");
+
 		
 		struct hci_request adv_data_rq = ble_hci_request(
 			OCF_LE_SET_ADVERTISING_DATA,
