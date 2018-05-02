@@ -79,7 +79,7 @@ int main(){
 	//get neighbours until timeout
 	neighbours = get_neighbours();
 
-	int max_id = get_max_id_neighbour_array(neighbours);
+	int max_id = 5; //get_max_id_neighbour_array(neighbours);				//TODO
 
 	while(1){
 		if(max_id > myid){
@@ -93,6 +93,7 @@ int main(){
 		}
 
 		//count ammount of neighbours (fin)
+		/**
 		int ammount_of_neighbours = 0;
 		ll_foreach(ll_neighbours, id) {
 			ammount_of_neighbours++;
@@ -110,5 +111,6 @@ int main(){
 			cn = wait_for_cn();											//TODO IMPLEMENT wait_for_cn
 			remove_cn(prey);											//TODO IMPLEMENT remove_cn;
 		}
+		* */
 	}
 }
