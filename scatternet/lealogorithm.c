@@ -10,105 +10,89 @@
 #define MAX_CONNECTION_LIMIT 2
 #define BUFFER_SIZE 1024
 #define TIMEOUT_SECONDS 20
+#define NUM_STATES 6
 
+typedef enum {
+	ADV_OWN_ADDR,
+	ADV_NEIGHBOUR_ADDR,
+	DELEGATE,
+	DELEGATED
+	CONNECT,
+	DONE,
+	NUM_STATES
+}StateType;
 
-typedef enum {false, true} bool;
+typedef struct {
+	StateType state;
+	void (*func)(void);
+}StateMachineType;
 
-struct t_neighbours {
-	char n[10][18];
-};
+//State function prototypes
+void adv_own(void);
+void adv_neighbour(void);
+void delegate(void);
+void delegated(void);
+void connect(void);
+void done(void);
 
-/**
- * scans neighboars for data, returns true if the data tells us that we
- * have a delegated task.
- * returns false if the data tells us that a node wants to connect to us.
-**/
-
-char* scan_neighbours(){												//TODO IMPLEMENT scan_neighbours
-	char *data;
-	return data;
+StateMachineType StateMachine[] = 
+{
+	{ADV_OWN_ADDR, adv_own},
+	{ADV_NEIGHBOUR_ADDR, adv_neighbour},
+	{DELEGATE, delegate},
+	{DELEGATED, delegated},
+	{CONNECT, connect},
+	{DONE, done}
 }
 
+//Function prototypes
+void advertise(void);
+void scan(void);
+void common_neighbours(void);
+void max_neighbour(void);
 
-bool wait_until_contacted(){											//TODO GET DATA FOR data
-	char* data;
-	data = scan_neighbours();
-	//parse data and return true if delegated task, else false
-	if(true) return true;
-	else return false;
+StateType state = ADV_OWN_ADDR;
+
+//state function implementations
+void adv_own(void) {
+	//Advertise our own address
+	//Scan for neighbours
+	
+	//If a neighbour is found, add it to memory and prey_list and go to ADV_NEIGHBOUR_ADDR state
 }
-
-void accept_connection(){
-
+void adv_neighbour(void) {
+	//Advertise our neighbours
+	//Scan for neighbours and if a new neighbour is found add it to memory and prey_list
+	
+	//If timer times out and if neighbour_max > own_addr then reset timer and keep to same state
+	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state
+	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
+	//If we receive prey msg we go to the DELEGATED state
 }
-
-struct t_neighbours get_neighbours(){							//TODO ADD CODE FOR GETTING NEIGHBOURS
-	time_t start = time(0);
-	struct t_neighbours neighbours;
-	while(1){
-		//ADD CODE FOR GETTING NEIGHBOURS
-		if(TIMEOUT_SECONDS < (time(0) - start)) return neighbours;
-	}
+void delegate(void) {
+	//Advertise a prey msg to neigbour_max
+	//Remove neighbour_max from prey_list
+	//Remove Common neighbours from prey 
+	//Decrement connection_capacity
+	//Color edge to neighbour_max blue
+	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
+	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state	
 }
-
-/**
- * Turns on LeAdv
- * */
-void advertise_our_id(){
-	int device_id;
-    int device_descriptor;
-    int advertise;
-	device_id = hci_get_route(NULL);
-    device_descriptor = hci_open_dev(device_id);
-	advertise = hci_le_set_advertise_enable(device_descriptor, 1, 10000); //maybe change from 10000
-	printf("leadv on %d\n" , advertise);
+void delegated(void) {
+	//Calculate Common neighbours
+	//Connect to Common neighbours
+	//Color edges
+	//Go to the DONE state
 }
-
+void connect(void) {
+	//Connect to neighbours
+	//color edges 
+	//Go to the DONE state
+}
+void done(void) {
+	//Go to Phase 2, I guess...
+}
 
 int main(){
-	int connectionlimit = MAX_CONNECTION_LIMIT;
-	//TODO GIVE VARIABLES APPROPRIATE VALUES AND SIZES
-	char buf[BUFFER_SIZE];
-	struct t_neighbours neighbours;
-	int prey[0];
-	int myid;
-	bool delegate = false;
-
-	//add neighbours to list until timeout
-	advertise_our_id();													//TODO advertise_our_id
-	//get neighbours until timeout
-	neighbours = get_neighbours();
-
-	int max_id = get_max_id_neighbour_array(neighbours);
-
-	while(1){
-		if(max_id > myid){
-			delegate = wait_until_contacted();							//Partially implemented
-			if(delegate == false){
-				accept_connection();									//TODO IMPLEMENT accept_connection
-				break; //goto (done) state
-			} else {
-				
-			}
-		}
-
-		//count ammount of neighbours (fin)
-		int ammount_of_neighbours = 0;
-		ll_foreach(ll_neighbours, id) {
-			ammount_of_neighbours++;
-		}
-
-		if(ammount_of_neighbours <= connectionlimit){
-			ll_foreach(pray, bladrr){
-				connect(id or bdaddr);									//TODO IMPLEMENT CONNECT WITH IN
-				//connectionlimit--; needed? no
-																			
-			}
-		} else {
-			delegate_work(neighbour_max);								//TODO IMPLEMENT delegate_work,
-																		//& neighbour_max
-			cn = wait_for_cn();											//TODO IMPLEMENT wait_for_cn
-			remove_cn(prey);											//TODO IMPLEMENT remove_cn;
-		}
-	}
+	
 }
