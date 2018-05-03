@@ -272,14 +272,10 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 					//printf("%d ", rssi); 
 				}
 				//printf("\n");
-				if(sec_addr[3] == ':' && sec_addr[6] == ':'){
 					nb_object = ll_new(nb_object);
 					strcpy(nb_object->nb_bdaddr, addr);
 					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
-				} else {
-					nb_object = ll_new(nb_object);
-					strcpy(nb_object->nb_bdaddr, addr);
-				}
+				
 				
 				
 			}
@@ -469,9 +465,10 @@ int main(int argc, char *argv[]) {
 
 	while (1) {
 		
-		char neighbour_1 [] = "No neighbour";
+		char neighbour_1 [] = "";
 		
 		if ((nb_object != NULL)) {
+			printf("this is being advertised %s\n", arr[current]);
 			advertise(arr[current]);
 			current++;
 			if(current > counter){
