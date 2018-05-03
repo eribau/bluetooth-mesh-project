@@ -64,7 +64,7 @@ struct nb_object*  rtn_nb_ptr (struct nb_object **ptr){
   struct nb_object *nb_ptr;
   for(int j; j < nmb_arr_entries; j++){
     nb_ptr = ll_new(nb_ptr);
-    strcpy(nb_ptr->bd_addr, ptr[j]);
+    strcpy(nb_ptr->nb_bdaddr, ptr[j]->nb_bdaddr);
   }
   return nb_ptr;
 }

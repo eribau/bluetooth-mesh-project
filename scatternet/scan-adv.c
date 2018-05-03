@@ -499,7 +499,13 @@ int main(int argc, char *argv[]) {
 	
 	*ptr = fill_entries(ptr, nb_object);
 	
-	print_nb(ptr);
+	struct nb_object *rtn = NULL;
+	rtn = rtn_nb_ptr(ptr);
+	
+	ll_foreach(rtn, it){
+		print_nb_nb(ptr, it->nb_bdaddr);
+	}
+	
 	
 	/**
 	for(int i = 0; i < 16; i++){
