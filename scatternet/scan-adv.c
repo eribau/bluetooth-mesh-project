@@ -278,7 +278,7 @@ int print_advertising_devices(int dd, uint8_t filter_type) {
 			printf("%s %s ", addr, name);
 			for (int i = 0; i < info->length; i++) {
 				rssi = info->data[i];
-				printf("%c", rssi); 
+				printf("%d ", rssi); 
 			}
 			printf("\n");
 	
@@ -307,7 +307,7 @@ done:
 		printf("GOOD PRINT: %s\n", nan->addr_bt);
 		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
 		for (int i = 5 + 2; i < sizeof(nan->addr_data)-1; i++) {
-			printf("%d ", nan->addr_data[i]);
+			printf("%c", nan->addr_data[i]);
 		}
 		printf("\n");
 	}
