@@ -236,7 +236,7 @@ void print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb
 			goto done;
 		}
 
-		if (time(0) - start >= 20) {
+		if (time(0) - start >= 1) {
 			goto done;
 		}
 
@@ -305,9 +305,9 @@ done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
 
 	ll_foreach(nb_object, it) {
-		printf("GOOD PRINT: %s\n", it->nb_bdaddr);
+		printf("My_Neighbour: %s", it->nb_bdaddr);
 		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
-		printf("%s\n", it->nb_nb_bdaddr);
+		printf(" Neighbours_Neighbour: %s\n", it->nb_nb_bdaddr);
 		
 	}
 	
