@@ -319,8 +319,80 @@ done:
 int main(int argc, char *argv[]){
 	
 	//strcpy(neighbours->addr_bt, "0"); 
+	time_t start = time(0);
 
 	while (1) {
+		
+		//------------------------ADVERTISE------------------------
+		
+		int ret, status;
+		char neighbour_1 [] = "No neighbour";
+
+		const int device = hci_open_dev(hci_get_route(NULL));
+		if ( device < 0 ) { 
+			perror("Failed to open HC device.");
+			return 0; 
+		}
+
+		// Set BLE advertisement parameters.
+		
+		le_set_advertising_parameters_cp adv_params_cp;
+		memset(&adv_params_cp, 0, sizeof(adv_params_cp));
+		adv_params_cp.min_interval = htobs(0x0800);
+		adv_params_cp.max_interval = htobs(0x0800);
+		adv_params_cp.chan_map = 7;
+		
+		struct hci_request adv_params_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISING_PARAMETERS,
+			LE_SET_ADVERTISING_PARAMETERS_CP_SIZE, &status, &adv_params_cp);
+		
+		ret = hci_send_req(device, &adv_params_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to set advertisement parameters data.");
+			return 0;
+		}
+		
+		// Set BLE advertisement data.
+		//struct neighbour *next = ll_next(neighbours);
+		
+		le_set_advertising_data_cp adv_data_cp;
+		if (neighbours != NULL) {
+			adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbours->addr_bt);
+		} else {
+			adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour_1);
+		}
+		
+		struct hci_request adv_data_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISING_DATA,
+			LE_SET_ADVERTISING_DATA_CP_SIZE, &status, &adv_data_cp);
+
+		ret = hci_send_req(device, &adv_data_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to set advertising data.");
+			return 0;
+		}
+
+		// Enable advertising.
+
+		le_set_advertise_enable_cp advertise_cp;
+		memset(&advertise_cp, 0, sizeof(advertise_cp));
+		advertise_cp.enable = 0x01;
+
+		struct hci_request enable_adv_rq = ble_hci_request(
+			OCF_LE_SET_ADVERTISE_ENABLE,
+			LE_SET_ADVERTISE_ENABLE_CP_SIZE, &status, &advertise_cp);
+
+		ret = hci_send_req(device, &enable_adv_rq, 1000);
+		if ( ret < 0 ) {
+			hci_close_dev(device);
+			perror("Failed to enable advertising.");
+			return 0;
+		}
+
+		hci_close_dev(device);
+		
 		//-----------------------------------------SCAN---------------------------
 		
 		int err, opt, dd, dev_id;
@@ -373,75 +445,9 @@ int main(int argc, char *argv[]){
 
 		hci_close_dev(dd);
 		
-		//------------------------ADVERTISE------------------------
-		
-		int ret, status;
-		char neighbour_1 [] = "boi_next_D00R";
-
-		const int device = hci_open_dev(hci_get_route(NULL));
-		if ( device < 0 ) { 
-			perror("Failed to open HC device.");
-			return 0; 
+		if (time(0) - start >= 21) {
+			break;
 		}
-
-		// Set BLE advertisement parameters.
-		
-		le_set_advertising_parameters_cp adv_params_cp;
-		memset(&adv_params_cp, 0, sizeof(adv_params_cp));
-		adv_params_cp.min_interval = htobs(0x0800);
-		adv_params_cp.max_interval = htobs(0x0800);
-		adv_params_cp.chan_map = 7;
-		
-		struct hci_request adv_params_rq = ble_hci_request(
-			OCF_LE_SET_ADVERTISING_PARAMETERS,
-			LE_SET_ADVERTISING_PARAMETERS_CP_SIZE, &status, &adv_params_cp);
-		
-		ret = hci_send_req(device, &adv_params_rq, 1000);
-		if ( ret < 0 ) {
-			hci_close_dev(device);
-			perror("Failed to set advertisement parameters data.");
-			return 0;
-		}
-		
-		printf("DEBUG 1\n");
-		// Set BLE advertisement data.
-		//struct neighbour *next = ll_next(neighbours);
-		printf("s\n", neighbours->addr_bt);
-
-		le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", neighbour_1);
-		printf("DEBUG 2\n");
-
-		
-		struct hci_request adv_data_rq = ble_hci_request(
-			OCF_LE_SET_ADVERTISING_DATA,
-			LE_SET_ADVERTISING_DATA_CP_SIZE, &status, &adv_data_cp);
-
-		ret = hci_send_req(device, &adv_data_rq, 1000);
-		if ( ret < 0 ) {
-			hci_close_dev(device);
-			perror("Failed to set advertising data.");
-			return 0;
-		}
-
-		// Enable advertising.
-
-		le_set_advertise_enable_cp advertise_cp;
-		memset(&advertise_cp, 0, sizeof(advertise_cp));
-		advertise_cp.enable = 0x01;
-
-		struct hci_request enable_adv_rq = ble_hci_request(
-			OCF_LE_SET_ADVERTISE_ENABLE,
-			LE_SET_ADVERTISE_ENABLE_CP_SIZE, &status, &advertise_cp);
-
-		ret = hci_send_req(device, &enable_adv_rq, 1000);
-		if ( ret < 0 ) {
-			hci_close_dev(device);
-			perror("Failed to enable advertising.");
-			return 0;
-		}
-
-		hci_close_dev(device);
-		
 
 	}
 	return 0;
