@@ -60,6 +60,15 @@ void print_nb(struct nb_object **ptr){
 	}
 }
 
+struct nb_object*  rtn_nb_ptr (struct nb_object **ptr){
+  struct nb_object *nb_ptr;
+  for(int j; j < nmb_arr_entries; j++){
+    nb_ptr = ll_new(nb_ptr);
+    strcpy(nb_ptr->bd_addr, ptr[j]);
+  }
+  return nb_ptr;
+}
+
 /** Prints all the neigbours of nb_bdaddr **/
 void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
 	for(int j = 0; j < nmb_arr_entries; j++){
