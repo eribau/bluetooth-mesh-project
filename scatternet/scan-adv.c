@@ -502,6 +502,8 @@ int main(int argc, char *argv[]) {
 	struct nb_object *rtn = NULL;
 	rtn = rtn_nb_ptr(ptr);
 	
+	printf("%s\n", rtn->nb_bdaddr);
+	
 	printf("dab on the haters\n");
 	ll_foreach(rtn, it){
 	printf("dont dab on the haters\n");
