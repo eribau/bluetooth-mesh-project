@@ -20,6 +20,7 @@
 
 #include "ll.h"
 #include "structs.h"
+#include "nb_data.h"
 
 #define FLAGS_AD_TYPE 0x01
 #define FLAGS_LIMITED_MODE_BIT 0x01
@@ -272,10 +273,14 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 					//printf("%d ", rssi); 
 				}
 				//printf("\n");
+				if(sec_addr[2] == ':' && sec_addr[5] == ':'){
 					nb_object = ll_new(nb_object);
 					strcpy(nb_object->nb_bdaddr, addr);
 					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
-				
+				} else {
+					nb_object = ll_new(nb_object);
+					strcpy(nb_object->nb_bdaddr, addr);
+				}
 				
 				
 			}
@@ -489,5 +494,21 @@ int main(int argc, char *argv[]) {
 		}
 
 	}
+	
+	struct nb_object *ptr[16];
+	
+	*ptr = fill_entries(ptr, nb_object);
+	
+	print_nb(ptr);
+	
+	/**
+	for(int i = 0; i < 16; i++){
+		ll_foreach(ptr[i], it){
+			printf("nb: %s, nb_nb: %s\n", it->nb_bdaddr, it->nb_nb_bdaddr);
+		}
+	}
+	**/
+	
+	
 	return 0;
 }
