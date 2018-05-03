@@ -1,3 +1,7 @@
+/*
+This code will take information about neighbours and store it in an array of linked lists.
+This code is based on Charles Lehner code ll.c which is free software.
+*/
 #include <stdio.h>
 #include <string.h>
 #include "ll.h"
@@ -7,13 +11,13 @@
 // Global variables
 int nmb_arr_entries = 0;
 
-// nb_bdaddr is neighbour bluetooth address, nb_nb is nb's neighbour address
+/** nb_bdaddr is neighbour bluetooth address, nb_nb is nb's neighbour address **/
 struct nb_object {
  	char nb_bdaddr[18];
 	char nb_nb_bdaddr[18];
 };
 
-// Adds a LL to an entry in the array
+/** Adds a LL to an entry in the array **/
 void add_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
   struct nb_object *nb_object = NULL;
   nb_object = ll_new(nb_object);
@@ -24,7 +28,7 @@ void add_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
   nmb_arr_entries++;
 }
 
-// Adds new nb_nb. If nb not found it runs add_nb and then adds nb_nb.
+/** Adds new nb_nb. If nb not found it runs add_nb and then adds nb_nb. **/
 void add_nb_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
 	for(int j = 0; j < nmb_arr_entries; j++){
 		if(0 == strcmp(ptr[j]->nb_bdaddr, nb_bdaddr)){	
@@ -48,14 +52,14 @@ void add_nb_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
 
 }
 
-// Prints all neighbours
+/** Prints all neighbours **/
 void print_nb(struct nb_object **ptr){
 	for(int j; j < nmb_arr_entries; j++){
 		printf("%s\n", ptr[j]->nb_bdaddr);
 	}
 }
 
-// Prints all the neigbours of nb_bdaddr
+/** Prints all the neigbours of nb_bdaddr **/
 void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
 	for(int j = 0; j < nmb_arr_entries; j++){
 		if(0 == strcmp(ptr[j]->nb_bdaddr, nb_bdaddr)){	
@@ -78,5 +82,5 @@ int main()
 	
 	//print_nb(ptr);
 	print_nb_nb(ptr, "pi3");
-   return 0;
+	return 0;
 }
