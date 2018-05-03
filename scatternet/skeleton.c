@@ -12,6 +12,12 @@
 #define TIMEOUT_SECONDS 20
 #define NUM_STATES 6
 
+//global variables
+int piconet_capacity = MAX_CONNECTION_LIMIT;
+//memory
+//prey_list
+
+//State related structures
 typedef enum {
 	ADV_OWN_ADDR,
 	ADV_NEIGHBOUR_ADDR,
@@ -48,8 +54,8 @@ StateMachineType state_machine[] =
 //Function prototypes
 void advertise(void);
 void scan(void);
-void common_neighbours(void);	//Calculate common neighbours
-void max_neighbour(void);		//Calculate the greatest neighbour
+nb_data* common_neighbours(nb_data*);	//Calculate common neighbours, returns a list of common neighbours
+nb_bdaddr max_neighbour(nb_data*);		//Calculate the greatest neighbour, returns the greatest neighbour
 
 StateType state = ADV_OWN_ADDR;
 
@@ -68,17 +74,21 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
+	//If we receive an connection we go to the DONE state
 }
 void delegate(void) {
 	//Advertise a prey msg to neigbour_max
+	//Scan for confirmation msg from delegated node
+	//If we don't receive any confirmation we advertise and scan again, else continue
 	//Remove neighbour_max from prey_list
 	//Remove Common neighbours from prey 
-	//Decrement connection_capacity
-	//Color edge to neighbour_max blue
+	//Decrement piconet_capacity
+	
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state	
 }
 void delegated(void) {
+	//Broadcast prey msg to confirm that it received the message
 	//Calculate Common neighbours
 	//Connect to Common neighbours
 	//Color edges
@@ -90,6 +100,7 @@ void connect(void) {
 	//Go to the DONE state
 }
 void done(void) {
+	//Refuse any attempt to connect
 	//Go to Phase 2, I guess...
 }
 
