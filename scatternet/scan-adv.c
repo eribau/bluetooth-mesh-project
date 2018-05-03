@@ -484,7 +484,7 @@ int main(int argc, char *argv[]) {
 			add_to_array(arr, nb_object, &counter);
 		}
 		
-		if (time(0) - start >= 5) {
+		if (time(0) - start >= 20) {
 			break;
 		}
 
