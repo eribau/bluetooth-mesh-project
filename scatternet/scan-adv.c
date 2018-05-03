@@ -180,7 +180,7 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 	return 0;
 }
 
-void print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_object) {
+struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_object) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
 	//struct nb_object *nb_object = NULL;
 	struct hci_filter nf, of;
@@ -263,7 +263,7 @@ void print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb
 			//printf("%d\n", rssi);
 			
 			if (strcmp("Pi", name) == 0) {
-				nb_object = ll_new(nb_object);
+				
 				char sec_addr[31];
 				printf("DEBUG ");
 				for (int i = 7; i < 24; i++) {
@@ -272,8 +272,16 @@ void print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb
 					//printf("%d ", rssi); 
 				}
 				//printf("\n");
-				strcpy(nb_object->nb_bdaddr, addr);
-				strcpy(nb_object->nb_nb_bdaddr, sec_addr);
+				if(sec_addr[3] == ':' && sec_addr[6] == ':'){
+					nb_object = ll_new(nb_object);
+					strcpy(nb_object->nb_bdaddr, addr);
+					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
+				} else {
+					nb_object = ll_new(nb_object);
+					strcpy(nb_object->nb_bdaddr, addr);
+				}
+				
+				
 			}
 		
 			printf("%s %s ", addr, name);
@@ -313,7 +321,7 @@ done:
 	
 	if (len < 0) exit(-1);
 
-	return;
+	return nb_object;
 }
 
 int advertise(char *array) {
@@ -383,7 +391,7 @@ int advertise(char *array) {
 	return 0;
 }
 
-void scan(struct nb_object *nb_object) {
+struct nb_object* scan(struct nb_object *nb_object) {
 //-----------------------------------------SCAN---------------------------
 	
 	int err, opt, dd, dev_id;
@@ -426,7 +434,7 @@ void scan(struct nb_object *nb_object) {
 
 	printf("LE Scan ...\n");
 
-	print_advertising_devices(dd, filter_type, nb_object);
+	nb_object = print_advertising_devices(dd, filter_type, nb_object);
 	
 	err = hci_le_set_scan_enable(dd, 0x00, filter_dup, 10000);
 	if (err < 0) {
@@ -435,7 +443,17 @@ void scan(struct nb_object *nb_object) {
 	}
 
 	hci_close_dev(dd);
-	return;
+	return nb_object;
+}
+
+void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
+	for(int i = 0; i < *counter; i++){
+		if(0 == strcmp(arr[i], nb_object->nb_bdaddr)){
+			return;
+		}
+	}
+	strcpy(arr[*counter], nb_object->nb_bdaddr);
+	*counter++;
 }
 
 int main(int argc, char *argv[]) {
@@ -443,23 +461,33 @@ int main(int argc, char *argv[]) {
 	//strcpy(neighbours->addr_bt, "0"); 
 	time_t start = time(0);
 	
+	char arr[10][18];
+	int counter = 0;
+	int current = 0;
+	
 	struct nb_object *nb_object = NULL;
 
 	while (1) {
 		
 		char neighbour_1 [] = "No neighbour";
 		
-		
-		if ((nb_object != NULL) && (ll_next(nb_object) != NULL)) {
-			advertise(nb_object->nb_bdaddr);
+		if ((nb_object != NULL)) {
+			advertise(arr[current]);
+			current++;
+			if(current > counter){
+				current = 0;
+			}
 		} else {
 			advertise(neighbour_1);
 		}
 	
+		nb_object = scan(nb_object);
 		
-		scan(nb_object);
+		ll_foreach(nb_object, it){
+			add_to_array(arr, nb_object, &counter);
+		}
 		
-		if (time(0) - start >= 20) {
+		if (time(0) - start >= 5) {
 			break;
 		}
 
