@@ -72,32 +72,18 @@ void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
 }
 
 
+// Remove this later
 /** Adds all entries from list_ptr and stores them without duplicates in ptr **/
-void fill_entries(struct nb_object **ptr, struct nb_object *list_ptr){
+/*void fill_entries(struct nb_object **ptr, struct nb_object *list_ptr){
   while(ll_pop(list_ptr) != NULL){
       add_nb_nb(ptr, list_ptr->nb_bdaddr, list_ptr->nb_nb_bdaddr);
       ll_pop(list_ptr);
   }
-}
+}*/
 
-void fill_entries2(struct nb_object **ptr, struct nb_object *list_ptr){
+/** Adds all entries from list_ptr and stores them without duplicates in ptr **/
+void fill_entries(struct nb_object **ptr, struct nb_object *list_ptr){
   ll_foreach(list_ptr, it){
     add_nb_nb(ptr, it->nb_bdaddr, it->nb_nb_bdaddr);
   }
 }
-
-/*int main(){
-
-  
-	add_nb_nb(ptr, "pi3", "pi1");
-	add_nb_nb(ptr, "pi3", "pi3");
-	add_nb_nb(ptr, "pi3", "pi4");
-	add_nb_nb(ptr, "pi3", "pi4");
-	add_nb_nb(ptr, "pi3", "pi5");
-	add_nb_nb(ptr, "pi4", "pi5");
-	
-	//print_nb(ptr);
-	print_nb_nb(ptr, "pi3");
-	return 0;
-}
-*/
