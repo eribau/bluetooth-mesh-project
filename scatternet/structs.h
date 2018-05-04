@@ -6,8 +6,8 @@
 struct nb_object {
  	char nb_bdaddr[18];
 	char nb_nb_bdaddr[18];
-	char edge_color = 'D';
-	char Delegate = 'F';
+	char edge_color;
+	char delegate;
 };
 
 
