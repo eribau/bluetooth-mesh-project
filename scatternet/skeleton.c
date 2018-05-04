@@ -10,7 +10,7 @@
 #define MAX_CONNECTION_LIMIT 2
 #define BUFFER_SIZE 1024
 #define TIMEOUT_SECONDS 20
-#define NUM_STATES 6
+#define NUM_STATES 5
 
 //global variables
 int piconet_capacity = MAX_CONNECTION_LIMIT;
@@ -19,7 +19,6 @@ int piconet_capacity = MAX_CONNECTION_LIMIT;
 
 //State related structures
 typedef enum {
-	ADV_OWN_ADDR,
 	ADV_NEIGHBOUR_ADDR,
 	DELEGATE,
 	DELEGATED
@@ -34,7 +33,6 @@ typedef struct {
 }StateMachineType;
 
 //State function prototypes
-void adv_own(void);
 void adv_neighbour(void);
 void delegate(void);
 void delegated(void);
@@ -43,7 +41,6 @@ void done(void);
 
 StateMachineType state_machine[] = 
 {
-	{ADV_OWN_ADDR, adv_own},
 	{ADV_NEIGHBOUR_ADDR, adv_neighbour},
 	{DELEGATE, delegate},
 	{DELEGATED, delegated},
@@ -57,15 +54,8 @@ void scan(void);
 nb_data* common_neighbours(nb_data*);	//Calculate common neighbours, returns a list of common neighbours
 nb_bdaddr max_neighbour(nb_data*);		//Calculate the greatest neighbour, returns the greatest neighbour
 
-StateType state = ADV_OWN_ADDR;
+StateType state = ADV_NEIGHBOUR_ADDR;
 
-//state function implementations
-void adv_own(void) {
-	//Advertise our own address
-	//Scan for neighbours
-	
-	//If a neighbour is found, add it to memory and prey_list and go to ADV_NEIGHBOUR_ADDR state
-}
 void adv_neighbour(void) {
 	//Advertise our neighbours
 	//Scan for neighbours and if a new neighbour is found add it to memory and prey_list
