@@ -181,6 +181,7 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 	return 0;
 }
 
+
 struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_object) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
 	//struct nb_object *nb_object = NULL;
@@ -263,7 +264,7 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 			char rssi;
 			//printf("%d\n", rssi);
 			
-			if (strcmp("Pi", name) == 0) {
+			if (0 == strcmp("Pi", name)) {
 				
 				char sec_addr[31];
 				printf("DEBUG ");
@@ -283,7 +284,23 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 				}
 				
 				
+			} else if(0 == strcmp("De", name)) {
+				char sec_addr[31];
+				printf("DEBUG ");
+				for (int i = 7; i < 24; i++) {
+					sec_addr[i-7] = info->data[i];
+					//printf("%c", sec_addr[i-7]);
+					//printf("%d ", rssi); 
+				}
+				//printf("\n");
+				if(sec_addr[2] == ':' && sec_addr[5] == ':'){
+					nb_object = ll_new(nb_object);
+					strcpy(nb_object->nb_bdaddr, addr);
+					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
+					nb_object->Delegate = 'T';
+				} 
 			}
+					
 		
 			printf("%s %s ", addr, name);
 			for (int i = 0; i < info->length; i++) {
@@ -325,7 +342,14 @@ done:
 	return nb_object;
 }
 
-int advertise(char *array) {
+
+//should be public
+/**
+*Advertise(char *array), takes a char array of maximum size 24
+*And advertises that, (u8bit) advertisement will look like: 2 bytes for name "pi" followed by
+*5 bytes for control and flags followed by the 24 byte message.
+*//
+int advertise(char *array, char *name) {
 	//------------------------ADVERTISE------------------------		
 	int ret, status;
 
@@ -357,7 +381,7 @@ int advertise(char *array) {
 	// Set BLE advertisement data.
 	//struct neighbour *next = ll_next(neighbours);
 	
-	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", array);
+	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data(name, array);
 	
 	struct hci_request adv_data_rq = ble_hci_request(
 		OCF_LE_SET_ADVERTISING_DATA,
@@ -392,6 +416,9 @@ int advertise(char *array) {
 	return 0;
 }
 
+
+//should be public
+//*
 struct nb_object* scan(struct nb_object *nb_object) {
 //-----------------------------------------SCAN---------------------------
 	
@@ -457,8 +484,13 @@ void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
 	*counter++;
 }
 
-int main(int argc, char *argv[]) {
-	
+
+//should be public
+/**
+* Call to this functions returns a pointer to a array of linked list (*linked_list[]);
+* Linked list contains node id name and neighbours to that node.
+**/
+struct nb_object* scan_adv(){
 	//strcpy(neighbours->addr_bt, "0"); 
 	time_t start = time(0);
 	
@@ -474,13 +506,13 @@ int main(int argc, char *argv[]) {
 		
 		if ((nb_object != NULL)) {
 			printf("this is being advertised %s\n", arr[current]);
-			advertise(arr[current]);
+			advertise(arr[current], "Pi");
 			current++;
 			if(current > counter){
 				current = 0;
 			}
 		} else {
-			advertise(neighbour_1);
+			advertise(neighbour_1, "Pi");
 		}
 	
 		nb_object = scan(nb_object);
@@ -508,6 +540,7 @@ int main(int argc, char *argv[]) {
 	ll_foreach(rtn, it){
 	printf("dont dab on the haters\n");
 		print_nb_nb(ptr, it->nb_bdaddr);
+		printf("%c\n", it->Delegate);
 	}
 	
 	
@@ -518,6 +551,15 @@ int main(int argc, char *argv[]) {
 		}
 	}
 	**/
+	
+	return;
+}
+
+int main(int argc, char *argv[]) {
+	
+	
+	
+	scan_adv();
 	
 	
 	return 0;
