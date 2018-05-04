@@ -10,10 +10,15 @@
 #define MAX_CONNECTION_LIMIT 2
 #define BUFFER_SIZE 1024
 #define TIMEOUT_SECONDS 20
-#define NUM_STATES 6
+#define NUM_STATES 5
 
+//global variables
+int piconet_capacity = MAX_CONNECTION_LIMIT;
+//memory
+//prey_list
+
+//State related structures
 typedef enum {
-	ADV_OWN_ADDR,
 	ADV_NEIGHBOUR_ADDR,
 	DELEGATE,
 	DELEGATED
@@ -28,7 +33,6 @@ typedef struct {
 }StateMachineType;
 
 //State function prototypes
-void adv_own(void);
 void adv_neighbour(void);
 void delegate(void);
 void delegated(void);
@@ -37,7 +41,6 @@ void done(void);
 
 StateMachineType state_machine[] = 
 {
-	{ADV_OWN_ADDR, adv_own},
 	{ADV_NEIGHBOUR_ADDR, adv_neighbour},
 	{DELEGATE, delegate},
 	{DELEGATED, delegated},
@@ -48,11 +51,12 @@ StateMachineType state_machine[] =
 //Function prototypes
 void advertise(void);
 void scan(void);
-void common_neighbours(void);	//Calculate common neighbours
-void max_neighbour(void);		//Calculate the greatest neighbour
+nb_data* common_neighbours(nb_data*);	//Calculate common neighbours, returns a list of common neighbours
+nb_bdaddr max_neighbour(nb_data*);		//Calculate the greatest neighbour, returns the greatest neighbour
 
-StateType state = ADV_OWN_ADDR;
+StateType state = ADV_NEIGHBOUR_ADDR;
 
+<<<<<<< HEAD
 //state function implementations
 /*void adv_own(void) {
 	//Advertise our own address
@@ -62,6 +66,8 @@ StateType state = ADV_OWN_ADDR;
   
 	//If a neighbour is found, add it to memory and prey_list and go to ADV_NEIGHBOUR_ADDR state
 	}*/
+=======
+>>>>>>> ff471912a18137b52b06f13da676fb9411e15b34
 void adv_neighbour(void) {
 	//Advertise our neighbours
 	//Scan for neighbours and if a new neighbour is found add it to memory and prey_list
@@ -70,6 +76,7 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
+<<<<<<< HEAD
 
         time_t start = time(0);
 	char arr[10][18];
@@ -106,17 +113,23 @@ void adv_neighbour(void) {
 
 
 	
+=======
+	//If we receive an connection we go to the DONE state
+>>>>>>> ff471912a18137b52b06f13da676fb9411e15b34
 }
 void delegate(void) {
 	//Advertise a prey msg to neigbour_max
+	//Scan for confirmation msg from delegated node
+	//If we don't receive any confirmation we advertise and scan again, else continue
 	//Remove neighbour_max from prey_list
 	//Remove Common neighbours from prey 
-	//Decrement connection_capacity
-	//Color edge to neighbour_max blue
+	//Decrement piconet_capacity
+	
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state	
 }
 void delegated(void) {
+	//Broadcast prey msg to confirm that it received the message
 	//Calculate Common neighbours
 	//Connect to Common neighbours
 	//Color edges
@@ -128,6 +141,7 @@ void connect(void) {
 	//Go to the DONE state
 }
 void done(void) {
+	//Refuse any attempt to connect
 	//Go to Phase 2, I guess...
 }
 
