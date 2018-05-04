@@ -84,11 +84,11 @@ int socket_creator(char *arr, struct sockaddr_l2 loc_addr, struct sockaddr_l2 re
 	of the hardcoded bluetooth addresses, then forks into two processes
 	where one is reading data and one is writing data with all connections.
 **/
-int connect_to_neighbour(char (*array)[18]) {
+int* connect_to_neighbour(char (*array)[18]) {
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
     struct sockaddr_l2 rem_addr = {0};												// Remote bluetooth address	
     int bytes_read;
-    int connections[sizeof(array)];
+    static int connections[sizeof(array)];
     char buf[1024] = {0};
     char buf_input[1024] = {0};																// Buffer for reading data	
     bool single_message = false;
@@ -109,9 +109,10 @@ int connect_to_neighbour(char (*array)[18]) {
 		printf(BOLD KBLU "Attempting to connect with: " UNBOLD KYEL BOLD "%s\n" UNBOLD KNRM, array[i]);
 		connections[i] = socket_creator(array[i], loc_addr, rem_addr);
 	}
-	return 0;
+	return connections;
 }
 
+/* TEST MAIN
 int main(int argc, char *argv[]) {
 
 	char arr [3][18] = {
@@ -123,5 +124,5 @@ int main(int argc, char *argv[]) {
 	connect_to_neighbour(arr);
 
 	return 0;
-}
-
+} 
+*/
