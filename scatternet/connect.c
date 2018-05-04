@@ -27,12 +27,16 @@
 
 #define ATT_CID 4 																		// For l2cap socket to use BLE
 
+void delay(unsigned int);
+typedef enum {false, true} bool;
+
+
 /** 
  Takes in an array of bluetooth addresses, which are slaves to
  connect to. Creates a new socket for each connection. Returns a
  connection socket for each connection.
 **/
-int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 rem_addr){
+int socket_creator(char *arr, struct sockaddr_l2 loc_addr, struct sockaddr_l2 rem_addr){
 	
 	int status;
 	int connection_socket;
@@ -80,7 +84,7 @@ int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 r
 	of the hardcoded bluetooth addresses, then forks into two processes
 	where one is reading data and one is writing data with all connections.
 **/
-int connect_to_neighbour(char *array) {
+int connect_to_neighbour(char (*array)[18]) {
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
     struct sockaddr_l2 rem_addr = {0};												// Remote bluetooth address	
     int bytes_read;
@@ -101,7 +105,7 @@ int connect_to_neighbour(char *array) {
     rem_addr.l2_cid = htobs(ATT_CID);
     rem_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;   
 	
-	for (int i = 0; i < sizeof(array); i++) {											// 8 is the size of the hard coded array with BT addresses
+	for (int i = 0; i < sizeof(array) - 1; i++) {											// 8 is the size of the hard coded array with BT addresses
 		printf(BOLD KBLU "Attempting to connect with: " UNBOLD KYEL BOLD "%s\n" UNBOLD KNRM, array[i]);
 		connections[i] = socket_creator(array[i], loc_addr, rem_addr);
 	}
@@ -114,7 +118,7 @@ int main(int argc, char *argv[]) {
 		"B8:27:EB:4F:D6:56", 	// pi4
 		"B8:27:EB:DD:39:F9", 	// pi5
 		"B8:27:EB:52:65:92", 	// pi6
-	}	
+	};
 	
 	connect_to_neighbour(arr);
 
