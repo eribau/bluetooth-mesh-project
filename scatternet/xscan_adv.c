@@ -529,38 +529,16 @@ struct nb_object* scan_adv(){
 	
 	struct nb_object *ptr[16];
 	
-	*ptr = fill_entries(ptr, nb_object);
-	
-	struct nb_object *rtn = NULL;
-	rtn = rtn_nb_ptr(ptr);
-	
-	printf("%s\n", rtn->nb_bdaddr);
-	
-	printf("dab on the haters\n");
-	ll_foreach(rtn, it){
-	printf("dont dab on the haters\n");
-		print_nb_nb(ptr, it->nb_bdaddr);
-		printf("%c\n", it->Delegate);
+	ll_foreach(nb_object, it){
+		printf("%s\n", it->nb_bdaddr);
+		ptrinf("%c\n", it->Delegate);
 	}
-	
-	
-	/**
-	for(int i = 0; i < 16; i++){
-		ll_foreach(ptr[i], it){
-			printf("nb: %s, nb_nb: %s\n", it->nb_bdaddr, it->nb_nb_bdaddr);
-		}
-	}
-	**/
 	
 	return;
 }
 
-int main(int argc, char *argv[]) {
-	
-	
-	
-	scan_adv();
-	
+int main(int argc, char *argv[]) {	
+	scan_adv();	
 	
 	return 0;
 }

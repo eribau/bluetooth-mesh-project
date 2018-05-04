@@ -53,13 +53,6 @@ void max_neighbour(void);		//Calculate the greatest neighbour
 
 StateType state = ADV_OWN_ADDR;
 
-//state function implementations
-void adv_own(void) {
-	//Advertise our own address
-	//Scan for neighbours
-	
-	//If a neighbour is found, add it to memory and prey_list and go to ADV_NEIGHBOUR_ADDR state
-}
 void adv_neighbour(void) {
 	//Advertise our neighbours
 	//Scan for neighbours and if a new neighbour is found add it to memory and prey_list
@@ -68,6 +61,41 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
+
+        time_t start = time(0);
+	char arr[10][18];
+	int counter = 0;
+	int current = 0;
+	struct nb_object *nb_object = NULL;
+	
+	while (1) {
+	  char neighbour_1 [] = ""; // Initializes 
+	  if ((nb_object != NULL)) {
+	    printf("this is being advertised %s\n", arr[current]);
+	    advertise(arr[current]);
+	    current++;
+	    if(current > counter){
+	      current = 0;
+	    }
+	  } else {
+	    advertise(neighbour_1);
+	  }
+	  nb_object = scan(nb_object);
+	  ll_foreach(nb_object, it){
+	    add_to_array(arr, nb_object, &counter);
+	  }
+	  if (time(0) - start >= 20) {
+	    break;
+	  }
+	}
+	
+	struct nb_object *ptr[16];
+	*ptr = fill_entries(ptr, nb_object);
+	struct nb_object *rtn = NULL;
+	rtn = rtn_nb_ptr(ptr);
+
+
+	
 }
 void delegate(void) {
 	//Advertise a prey msg to neigbour_max
