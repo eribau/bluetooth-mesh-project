@@ -561,6 +561,8 @@ int main(int argc, char *argv[]) {
 	
 	ll_foreach(new, it){
 		printf("%s\n", it->nb_bdaddr);
+		printf("%s\n", it->nb_nb_bdaddr);
+		printf("%c\n", it->de);
 	}
 	
 	return 0;
