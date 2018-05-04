@@ -529,7 +529,7 @@ void scan_adv(){
 
 	}
 	
-	ll_foreach(nb_bdaddr, it){
+	ll_foreach(nb_object, it){
 		printf("%s\n", it->nb_bdaddr);
 		printf("%c\n", it->de);
 	}
