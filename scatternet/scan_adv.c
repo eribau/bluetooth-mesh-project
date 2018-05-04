@@ -554,6 +554,7 @@ struct nb_object* scan_adv(){
 	
 	return nb_object;
 }
+
 /*
 int main(int argc, char *argv[]) {	
 	struct nb_object *new = NULL;

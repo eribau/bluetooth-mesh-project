@@ -6,16 +6,29 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include "scan_adv.h"
 
 #define MAX_CONNECTION_LIMIT 2
 #define BUFFER_SIZE 1024
 #define TIMEOUT_SECONDS 20
-#define NUM_STATES 6
+//#define NUM_STATES 6
+
+int NUM_STATE = 6;
+
+
+//State function prototypes
+void adv_own(void);
+void adv_neighbour(void);
+void delegate(void);
+void delegated(void);
+void ble_connect(void);
+void done(void);
+
 
 typedef enum {
        	ADV_NEIGHBOUR_ADDR,
 	DELEGATE,
-	DELEGATED
+	DELEGATED,
 	CONNECT,
 	DONE,
 	NUM_STATES
@@ -26,30 +39,23 @@ typedef struct {
 	void (*func)(void);
 }StateMachineType;
 
-//State function prototypes
-void adv_own(void);
-void adv_neighbour(void);
-void delegate(void);
-void delegated(void);
-void connect(void);
-void done(void);
 
 StateMachineType state_machine[] = 
 {
 	{ADV_NEIGHBOUR_ADDR, adv_neighbour},
 	{DELEGATE, delegate},
 	{DELEGATED, delegated},
-	{CONNECT, connect},
+	{CONNECT, ble_connect},
 	{DONE, done}
-}
+};
 
 //Function prototypes
 //void advertise(void);
-void scan(void);
+//void scan(void);
 void common_neighbours(void);	//Calculate common neighbours
 void max_neighbour(void);		//Calculate the greatest neighbour
 
-StateType state = ADV_OWN_ADDR;
+StateType state = ADV_NEIGHBOUR_ADDR;
 //------------------------Global variables
 int i_am_prey = 0; // if 1 then this device is a prey
 //------------------------
@@ -62,7 +68,7 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
 	
-	prinf("hej\n");
+	printf("hej\n");
   
   time_t start = time(0);
   char arr[10][18];
@@ -84,8 +90,13 @@ void adv_neighbour(void) {
     }
     nb_object = scan(nb_object);
     
+    char *my_bdaddr = "placeholder";//print_own_bd_addr(); // This function is in connect handler
+	char my_bd[18];
+	strcpy(my_bd, my_bdaddr);
+	//char my_bd [18] = *print_own_bd_addr();
+    
     ll_foreach(nb_object, it){
-    if('T' == it->de;){
+    if('T' == it->de){
     	if(0 == strcmp(my_bd, it->nb_bdaddr)){
     		state = DELEGATED;
     		}
@@ -111,14 +122,11 @@ void adv_neighbour(void) {
 	  
 	  // Add prey list
 	  char prey[10][18];
-	  char *my_bd_addr = print_own_bd_addr(); // This function is in connect handler
-	  char my_bd [18] = *my_bdaddr();
-	  //char my_bd [18] = *print_own_bd_addr();
 	  int nmb_of_prey = 0;
 	  
 	  ll_foreach(rtn, it){
 		if(0 < strcmp(my_bd, it->nb_bdaddr)) { // This means my_bd > it->nb_bdaddr
-		  prey[nmb_of_prey] = it->nb_bdaddr;
+		  strcpy(prey[nmb_of_prey], it->nb_bdaddr);
 		  nmb_of_prey++;
 		}
 		else{ // This node has a nb with a higher unique identifier
@@ -127,7 +135,7 @@ void adv_neighbour(void) {
 	  }
 	  
 	  if (time(0) - start >= 20) {
-	  	if(i_am_pray) {
+	  	if(i_am_prey) {
 	  		continue;
 	  	} else {
 	  		state = DELEGATE;
@@ -156,7 +164,7 @@ void delegated(void) {
 	//Color edges
 	//Go to the DONE state
 }
-void connect(void) {
+void ble_connect(void) {
 	//Connect to neighbours
 	//color edges 
 	//Go to the DONE state
@@ -166,8 +174,8 @@ void done(void) {
 }
 
 int main(){
-	if(state < NUM_STATES) {
-		(*state_machine[state].func();
+	if(state < NUM_STATE) {
+		(*state_machine[state].func)();
 	} else {
 		perror("Invalid state");
 	}

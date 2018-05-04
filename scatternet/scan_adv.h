@@ -1,5 +1,5 @@
-#ifndef SCAN-ADV_H_  
-#define SCAN-ADV_H_
+#ifndef SCAN_ADV_H_  
+#define SCAN_ADV_H_
 
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
