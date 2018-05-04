@@ -13,8 +13,7 @@
 #define NUM_STATES 6
 
 typedef enum {
-	ADV_OWN_ADDR,
-	ADV_NEIGHBOUR_ADDR,
+       	ADV_NEIGHBOUR_ADDR,
 	DELEGATE,
 	DELEGATED
 	CONNECT,
@@ -37,7 +36,6 @@ void done(void);
 
 StateMachineType state_machine[] = 
 {
-	{ADV_OWN_ADDR, adv_own},
 	{ADV_NEIGHBOUR_ADDR, adv_neighbour},
 	{DELEGATE, delegate},
 	{DELEGATED, delegated},
@@ -46,7 +44,7 @@ StateMachineType state_machine[] =
 }
 
 //Function prototypes
-void advertise(void);
+//void advertise(void);
 void scan(void);
 void common_neighbours(void);	//Calculate common neighbours
 void max_neighbour(void);		//Calculate the greatest neighbour
@@ -61,49 +59,74 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
-
   
-	time_t start = time(0);
-	char arr[10][18];
-	int counter = 0;
-	int current = 0;
-	struct nb_object *nb_object = NULL;
+  time_t start = time(0);
+  char arr[10][18];
+  int counter = 0;
+  int current = 0;
+  struct nb_object *nb_object = NULL;
+  
+  while (1) {
+    char neighbour_1 [] = "";
+    if ((nb_object != NULL)) {
+      printf("this is being advertised %s\n", arr[current]);
+      advertise(arr[current]);
+      current++;
+      if(current > counter){
+	current = 0;
+      }
+    } else {
+      advertise(neighbour_1);
+    }
+    nb_object = scan(nb_object);
+    ll_foreach(nb_object, it){
+      add_to_array(arr, nb_object, &counter);
+    }
+    if (time(0) - start >= 20) {
+      break;
+    }
+  }
+  
+  // Add entries in datastructure
+  struct nb_object *ptr[16];
+  *ptr = fill_entries(ptr, nb_object);
+  
+  // Show neighbours neighbour, remove when sure it works.
+  struct nb_object *rtn = NULL;
+  rtn = rtn_nb_ptr(ptr);
+  printf("%s\n", rtn->nb_bdaddr);
+  printf("dab on the haters\n");
+  ll_foreach(rtn, it){
+    printf("dont dab on the haters\n");
+    print_nb_nb(ptr, it->nb_bdaddr);
+  }
+  
+  // Add prey list
+  char prey[10][18];
+  char *my_bd_addr = print_own_bd_addr(); // This function is in connect handler
+  char my_bd [18] = *my_bdaddr();
+  //char my_bd [18] = *print_own_bd_addr();
+  int nmb_of_prey = 0;
+  int i_am_prey = 0; // if 1 then this device is a prey
+  
+  ll_foreach(rtn, it){
+    if(0 < strcmp(my_bd, it->nb_bdaddr)) { // This means my_bd > it->nb_bdaddr
+      prey[nmb_of_prey] = it->nb_bdaddr;
+      nmb_of_prey++;
+    }
+    else{ // This node has a nb with a higher unique identifier
+      i_am_prey = 1;  
+    }
+  }
 
-	while (1) {
-		char neighbour_1 [] = "";
-		if ((nb_object != NULL)) {
-			printf("this is being advertised %s\n", arr[current]);
-			advertise(arr[current]);
-			current++;
-			if(current > counter){
-				current = 0;
-			}
-		} else {
-			advertise(neighbour_1);
-		}
-		nb_object = scan(nb_object);
-		ll_foreach(nb_object, it){
-			add_to_array(arr, nb_object, &counter);
-		}
-		if (time(0) - start >= 20) {
-			break;
-		}
-	}
+  if(nmb_of_prey <= 2) { // Go into connect phase
+    state = CONNECT;
+  }
+  else { // Go into delegation phase
+    state = DELEGATE;
+  }
 
-	// Add entries in datastructure
-	struct nb_object *ptr[16];
-	*ptr = fill_entries(ptr, nb_object);
 
-	// Show neighbours neighbour, remove when sure it works.
-	struct nb_object *rtn = NULL;
-	rtn = rtn_nb_ptr(ptr);
-	printf("%s\n", rtn->nb_bdaddr);
-	printf("dab on the haters\n");
-	ll_foreach(rtn, it){
-	printf("dont dab on the haters\n");
-	print_nb_nb(ptr, it->nb_bdaddr);
-
-	}
 }
 
 void delegate(void) {
