@@ -383,7 +383,7 @@ int advertise(char *array) {
 	// Set BLE advertisement data.
 	//struct neighbour *next = ll_next(neighbours);
 	
-	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", array);
+	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("De", array);
 	
 	struct hci_request adv_data_rq = ble_hci_request(
 		OCF_LE_SET_ADVERTISING_DATA,
@@ -492,7 +492,7 @@ void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
 * Call to this functions returns a pointer to a array of linked list (*linked_list[]);
 * Linked list contains node id name and neighbours to that node.
 **/
-void scan_adv(){
+struct nb_object* scan_adv(){
 	//strcpy(neighbours->addr_bt, "0"); 
 	time_t start = time(0);
 	
@@ -529,7 +529,7 @@ void scan_adv(){
 
 	}
 	
-	ll_foreach(nb_bdaddr, it){
+	ll_foreach(nb_object, it){
 		printf("%s\n", it->nb_bdaddr);
 		printf("%c\n", it->de);
 	}
@@ -552,11 +552,18 @@ void scan_adv(){
 	}
 	*/
 	
-	return;
+	return nb_object;
 }
 
 int main(int argc, char *argv[]) {	
-	scan_adv();	
+	struct nb_object *new = NULL;
+	new = scan(new);
+	
+	ll_foreach(new, it){
+		printf("%s\n", it->nb_bdaddr);
+		printf("%s\n", it->nb_nb_bdaddr);
+		printf("%c\n", it->de);
+	}
 	
 	return 0;
 }
