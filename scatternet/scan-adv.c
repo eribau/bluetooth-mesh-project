@@ -507,7 +507,7 @@ int main(int argc, char *argv[]) {
 	printf("dab on the haters\n");
 	ll_foreach(rtn, it){
 	printf("dont dab on the haters\n");
-		print_nb_nb(ptr, it->nb_bdaddr);
+	print_nb_nb(ptr, it->nb_bdaddr);
 	}
 	
 	
