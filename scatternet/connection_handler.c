@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
 		"B8:27:EB:52:65:92", 	// pi6
 	};
 	
-	if (argv[0] == "2") {
+	if (strcmp(argv[1], "3") == 0) {
 		accept_a_neighbour();
 	} else {
 		connect_to_neighbour(arr);
