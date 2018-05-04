@@ -67,7 +67,7 @@ void adv_neighbour(void) {
   struct nb_object *nb_object = NULL;
   
   while (1) {
-    char neighbour_1 [] = "";
+    char neighbour [] = "";
     if ((nb_object != NULL)) {
       printf("this is being advertised %s\n", arr[current]);
       advertise(arr[current]);
@@ -76,7 +76,7 @@ void adv_neighbour(void) {
 	current = 0;
       }
     } else {
-      advertise(neighbour_1);
+      advertise(neighbour);
     }
     nb_object = scan(nb_object);
     ll_foreach(nb_object, it){
