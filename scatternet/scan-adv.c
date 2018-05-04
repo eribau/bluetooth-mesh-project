@@ -492,7 +492,7 @@ void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
 * Call to this functions returns a pointer to a array of linked list (*linked_list[]);
 * Linked list contains node id name and neighbours to that node.
 **/
-void scan_adv(){
+struct nb_object* scan_adv(){
 	//strcpy(neighbours->addr_bt, "0"); 
 	time_t start = time(0);
 	
@@ -552,11 +552,16 @@ void scan_adv(){
 	}
 	*/
 	
-	return;
+	return nb_object;
 }
 
 int main(int argc, char *argv[]) {	
-	scan_adv();	
+	struct nb_object *new = NULL;
+	new = scan(new);
+	
+	ll_foreach(new, it){
+		printf("%s\n", it->nb_bdaddr);
+	}
 	
 	return 0;
 }
