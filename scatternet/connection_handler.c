@@ -112,7 +112,56 @@ int* connect_to_neighbour(char (*array)[18]) {
 	return connections;
 }
 
-/* TEST MAIN
+
+int accept_a_neighbour()
+{
+    struct sockaddr_l2 loc_addr = { 0 }; 													// Local bluetooth address
+    struct sockaddr_l2 rem_addr = { 0 };													// Remote bluetooth address
+    socklen_t opt = sizeof(rem_addr);
+    int connection_socket;
+    int connection_fd; 
+    int bytes_read;
+    int device_id;
+    int device_descriptor;
+    int advertise;
+    char buf[1024] = { 0 };
+    char buf_input[1024] = { 0 };
+    pid_t childpid;
+    //char dest[18] = "B8:27:EB:51:32:99"; //Pi3
+    
+    struct timeval tv;						//Allocate timeout for read() in socket options
+	tv.tv_sec = 0;
+	tv.tv_usec = 100000;
+
+	device_id = hci_get_route(NULL);
+    device_descriptor = hci_open_dev(device_id);
+
+    connection_socket = socket(AF_BLUETOOTH, SOCK_SEQPACKET, BTPROTO_L2CAP);				// Allocate a socket
+    
+    loc_addr.l2_family = AF_BLUETOOTH;														// Set up local bluetooth adapter
+    loc_addr.l2_bdaddr = *BDADDR_ANY;
+    loc_addr.l2_cid = htobs(ATT_CID);                                   					// ATT_CID = 4, For l2cap to use BLE
+    loc_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;
+    
+    bind(connection_socket, (struct sockaddr *)&loc_addr, sizeof(loc_addr));				// Bind socket
+    
+	advertise = hci_le_set_advertise_enable(device_descriptor, 1, 10000);								// Advertise LE
+	printf("leadv on %d\n" , advertise);
+	
+	listen(connection_socket, 10);
+	
+	connection_fd = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);		// Accept a connection from the server
+	
+	setsockopt(connection_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);	// Set socket options for read() to use a timeout
+	
+	ba2str( &rem_addr.l2_bdaddr, buf );													// Print bluetooth address of the server 
+	fprintf(stderr, "accepted connection from %s\n", buf);
+	
+	return connection_fd;
+}
+
+
+//TEST MAIN
 int main(int argc, char *argv[]) {
 
 	char arr [3][18] = {
@@ -121,8 +170,12 @@ int main(int argc, char *argv[]) {
 		"B8:27:EB:52:65:92", 	// pi6
 	};
 	
-	connect_to_neighbour(arr);
+	if (argv[0] == "2") {
+		accept_a_neighbour();
+	} else {
+		connect_to_neighbour(arr);
+	}
 
 	return 0;
 } 
-*/
+
