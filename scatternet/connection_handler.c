@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
+#include <sys/ioctl.h>
 
 #include <sys/socket.h>
 #include <sys/wait.h>
@@ -13,6 +14,8 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+
+//#include "connection_handler.h"	
 
 #define KNRM  "\x1B[0m"																	// Color for terminal outputs
 #define KRED  "\x1B[91m"
@@ -30,6 +33,9 @@
 void delay(unsigned int);
 typedef enum {false, true} bool;
 
+
+static struct hci_dev_info di;
+//static void print_dev_hdr(struct hci_dev_info *di);
 
 /** 
  Takes in an array of bluetooth addresses, which are slaves to
@@ -80,9 +86,8 @@ int socket_creator(char *arr, struct sockaddr_l2 loc_addr, struct sockaddr_l2 re
 
 /**
 	This method sets up its local bluetooth adapter and the type of the
-	remote bluetooth adapter it will connect to. It then connects to all
-	of the hardcoded bluetooth addresses, then forks into two processes
-	where one is reading data and one is writing data with all connections.
+	remote bluetooth adapter it will connect to. It then connects 
+	to all the bluetooth address given as the input
 **/
 int* connect_to_neighbour(char (*array)[18]) {
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
@@ -112,7 +117,10 @@ int* connect_to_neighbour(char (*array)[18]) {
 	return connections;
 }
 
-
+/**
+  The accept function does not take in any argument, if it is called it 
+  will be blocking and accept the first connection that is sent to it
+  **/
 int accept_a_neighbour()
 {
     struct sockaddr_l2 loc_addr = { 0 }; 													// Local bluetooth address
@@ -160,22 +168,58 @@ int accept_a_neighbour()
 	return connection_fd;
 }
 
+char* print_dev_hdr(struct hci_dev_info *di)
+{
+	static int hdr = -1;
+	static char addr[18];
+
+	/*if (hdr == di->dev_id)
+		return;*/
+	hdr = di->dev_id;
+
+	ba2str(&di->bdaddr, addr);
+
+	//printf("%s\n", addr);
+	return addr;
+}
+
+char* print_own_bd_addr()
+{
+	int ctl;
+	ctl = socket(AF_BLUETOOTH, SOCK_RAW, BTPROTO_HCI);
+	
+	ioctl(ctl, HCIGETDEVINFO, (void *) &di);
+	
+	printf("%s\n", print_dev_hdr(&di));
+	
+	return print_dev_hdr(&di);
+	
+}
 
 //TEST MAIN
-int main(int argc, char *argv[]) {
-
-	char arr [3][18] = {
+/*int main(int argc, char *argv[]) {
+	
+	
+	print_own_bd_addr();
+	
+	
+	//print_own_bd_addr();
+	
+	//print_dev_hdr(&di);
+	/*char arr [3][18] = {
 		"B8:27:EB:4F:D6:56", 	// pi4
 		"B8:27:EB:DD:39:F9", 	// pi5
 		"B8:27:EB:52:65:92", 	// pi6
 	};
 	
-	if (strcmp(argv[1], "3") == 0) {
+	if (strcmp(argv[1], "slave") == 0) {
 		accept_a_neighbour();
-	} else {
+	}
+	if (strcmp(argv[1], "master") == 0) {
 		connect_to_neighbour(arr);
 	}
+	
+	//connect_to_neighbour(arr);
 
 	return 0;
-} 
-
+}*/
