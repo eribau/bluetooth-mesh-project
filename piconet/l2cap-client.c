@@ -78,10 +78,12 @@ int main(int argc, char **argv)
 				if(0 < connection_fd) {																	
 					memset(buf, 0, sizeof(buf));			
 					bytes_read = read(connection_fd, buf, sizeof(buf));							//Read a message from the server
+					strtok(buf, "\n");
 					if (0 < bytes_read) {
 						printf("%s\n", buf);			
 					}
-					if(strcmp("toggleLED\n", buf) == 0) {											//Potentially toggle the LED
+					char *point = strstr(buf, "toggleLED");
+					if(0 == strcmp("toggleLED", point)) {											//Potentially toggle the LED
 						toggle_led();
 					}
 					delay(100);

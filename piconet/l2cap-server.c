@@ -156,6 +156,9 @@ int main(int argc, char *argv[]) {
 	} else {
 		bool global_message = false;
 		while(1) {
+			red_off();
+			blue_off();
+			green_on();
 			for(int i = 0; i < NUM_OF_ENTRIES; i++){
 				memset(buf, 0, sizeof(buf));
 				bytes_read = read(connections[i], buf, sizeof(buf));				//Non blocking read from all clients
