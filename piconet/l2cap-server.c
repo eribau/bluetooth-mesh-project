@@ -13,6 +13,7 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
+#include "iocontroller_rgb.h"
 
 #define ATT_CID 4 																		// For l2cap socket to use BLE
 
@@ -26,6 +27,7 @@
 #define KWHT  "\x1B[97m"
 #define BOLD  "\x1B[1m"
 #define UNBOLD  "\x1B[21m"
+#define NUM_OF_ENTRIES 6
 
 void delay(unsigned int);
 typedef enum {false, true} bool;
@@ -84,25 +86,29 @@ int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 r
 	where one is reading data and one is writing data with all connections.
 **/
 int main(int argc, char *argv[]) {
+	init_gpio();
+	red_on();
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
     struct sockaddr_l2 rem_addr = {0};												// Remote bluetooth address	
     int bytes_read = 0;
-    int connections[8];
+    int connections[NUM_OF_ENTRIES];
     char buf[1024] = {0};
     char buf_input[1024] = {0};																// Buffer for reading data	
     bool single_message = false;
     bool single_pi_message = false;
     pid_t childpid;
     char temp [1024];
-    char arr [8][18] = {
+    char arr [NUM_OF_ENTRIES][18] = {
 		"B8:27:EB:9B:D4:87", 	// pi1 
-		"B8:27:EB:E4:D7:BF", 	// pi2
+		//"B8:27:EB:E4:D7:BF", 	// pi2
+		"B8:27:EB:51:32:99",	// pi3
 		"B8:27:EB:4F:D6:56", 	// pi4
 		"B8:27:EB:DD:39:F9", 	// pi5
 		"B8:27:EB:52:65:92", 	// pi6
-		"B8:27:EB:EF:F7:B8", 	// pi7
+		//"B8:27:EB:EF:F7:B8", 	// pi7
 		"B8:27:EB:F4:3B:BA", 	// pi8
-		"B8:27:EB:15:3D:99"};	// pi9			
+		//"B8:27:EB:15:3D:99"};	// pi9		
+	};	
 		
     loc_addr.l2_family = AF_BLUETOOTH; 									// Setup for local (server) BLE adapter
     loc_addr.l2_bdaddr = *BDADDR_ANY;													// Bind socket to the first available bluetooth adapter
@@ -113,30 +119,35 @@ int main(int argc, char *argv[]) {
     rem_addr.l2_cid = htobs(ATT_CID);
     rem_addr.l2_bdaddr_type = BDADDR_LE_PUBLIC;   
 	
-	for (int i = 0; i < 8; i++) {											// 8 is the size of the hard coded array with BT addresses
+	red_off();
+	blue_on();
+	for (int i = 0; i < NUM_OF_ENTRIES; i++) {											// 8 is the size of the hard coded array with BT addresses
 		printf(BOLD KBLU "Attempting to connect with: " UNBOLD KYEL BOLD "%s\n" UNBOLD KNRM, arr[i]);
 		connections[i] = socket_creator(arr[i], loc_addr, rem_addr);
 	}
 	
 	if (0 == (childpid = fork())) {										// Fork for reading and writing to the clients
 		while(1) {
+			blue_off();
+			red_off();
+			green_on();
 			printf(BOLD KCYN "Type in the BT address or the message to every connection: \n" UNBOLD KNRM);
 			memset(buf_input, 0, sizeof(buf_input));					// Empty the buffer
 			fgets(buf_input, sizeof(buf_input), stdin);					// Input
 			strtok(buf_input, "\n");
 
-			for (int j = 0; j < 8; j++) {								// Check if message is for a specific client
+			for (int j = 0; j < NUM_OF_ENTRIES; j++) {								// Check if message is for a specific client
 				if (0 == strcmp(buf_input, arr[j])) {
 					single_message = true;
 					printf("Write your message to: %s \n", arr[j]);
 					memset(buf_input, 0, sizeof(buf_input));
 					fgets(buf_input, sizeof(buf_input), stdin);
-					write(connections[j], buf_input, strlen(buf_input)-1);
+					write(connections[j], buf_input, strlen(buf_input));
 				}
 			}
 			
 			if (single_message == false) {
-				for (int i = 0; i < 8; i++) {									// 8 is the size of the hard coded array with BT addresses
+				for (int i = 0; i < NUM_OF_ENTRIES; i++) {									// 8 is the size of the hard coded array with BT addresses
 					write(connections[i], buf_input, strlen(buf_input));		// Send a message to all clients
 				}
 			}
@@ -145,14 +156,17 @@ int main(int argc, char *argv[]) {
 	} else {
 		bool global_message = false;
 		while(1) {
-			for(int i = 0; i < 8; i++){
+			for(int i = 0; i < NUM_OF_ENTRIES; i++){
 				memset(buf, 0, sizeof(buf));
 				bytes_read = read(connections[i], buf, sizeof(buf));				//Non blocking read from all clients
 				if(0 < bytes_read){
+					green_off();
+					red_on();
+					blue_on();
 					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
 					strtok(buf, "\n");
 					global_message = true;
-					for (int j = 0; j < 8; j++) {			
+					for (int j = 0; j < NUM_OF_ENTRIES; j++) {			
 						if (0 == strcmp(buf, arr[j])) {								// Check if message is for a specific client
 							printf("Writing to: %s \n", arr[j]);
 							global_message = false;
@@ -174,7 +188,7 @@ int main(int argc, char *argv[]) {
 						strcat(temp, arr[i]);
 						strcat(temp, ": ");
 						strcat(temp, buf);
-						for (int j = 0; j < 8; j++) {	
+						for (int j = 0; j < NUM_OF_ENTRIES; j++) {	
 							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						}
 					}

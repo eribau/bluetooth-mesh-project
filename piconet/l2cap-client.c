@@ -12,7 +12,7 @@
 
 #include <wiringPi.h>
 
-#include "inputprocessing.h"
+#include "iocontroller.h"
 
 #define ATT_CID 4																			// ATT_CID = 4, For l2cap socket to use BLE
 
@@ -81,10 +81,10 @@ int main(int argc, char **argv)
 					if (0 < bytes_read) {
 						printf("%s\n", buf);			
 					}
-					if(strcmp("toggleLED", buf) == 0) {											//Potentially toggle the LED
-						toggle_led("toggle\n");
+					if(strcmp("toggleLED\n", buf) == 0) {											//Potentially toggle the LED
+						toggle_led();
 					}
-					delay(1000);
+					delay(100);
 				} else {
 					close(connection_socket);
 				}

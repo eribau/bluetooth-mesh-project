@@ -8,6 +8,14 @@
 
 extern bool g_connection_check;											// Global variable from tcpserver
 
+bool g_toggle = false;													// First state of the LED (off)
+ 
+/** Responsible for processing user input.
+	If the input is equal to the preset keyword, g_toggle on/off lights,
+	depending on the current state.  
+**/
+
+
 /** Turns on LED at a specific preprogrammed pin **/
 void turn_on() {														
 	int pin = 7;														// LED's pin number
@@ -26,6 +34,19 @@ void turn_off() {														// Code for this method follows the turn_on docum
 	pinMode(pin, OUTPUT);
 	printf("LED Off\n");
 	digitalWrite(pin, 0);
+}
+
+void toggle_led() {
+								// If the input matches the preset keyword, turn on/off, depending on the state of the LED.
+	if (g_toggle == false) {
+		turn_on();
+		g_toggle = true;
+	}
+	else {
+		turn_off();
+		g_toggle = false;
+	} 
+	
 }
 
 /** 
