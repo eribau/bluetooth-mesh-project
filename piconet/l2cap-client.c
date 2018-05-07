@@ -40,6 +40,7 @@ int main(int argc, char **argv)
     int device_descriptor;
     int advertise;
     char buf[1024] = { 0 };
+    char buftemp[1024] = { 0 };
     char buf_input[1024] = { 0 };
     pid_t childpid;
     
@@ -82,7 +83,8 @@ int main(int argc, char **argv)
 					if (0 < bytes_read) {
 						printf("%s\n", buf);			
 					}
-					char *point = strstr(buf, "toggleLED\n");
+					buftemp = buf;
+					char *point = strstr(buftemp, "toggleLED\n");
 					printf("hejs%s\n", point);
 					if(0 == strcmp("toggleLED\n", point)) {							//Potentially toggle the LED
 						toggle_led();
