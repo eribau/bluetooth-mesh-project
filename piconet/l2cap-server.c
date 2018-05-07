@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
 			printf(BOLD KCYN "Type in the BT address or the message to every connection: \n" UNBOLD KNRM);
 			memset(buf_input, 0, sizeof(buf_input));					// Empty the buffer
 			fgets(buf_input, sizeof(buf_input), stdin);					// Input
-			strtok(buf_input, "\n");
+			//strtok(buf, "\n");
 
 			for (int j = 0; j < NUM_OF_ENTRIES; j++) {								// Check if message is for a specific client
 				if (0 == strcmp(buf_input, arr[j])) {
@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
 					printf("Write your message to: %s \n", arr[j]);
 					memset(buf_input, 0, sizeof(buf_input));
 					fgets(buf_input, sizeof(buf_input), stdin);
-					write(connections[j], buf_input, strlen(buf_input) - 1);
+					write(connections[j], buf_input, strlen(buf_input));
 				}
 			}
 			
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
 					blue_on();
 					delay(500);
 					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
-					strtok(buf, "\n");
+					//strtok(buf, "\n");
 					global_message = true;
 					for (int j = 0; j < NUM_OF_ENTRIES; j++) {			
 						if (0 == strcmp(buf, arr[j])) {								// Check if message is for a specific client
