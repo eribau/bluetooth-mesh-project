@@ -39,6 +39,8 @@ typedef struct {
 	void (*func)(void);
 }StateMachineType;
 
+void (*statefunc)() = adv_neighbour;
+
 
 StateMachineType state_machine[] = 
 {
@@ -68,17 +70,17 @@ void adv_neighbour(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length > connection_capacity go to the DELEGATE state
 	//If we receive prey msg we go to the DELEGATED state
 	
-	printf("hej\n");
+	//~ printf("hej\n");
   
   time_t start = time(0);
   char arr[10][18];
   int counter = 0;
   int current = 0;
-  struct nb_object *nb_object = NULL;
+  struct nb_object *nb_list = NULL;
   
   while (1) {
     char neighbour [] = "";
-    if ((nb_object != NULL)) {
+    if ((nb_list != NULL)) {
       printf("this is being advertised %s\n", arr[current]);
       advertise(arr[current]);
       current++;
@@ -88,38 +90,49 @@ void adv_neighbour(void) {
     } else {
       advertise(neighbour);
     }
-    nb_object = scan(nb_object);
+    printf("%d\n", &nb_list);
+    nb_list = scan(nb_list);
+    printf("%d\n", &nb_list);
     
     char *my_bdaddr = "placeholder";//print_own_bd_addr(); // This function is in connect handler
+    printf("Test1\n");
 	char my_bd[18];
+	printf("Test2\n");
 	strcpy(my_bd, my_bdaddr);
+	printf("Test3\n");
 	//char my_bd [18] = *print_own_bd_addr();
     
-    ll_foreach(nb_object, it){
+    ll_foreach(nb_list, it){
     if('T' == it->de){
     	if(0 == strcmp(my_bd, it->nb_bdaddr)){
-    		state = DELEGATED;
+    		statefunc = delegated;
     		}
     	}
-      	add_to_array(arr, nb_object, &counter);
+      	add_to_array(arr, nb_list, &counter);
     }
-    
+    printf("Test4\n");
   
   
 	  // Add entries in datastructure
-	  struct nb_object *ptr[16];
-	  *ptr = fill_entries(ptr, nb_object);
+	  struct nb_object *ptr[16] = { 0 };
+	  *ptr = fill_entries(ptr, nb_list);
+	  printf("Test5\n");
+	  printf("%d\n", ptr);
+	  
+	  print_nb(ptr);
 	  
 	  // Show neighbours neighbour, remove when sure it works.
 	  struct nb_object *rtn = NULL;
+	  printf("Test6\n");
 	  rtn = rtn_nb_ptr(ptr);
-	  printf("%s\n", rtn->nb_bdaddr);
+	  
 	  printf("dab on the haters\n");
+	  printf("%d\n", rtn->nb_bdaddr);
+	  //~ printf("dab on the haters\n");
 	  ll_foreach(rtn, it){
 		printf("dont dab on the haters\n");
 		print_nb_nb(ptr, it->nb_bdaddr);
 	  }
-	  
 	  // Add prey list
 	  char prey[10][18];
 	  int nmb_of_prey = 0;
@@ -136,20 +149,27 @@ void adv_neighbour(void) {
 	  
 	  if (time(0) - start >= 20) {
 	  	if(i_am_prey) {
+			printf("i am prey\n");
 	  		continue;
 	  	} else {
-	  		state = DELEGATE;
+			printf("Going into delegate\n");
+	  		statefunc = delegate;
+	  		break;
 	  	}
       }
 
 	  if(nmb_of_prey <= 2) { // Go into connect phase
-		state = CONNECT;
+		printf("Going into connection phase\n");
+		statefunc = ble_connect;
+		printf("Gonna run brak next line\n");
+		break;
 	  }
 	}
 
 }
 
 void delegate(void) {
+	printf("Now in DELEGATE\n");
 	//Advertise a prey msg to neigbour_max
 	//Remove neighbour_max from prey_list
 	//Remove Common neighbours from prey 
@@ -159,12 +179,18 @@ void delegate(void) {
 	//If (timer times out and neigbour_max < own_addr) and prey_length <= connection_capacity go to the CONNECT state	
 }
 void delegated(void) {
+	
+	printf("Now in DELEGATED!!\n");
+	
 	//Calculate Common neighbours
 	//Connect to Common neighbours
 	//Color edges
 	//Go to the DONE state
 }
 void ble_connect(void) {
+	
+	printf("Now in CONNECT\n");
+	
 	//Connect to neighbours
 	//color edges 
 	//Go to the DONE state
@@ -175,7 +201,7 @@ void done(void) {
 
 int main(){
 	if(state < NUM_STATE) {
-		(*state_machine[state].func)();
+		(*statefunc)();
 	} else {
 		perror("Invalid state");
 	}

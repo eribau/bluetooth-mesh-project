@@ -55,7 +55,7 @@ void add_nb_nb(struct nb_object **ptr, char *nb_bdaddr, char *nb_nb_bdaddr){
 
 /** Prints all neighbours **/
 void print_nb(struct nb_object **ptr){
-	for(int j; j < nmb_arr_entries; j++){
+	for(int j = 0; j < nmb_arr_entries; j++){
 		printf("%s\n", ptr[j]->nb_bdaddr);
 	}
 }

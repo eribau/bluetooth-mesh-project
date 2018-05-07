@@ -184,7 +184,7 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 }
 
 
-struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_object) {
+struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_list) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
 	//struct nb_object *nb_object = NULL;
 	struct hci_filter nf, of;
@@ -244,6 +244,7 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 
 		if (time(0) - start >= 1) {
 			printf("third goto\n");
+
 			goto done;
 		}
 
@@ -255,7 +256,7 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 		if (meta->subevent != 0x02){
 			printf("fourth goto\n");
 			goto done;
-	}
+		}
 		/* Ignoring multiple reports */
 		info = (le_advertising_info *) (meta->data + 1);
 		if (check_report_filter(filter_type, info)) {
@@ -273,7 +274,7 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 			if (0 == strcmp("Pi", name)) {
 				
 				char sec_addr[31];
-				printf("DEBUG ");
+				printf("Pi read in data ");
 				for (int i = 7; i < 24; i++) {
 					sec_addr[i-7] = info->data[i];
 					//printf("%c", sec_addr[i-7]);
@@ -281,18 +282,18 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 				}
 				//printf("\n");
 				if(sec_addr[2] == ':' && sec_addr[5] == ':'){
-					nb_object = ll_new(nb_object);
-					strcpy(nb_object->nb_bdaddr, addr);
-					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
+					nb_list = ll_new(nb_list);
+					strcpy(nb_list->nb_bdaddr, addr);
+					strcpy(nb_list->nb_nb_bdaddr, sec_addr);
 				} else {
-					nb_object = ll_new(nb_object);
-					strcpy(nb_object->nb_bdaddr, addr);
+					nb_list = ll_new(nb_list);
+					strcpy(nb_list->nb_bdaddr, addr);
 				}
 				
 				
-			} else if(0 == strcmp("De", name)) {
+			} else if(0 == strcmp("	De", name)) {
 				char sec_addr[31];
-				printf("DEBUG ");
+				printf("De read in data");
 				for (int i = 7; i < 24; i++) {
 					sec_addr[i-7] = info->data[i];
 					//printf("%c", sec_addr[i-7]);
@@ -300,44 +301,30 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 				}
 				//printf("\n");
 				if(sec_addr[2] == ':' && sec_addr[5] == ':'){
-					nb_object = ll_new(nb_object);
-					strcpy(nb_object->nb_bdaddr, addr);
-					strcpy(nb_object->nb_nb_bdaddr, sec_addr);
-					nb_object->de = 'T';
+					nb_list = ll_new(nb_list);
+					strcpy(nb_list->nb_bdaddr, addr);
+					strcpy(nb_list->nb_nb_bdaddr, sec_addr);
+					nb_list->de = 'T';
 				} 
 			}
 					
-		
 			printf("%s %s ", addr, name);
 			for (int i = 0; i < info->length; i++) {
 				rssi = info->data[i];
 				printf("%d ", rssi); 
 			}
 			printf("\n");
-	
-			//printf("%s %d %s\n", addr, rssi, name);
-			/*
-			addr_exists = 0; 
-			for (int i = 0; i < sizeof(addr_table)/sizeof(addr_table[0]); i++) {
-				if (strcmp(addr, addr_table[i]) == 0) {
-					addr_exists = 1;
-				}
-			}
-			if (addr_exists == 0) {strcpy(addr_table[addr_counter], addr);
-				list_node_t *a = list_node_new(addr_table[addr_counter]);
-				list_rpush(neighbours, a);
-			}*/
 			
 			addr_counter++;
 			if (addr_counter == (sizeof(addr_table)/sizeof(addr_table[0]) - 1)) addr_counter = 0;
 		}
 	}
-	
+
 done:
 	printf("now in done:");
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
 	
-	ll_foreach(nb_object, it) {
+	ll_foreach(nb_list, it) {
 		printf("My_Neighbour: %s", it->nb_bdaddr);
 		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
 		printf(" Neighbours_Neighbour: %s\n", it->nb_nb_bdaddr);
@@ -346,7 +333,7 @@ done:
 	
 	if (len < 0) exit(-1);
 
-	return nb_object;
+	return nb_list;
 }
 
 
@@ -426,7 +413,7 @@ int advertise(char *array) {
 
 //should be public
 //*
-struct nb_object* scan(struct nb_object *nb_object) {
+struct nb_object* scan(struct nb_object *nb_list) {
 //-----------------------------------------SCAN---------------------------
 	
 	int err, opt, dd, dev_id;
@@ -448,7 +435,7 @@ struct nb_object* scan(struct nb_object *nb_object) {
 			}
 	printf("hardcoded %s\n", address_ascii);
 	printf("%c\n", address_ascii[17]);
-	printf("xd\n");
+	//~ printf("xd\n");
 	
 	dev_id = hci_get_route(NULL);
 
@@ -469,7 +456,9 @@ struct nb_object* scan(struct nb_object *nb_object) {
 
 	printf("LE Scan ...\n");
 
-	nb_object = print_advertising_devices(dd, filter_type, nb_object);
+	printf("%d\n", &nb_list);
+	nb_list = print_advertising_devices(dd, filter_type, nb_list);
+	printf("%d\n", &nb_list);
 	
 	err = hci_le_set_scan_enable(dd, 0x00, filter_dup, 10000);
 	if (err < 0) {
@@ -478,16 +467,17 @@ struct nb_object* scan(struct nb_object *nb_object) {
 	}
 
 	hci_close_dev(dd);
-	return nb_object;
+	printf("try to return from scan\n");
+	return nb_list;
 }
 
-void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
+void add_to_array(char (*arr)[18], struct nb_object *nb_list, int *counter){
 	for(int i = 0; i < *counter; i++){
-		if(0 == strcmp(arr[i], nb_object->nb_bdaddr)){
+		if(0 == strcmp(arr[i], nb_list->nb_bdaddr)){
 			return;
 		}
 	}
-	strcpy(arr[*counter], nb_object->nb_bdaddr);
+	strcpy(arr[*counter], nb_list->nb_bdaddr);
 	*counter++;
 }
 
@@ -505,13 +495,13 @@ struct nb_object* scan_adv(){
 	int counter = 0;
 	int current = 0;
 	
-	struct nb_object *nb_object = NULL;
+	struct nb_object *nb_list = NULL;
 
 	while (1) {
 		
 		char neighbour_1 [] = "";
 		
-		if ((nb_object != NULL)) {
+		if ((nb_list != NULL)) {
 			printf("this is being advertised %s\n", arr[current]);
 			advertise(arr[current]);
 			current++;
@@ -522,10 +512,10 @@ struct nb_object* scan_adv(){
 			advertise(neighbour_1);
 		}
 	
-		nb_object = scan(nb_object);
+		nb_list = scan(nb_list);
 		
-		ll_foreach(nb_object, it){
-			add_to_array(arr, nb_object, &counter);
+		ll_foreach(nb_list, it){
+			add_to_array(arr, nb_list, &counter);
 		}
 		
 		if (time(0) - start >= 20) {
@@ -534,7 +524,7 @@ struct nb_object* scan_adv(){
 
 	}
 	
-	ll_foreach(nb_object, it){
+	ll_foreach(nb_list, it){
 		printf("%s\n", it->nb_bdaddr);
 		printf("%c\n", it->de);
 	}
@@ -557,7 +547,7 @@ struct nb_object* scan_adv(){
 	}
 	*/
 	
-	return nb_object;
+	return nb_list;
 }
 
 /*
