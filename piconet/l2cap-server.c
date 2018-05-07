@@ -142,7 +142,7 @@ int main(int argc, char *argv[]) {
 					printf("Write your message to: %s \n", arr[j]);
 					memset(buf_input, 0, sizeof(buf_input));
 					fgets(buf_input, sizeof(buf_input), stdin);
-					write(connections[j], buf_input, strlen(buf_input));
+					write(connections[j], buf_input, strlen(buf_input) - 1);
 				}
 			}
 			
@@ -156,9 +156,6 @@ int main(int argc, char *argv[]) {
 	} else {
 		bool global_message = false;
 		while(1) {
-			red_off();
-			blue_off();
-			green_on();
 			for(int i = 0; i < NUM_OF_ENTRIES; i++){
 				memset(buf, 0, sizeof(buf));
 				bytes_read = read(connections[i], buf, sizeof(buf));				//Non blocking read from all clients
@@ -166,6 +163,7 @@ int main(int argc, char *argv[]) {
 					green_off();
 					red_on();
 					blue_on();
+					delay(500);
 					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
 					strtok(buf, "\n");
 					global_message = true;
@@ -186,11 +184,14 @@ int main(int argc, char *argv[]) {
 							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						} 
 					}
+					red_off();
+					blue_off();
+					green_on();
 					if(global_message == true){
 						memset(temp, 0, sizeof(temp));
 						strcat(temp, arr[i]);
 						strcat(temp, ": ");
-						strcat(temp, buf);
+						strcat(temp, buf);	
 						for (int j = 0; j < NUM_OF_ENTRIES; j++) {	
 							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						}

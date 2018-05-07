@@ -82,8 +82,8 @@ int main(int argc, char **argv)
 					if (0 < bytes_read) {
 						printf("%s\n", buf);			
 					}
-					char *point = strstr(buf, "toggleLED");
-					if(0 == strcmp("toggleLED", point)) {											//Potentially toggle the LED
+					//char *point = strstr(buf, "toggleLED");
+					if(0 == strcmp("toggleLED", buf)) {											//Potentially toggle the LED
 						toggle_led();
 					}
 					delay(100);
