@@ -85,8 +85,8 @@ int main(int argc, char **argv)
 						printf("%s\n", buf);			
 					}
 					strcpy(buftemp, buf);
-					char *point = strstr(buftemp, "toggleLED");
-					if(0 == strcmp("toggleLED", point)) {							//Potentially toggle the LED
+					char *point = strstr(buftemp, "toggleLED\n");
+					if(strstr(buf, "toggleLED\n")!=NULL) {                                    //Potentially toggle the LED
 						toggle_led();
 					}
 					delay(100);
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 		while(1) {
 			memset(buf_input, 0, sizeof(buf_input));						// Send messages to the server
 			fgets(buf_input, sizeof(buf_input), stdin);
-			write(connection_fd, buf_input, strlen(buf_input)-1);
+			write(connection_fd, buf_input, strlen(buf_input));
 		}
 	}
 }

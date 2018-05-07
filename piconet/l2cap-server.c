@@ -142,13 +142,13 @@ int main(int argc, char *argv[]) {
 					printf("Write your message to: %s \n", arr[j]);
 					memset(buf_input, 0, sizeof(buf_input));
 					fgets(buf_input, sizeof(buf_input), stdin);
-					write(connections[j], buf_input, strlen(buf_input) - 1);
+					write(connections[j], buf_input, strlen(buf_input));
 				}
 			}
 			
 			if (single_message == false) {
 				for (int i = 0; i < NUM_OF_ENTRIES; i++) {									// 8 is the size of the hard coded array with BT addresses
-					write(connections[i], buf_input, strlen(buf_input) - 1);		// Send a message to all clients
+					write(connections[i], buf_input, strlen(buf_input) ;		// Send a message to all clients
 				}
 			}
 			single_message = false;
@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
 							strcat(temp, arr[i]);
 							strcat(temp, ": ");
 							strcat(temp, buf);
-							write(connections[j], temp, strlen(temp) - 1);				// Send the message to the specific client
+							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						} 
 					}
 					red_off();
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
 						strcat(temp, ": ");
 						strcat(temp, buf);	
 						for (int j = 0; j < NUM_OF_ENTRIES; j++) {	
-							write(connections[j], temp, strlen(temp) - 1);				// Send the message to the specific client
+							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						}
 					}
 					global_message = false;
