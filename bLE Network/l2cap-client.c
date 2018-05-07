@@ -22,10 +22,11 @@
   it to the first available physical bluetooth adapter on the chip. 
   After, it also sets up configurations for the destination address. 
   It then attemps to connect to the destination address specified. 
-  It can then read and write data in the connection with the server. 
+  It can then read and write data in the connection with the server.
+  This node will act as a slave. 
   **/
 typedef enum {false, true} bool;
-bool connection_check = true;
+bool g_connection_check = true;
 
 int main(int argc, char **argv)
 {
@@ -41,7 +42,6 @@ int main(int argc, char **argv)
     char buf[1024] = { 0 };
     char buf_input[1024] = { 0 };
     pid_t childpid;
-    char dest[18] = "B8:27:EB:51:32:99"; //Pi3
     
     struct timeval tv;						//Allocate timeout for read() in socket options
 	tv.tv_sec = 0;
@@ -72,8 +72,8 @@ int main(int argc, char **argv)
 	fprintf(stderr, "accepted connection from %s\n", buf);
 	
     
-    if ((childpid = fork()) == 0) {
-		if ((childpid = fork()) == 0) {
+    if (0 == (childpid = fork())) {
+		if (0 == (childpid = fork())) {
 			while(1) {
 				if(0 < connection_fd) {																	
 					memset(buf, 0, sizeof(buf));			
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 			pinMode (2, INPUT);													// Sets button as an input
 			int prev_button = LOW;												// Last state of the pull-up circuit
 			while (1) {
-				if(connection_check == false) exit(0);							// If connection to the client was closed, terminate
+				if(g_connection_check == false) exit(0);							// If connection to the client was closed, terminate
 				if(prev_button == HIGH && digitalRead(2) == LOW) {				// A falling edge
 					prev_button = LOW;
 					char reply[] = "button pressed\n";

@@ -1,5 +1,5 @@
-#ifndef INPUTPARSER_H_
-#define INPUTPARSER_H_
+#ifndef INPUT_PROCESSING_H
+#define INPUT_PROCESSING_H
 
 void toggle_led(char buf[]);
 

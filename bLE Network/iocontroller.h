@@ -1,5 +1,5 @@
-#ifndef IOCONTROLLER_H_
-#define IOCONTROLLER_H_
+#ifndef IOCONTROLLER_H
+#define IOCONTROLLER_H
 
 void turn_on();
 void turn_off();

@@ -34,13 +34,14 @@ typedef enum {false, true} bool;
  Takes in an array of bluetooth addresses, which are slaves to
  connect to. Creates a new socket for each connection. Returns a
  connection socket for each connection.
+ This node will act as a master for all these connections.
 **/
 int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 rem_addr){
 	
-	int status;
-	int connection_socket;
-	int bind_status;
-	int bytes_read;
+	int status = 0;
+	int connection_socket = 0;
+	int bind_status = 0;
+	int bytes_read = 0;
 	
 	struct timeval tv;												//Timeout for socket options for read() to be nonblocking
 	tv.tv_sec = 0;
@@ -85,7 +86,7 @@ int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 r
 int main(int argc, char *argv[]) {
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
     struct sockaddr_l2 rem_addr = {0};												// Remote bluetooth address	
-    int bytes_read;
+    int bytes_read = 0;
     int connections[8];
     char buf[1024] = {0};
     char buf_input[1024] = {0};																// Buffer for reading data	
@@ -117,7 +118,7 @@ int main(int argc, char *argv[]) {
 		connections[i] = socket_creator(arr[i], loc_addr, rem_addr);
 	}
 	
-	if ((childpid = fork()) == 0) {										// Fork for reading and writing to the clients
+	if (0 == (childpid = fork())) {										// Fork for reading and writing to the clients
 		while(1) {
 			printf(BOLD KCYN "Type in the BT address or the message to every connection: \n" UNBOLD KNRM);
 			memset(buf_input, 0, sizeof(buf_input));					// Empty the buffer
@@ -125,7 +126,7 @@ int main(int argc, char *argv[]) {
 			strtok(buf_input, "\n");
 
 			for (int j = 0; j < 8; j++) {								// Check if message is for a specific client
-				if (strcmp(buf_input, arr[j]) == 0) {
+				if (0 == strcmp(buf_input, arr[j])) {
 					single_message = true;
 					printf("Write your message to: %s \n", arr[j]);
 					memset(buf_input, 0, sizeof(buf_input));
@@ -142,7 +143,7 @@ int main(int argc, char *argv[]) {
 			single_message = false;
 		}
 	} else {
-		bool jankyaf = false;
+		bool global_message = false;
 		while(1) {
 			for(int i = 0; i < 8; i++){
 				memset(buf, 0, sizeof(buf));
@@ -150,18 +151,17 @@ int main(int argc, char *argv[]) {
 				if(0 < bytes_read){
 					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
 					strtok(buf, "\n");
-					jankyaf = true;
+					global_message = true;
 					for (int j = 0; j < 8; j++) {			
-						if (strcmp(buf, arr[j]) == 0) {								// Check if message is for a specific client
+						if (0 == strcmp(buf, arr[j])) {								// Check if message is for a specific client
 							printf("Writing to: %s \n", arr[j]);
-							jankyaf = false;
+							global_message = false;
 							while(1){
 								memset(buf, 0, sizeof(buf));
 								bytes_read = read(connections[i], buf, sizeof(buf));
 								delay(100);
-								if(0 < bytes_read)break;
+								if(0 < bytes_read) break;
 							}
-							
 							memset(temp, 0, sizeof(temp));
 							strcat(temp, arr[i]);
 							strcat(temp, ": ");
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
 							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						} 
 					}
-					if(jankyaf==true){
+					if(global_message == true){
 						memset(temp, 0, sizeof(temp));
 						strcat(temp, arr[i]);
 						strcat(temp, ": ");
@@ -177,10 +177,8 @@ int main(int argc, char *argv[]) {
 						for (int j = 0; j < 8; j++) {	
 							write(connections[j], temp, strlen(temp));				// Send the message to the specific client
 						}
-						
-					
 					}
-					jankyaf=false;
+					global_message = false;
 				}
 			}
 		}
