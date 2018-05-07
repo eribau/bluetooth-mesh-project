@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 					if (0 < bytes_read) {
 						printf("%s\n", buf);			
 					}
-					buftemp = buf;
+					strcpy(buftemp, buf);
 					char *point = strstr(buftemp, "toggleLED\n");
 					printf("hejs%s\n", point);
 					if(0 == strcmp("toggleLED\n", point)) {							//Potentially toggle the LED
