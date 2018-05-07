@@ -1,7 +1,3 @@
-/*
-	Code based on the https://github.com/mafintosh/echo-servers.c/blob/master/tcp-echo-server.c
-	Open license
-*/
 #include <stdio.h>														 
 #include <stdlib.h>														
 #include <sys/socket.h>
@@ -12,6 +8,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+
 #include "iocontroller.h"												// Responsible for GPIO
 #include "inputprocessing.h"											// Responsible for processing user's inputs
 #include "l2cap-server.h"												// l2cap bluetooth low energy server
@@ -20,9 +17,9 @@
 #define on_error(...) { fprintf(stderr, __VA_ARGS__); fflush(stderr); exit(1); }
 
 void delay(int);
-static int *global_variable;
-bool connection_check = false;
-int ble_client;
+static int *g_global_memory;
+bool g_connection_check = false;
+int g_ble_client;
 
 /**
  TCP RPi server that works as a gateway between a TCP client
@@ -35,13 +32,13 @@ int ble_client;
  PORTNUMBER is the portnumber that the server has opened a socket at. 
 **/
 int main (int argc, char *argv[]) {
-    global_variable = mmap(NULL, sizeof *global_variable, PROT_READ | 			// Creating shareable memory for all of the child processes
+    g_global_memory = mmap(NULL, sizeof *g_global_memory, PROT_READ | 			// Creating shareable memory for all of the child processes
 						PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);			
 
-    *global_variable = 1;
+    *g_global_memory = 1;
     pid_t childpid;														
 
-    ble_client = ble_server();											// ble_server (l2cap-server.c)
+    g_ble_client = ble_server();											// ble_server (l2cap-server.c)
 	
 
     if (2 > argc) on_error("Usage: %s [port]\n", argv[0]);				
@@ -77,7 +74,7 @@ int main (int argc, char *argv[]) {
         client_fd = accept(server_fd, (struct sockaddr *) &client, 		// This is a blocking line, waits until a socket is accepted
 											&client_len); 
         if (0 > client_fd) on_error("Could not establish new connection\n");
-        connection_check = true;
+        g_connection_check = true;
 
         if (0 == (childpid = fork())) {									// Fork, one process handles communication with pc terminal, the other gets to be a buttonlistener. 
             while (1) {
@@ -93,9 +90,9 @@ int main (int argc, char *argv[]) {
                 err = send(client_fd, buf, read, 0);					// Echoing the message
                 if (0 > err) on_error("Client write failed\n");
 
-                printf("ble_client : %d\n", ble_client);
+                printf("g_ble_client : %d\n", g_ble_client);
                 printf("buffer: %s\n", buf);
-                write(ble_client, buf, read);
+                write(g_ble_client, buf, read);
                 char message[] = "Server's response\n";					// Sending a static response
                 err = send(client_fd, message, strlen(message), 0);
                 if (0 > err) on_error("Client write failed\n");
@@ -105,19 +102,19 @@ int main (int argc, char *argv[]) {
             if (0 == (childpid = fork())) {								// Fork, one process listens to messages from pi2, the other one listens to messages from button.
                 char *pimessage;
                 while(1) {
-					if(false == connection_check) exit(1);
-                    pimessage = ble_read(ble_client);					// ble_read (l2cap-server) 
-                    printf("Pi2 Button Pressed: %s\n", pimessage);
+					if(false == g_connection_check) exit(1);
+						pimessage = ble_read(g_ble_client);					// ble_read (l2cap-server) 
+						printf("Pi2 Button Pressed: %s\n", pimessage);
                     char message[] = "Pi2 says hi 	\n";				// Sending a static response
                     send(client_fd, message, strlen(message), 0);
                     free(pimessage);
                 }
             } else{
-            button(client_fd);											// Calls the button (iocontroller) method for turning lights on/off
+				button(client_fd);											// Calls the button (iocontroller) method for turning lights on/off
 			}
 
         }
-        connection_check = false;
+        g_connection_check = false;
     }
 
     return 0;

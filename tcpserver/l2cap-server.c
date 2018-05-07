@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
@@ -20,12 +21,12 @@ int ble_server(){
     struct sockaddr_l2 loc_addr = { 0 };												// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };												// Remote bluetooth address
     char buf[1024] = { 0 };																// Buffer for reading data
-    int connection_socket;																
-    int bytes_read;
-    int device_id;
-    int dd;//find better name?
+    int connection_socket = 0;																
+    int bytes_read = 0;
+    int device_id = 0;
+    int dd = 0;
     socklen_t opt = sizeof(rem_addr);
-    int ble_client;
+    int ble_client = 0;
     
     device_id = hci_get_route(NULL);
     dd = hci_open_dev(device_id);										
