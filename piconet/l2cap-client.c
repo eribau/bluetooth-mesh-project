@@ -77,7 +77,8 @@ int main(int argc, char **argv)
 		if (0 == (childpid = fork())) {
 			while(1) {
 				if(0 < connection_fd) {																	
-					memset(buf, 0, sizeof(buf));			
+					memset(buf, 0, sizeof(buf));	
+					printf("debug\n");		
 					bytes_read = read(connection_fd, buf, sizeof(buf));							//Read a message from the server
 					//strtok(buf, "\n");
 					if (0 < bytes_read) {
