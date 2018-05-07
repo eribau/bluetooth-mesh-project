@@ -219,9 +219,9 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_flags = SA_NOCLDSTOP;
 	sa.sa_handler = sigint_handler;
-	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGINT, &sa,
+	 NULL);
 	setsockopt(dd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);	
-
 	while (1) {
 		evt_le_meta_event *meta;
 		le_advertising_info *info;
@@ -232,15 +232,18 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 		while ((len = read(dd, buf, sizeof(buf))) < 0) {
 			if (errno == EINTR && signal_received == SIGINT) {
 				len = 0;
+				printf("first goto\n");
 				goto done;
 			}
 
 			if (errno == EAGAIN || errno == EINTR)
 				continue;
+				printf("sec goto\n");
 			goto done;
 		}
 
 		if (time(0) - start >= 1) {
+			printf("third goto\n");
 			goto done;
 		}
 
@@ -249,9 +252,10 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 
 		meta = (void *) ptr;
 
-		if (meta->subevent != 0x02)
+		if (meta->subevent != 0x02){
+			printf("fourth goto\n");
 			goto done;
-
+	}
 		/* Ignoring multiple reports */
 		info = (le_advertising_info *) (meta->data + 1);
 		if (check_report_filter(filter_type, info)) {
@@ -330,8 +334,9 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 	}
 	
 done:
+	printf("now in done:");
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
-
+	
 	ll_foreach(nb_object, it) {
 		printf("My_Neighbour: %s", it->nb_bdaddr);
 		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
@@ -439,7 +444,7 @@ struct nb_object* scan(struct nb_object *nb_object) {
 	char address_ascii [18] = {0};
 	for (int i = 0; i < 17; i++) {
 				address_ascii[i] = address_dec[i];
-				printf("hardcoded %c\n", address_ascii[i]);
+				//~ printf("hardcoded %c\n", address_ascii[i]);
 			}
 	printf("hardcoded %s\n", address_ascii);
 	printf("%c\n", address_ascii[17]);
