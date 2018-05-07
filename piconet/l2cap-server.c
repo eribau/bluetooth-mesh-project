@@ -88,6 +88,7 @@ int socket_creator(char arr[], struct sockaddr_l2 loc_addr, struct sockaddr_l2 r
 int main(int argc, char *argv[]) {
 	init_gpio();
 	red_on();
+	delay(1000);
     struct sockaddr_l2 loc_addr = {0};												// Local bluetooth address
     struct sockaddr_l2 rem_addr = {0};												// Remote bluetooth address	
     int bytes_read = 0;
