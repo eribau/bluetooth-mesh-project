@@ -85,8 +85,8 @@ int main(int argc, char **argv)
 						printf("%s\n", buf);			
 					}
 					strcpy(buftemp, buf);
-					char *point = strstr(buftemp, "toggleLED\n");
-					if(0 == strcmp("toggleLED\n", point)) {							//Potentially toggle the LED
+					char *point = strstr(buftemp, "toggleLED");
+					if(0 == strcmp("toggleLED", point)) {							//Potentially toggle the LED
 						toggle_led();
 					}
 					delay(100);
