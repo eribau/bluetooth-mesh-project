@@ -91,9 +91,14 @@ int main(int argc, char **argv) {
 					bytes_read = read(connection_fd, buf, sizeof(buf));							//Read a message from the server
 					//strtok(buf, "\n");
 					if (0 < bytes_read) {
-						printf("%s\n", buf);			
+						printf("%s\n", buf);	
+						led_off();		
+						blue_on();
+						red_on();
+						delay(10);
+						led_off();
+						green_on();
 					}
-					
 					if(strstr(buf, "toggleLED")!=NULL) {                                    //Potentially toggle the LED
 						//toggle_led();
 					}

@@ -12,5 +12,6 @@ void green_on();
 void green_off();
 void blue_on();
 void blue_off();
+void led_off();
 
 #endif

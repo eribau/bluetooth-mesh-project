@@ -30,6 +30,12 @@ void init_gpio(){
 	digitalWrite(GREEN, LOW);
 }
 
+void led_off(){
+	digitalWrite(RED, LOW);
+	digitalWrite(BLUE, LOW);
+	digitalWrite(GREEN, LOW);
+}
+
 /** Sets io pin 11 to high **/
 void red_on() {
     printf("Turning on led");
