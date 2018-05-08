@@ -26,10 +26,12 @@
   This node will act as a slave. 
   **/
 typedef enum {false, true} bool;
-bool g_connection_check = true;
+extern bool g_connection_check;
+
 
 int main(int argc, char **argv)
 {
+	g_connection_check = true;
     struct sockaddr_l2 loc_addr = { 0 }; 													// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };													// Remote bluetooth address
     socklen_t opt = sizeof(rem_addr);
@@ -76,6 +78,15 @@ int main(int argc, char **argv)
     if (0 == (childpid = fork())) {
 		if (0 == (childpid = fork())) {
 			while(1) {
+				red_on();
+				delay(500);
+				red_off();
+				blue_on();
+				delay(500);
+				blue_off();
+				green_on();
+				delay(500);
+				green_off();
 				if(0 < connection_fd) {																	
 					memset(buf, 0, sizeof(buf));		
 					bytes_read = read(connection_fd, buf, sizeof(buf));							//Read a message from the server

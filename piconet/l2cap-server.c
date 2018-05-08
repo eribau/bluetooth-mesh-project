@@ -13,7 +13,7 @@
 #include <bluetooth/l2cap.h>
 #include <bluetooth/hci.h>
 #include <bluetooth/hci_lib.h>
-#include "iocontroller_rgb.h"
+#include "iocontroller.h"
 
 #define ATT_CID 4 																		// For l2cap socket to use BLE
 
@@ -31,6 +31,8 @@
 
 void delay(unsigned int);
 typedef enum {false, true} bool;
+
+extern bool g_connection_check;
 
 /** 
  Takes in an array of bluetooth addresses, which are slaves to
@@ -149,7 +151,7 @@ int main(int argc, char *argv[]) {
 			
 			if (single_message == false) {
 				for (int i = 0; i < NUM_OF_ENTRIES; i++) {									// 8 is the size of the hard coded array with BT addresses
-					write(connections[i], buf_input, strlen(buf_input) ;		// Send a message to all clients
+					write(connections[i], buf_input, strlen(buf_input));		// Send a message to all clients
 				}
 			}
 			single_message = false;
