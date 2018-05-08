@@ -30,7 +30,9 @@ extern bool g_connection_check;
 
 
 int main(int argc, char **argv) {
-	init_gpio();
+	blue_off();
+	red_off();
+	green_off();
 	delay(100);
 	red_on();
 	delay(1000);
