@@ -40,10 +40,10 @@
 
 
 
-// Functions for advertise
-
-struct hci_request ble_hci_request(uint16_t ocf, int clen, void * status, void * cparam)
-{
+/**
+ This function sets up hci flags for BLE 
+**/
+struct hci_request ble_hci_request(uint16_t ocf, int clen, void * status, void * cparam) {
 	struct hci_request rq;
 	memset(&rq, 0, sizeof(rq));
 	rq.ogf = OGF_LE_CTL;
@@ -55,39 +55,43 @@ struct hci_request ble_hci_request(uint16_t ocf, int clen, void * status, void *
 	return rq;
 }
 
-le_set_advertising_data_cp ble_hci_params_for_set_adv_data(char * name, char * btaddr)
-{
+/**
+ This function sets up the advertisement data 
+**/
+le_set_advertising_data_cp ble_hci_params_for_set_adv_data(char * name, char * btaddr) {
 	int name_len = strlen(name);
 
 	le_set_advertising_data_cp adv_data_cp;
 	memset(&adv_data_cp, 0, sizeof(adv_data_cp));
 
 	adv_data_cp.data[0] = 0x02; // Length.
-	adv_data_cp.data[1] = 0x01; // Flags field.
+	adv_data_cp.data[1] = 0x01; // Flags
 	adv_data_cp.data[2] = 0x01; // LE Limited Discoverable Flag set
 
-	adv_data_cp.data[3] = name_len + 1; // Length.
+	adv_data_cp.data[3] = name_len + 1; // Length of name.
 	adv_data_cp.data[4] = 0x09; // Name field.
-	memcpy(adv_data_cp.data + 5, name, name_len);
-	memcpy(adv_data_cp.data + 5 + name_len, btaddr, strlen(btaddr));
+	memcpy(adv_data_cp.data + 5, name, name_len); // Name
+	memcpy(adv_data_cp.data + 5 + name_len, btaddr, strlen(btaddr)); // Data
 
 	adv_data_cp.length = strlen(adv_data_cp.data);
 
 	return adv_data_cp;
 }
 
-// Functions for scan from hcitool.c 
-
 static volatile int signal_received = 0;
 
-static void sigint_handler(int sig)
-{
+/**
+Signal interrupt function from hcitool.c 
+**/
+static void sigint_handler(int sig) {
 	signal_received = sig;
 }
 
+/**
+Parse name function from hcitool.c 
+**/
 static void eir_parse_name(uint8_t *eir, size_t eir_len,
-						char *buf, size_t buf_len)
-{
+						char *buf, size_t buf_len) {
 	size_t offset;
 
 	offset = 0;
@@ -121,8 +125,10 @@ failed:
 	snprintf(buf, buf_len, "(unknown)");
 }
 
-static int read_flags(uint8_t *flags, const uint8_t *data, size_t size)
-{
+/**
+Flags function from hcitool.c 
+**/
+static int read_flags(uint8_t *flags, const uint8_t *data, size_t size) {
 	size_t offset;
 
 	if (!flags || !data)
@@ -153,6 +159,9 @@ static int read_flags(uint8_t *flags, const uint8_t *data, size_t size)
 	return -ENOENT;
 }
 
+/**
+Removing duplicates function from hcitool.c 
+**/
 static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 {
 	uint8_t flags;
@@ -181,10 +190,14 @@ static int check_report_filter(uint8_t procedure, le_advertising_info *info)
 	return 0;
 }
 
+/**
+Detecting advertising devices and adding them to our struct function, 
+modified from hcitool.c 
+**/
 struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct nb_object *nb_object) {
 	unsigned char buf[HCI_MAX_EVENT_SIZE], *ptr;
-	//struct nb_object *nb_object = NULL;
-	struct hci_filter nf, of;
+	struct hci_filter nf;
+	struct hci_filter of;
 	struct sigaction sa;
 	socklen_t olen;
 	int len;
@@ -195,8 +208,6 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 	char arr [100][18];
 	char addr_table[1000][18];
 	int addr_counter = 0;
-	
-	
 	
 	olen = sizeof(of);
 	if (getsockopt(dd, SOL_HCI, HCI_FILTER, &of, &olen) < 0) {
@@ -210,7 +221,7 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 
 	if (setsockopt(dd, SOL_HCI, HCI_FILTER, &nf, sizeof(nf)) < 0) {
 		printf("Could not set socket options\n");
-		//return -1;
+		exit(-1);
 	}
 
 	memset(&sa, 0, sizeof(sa));
@@ -225,7 +236,6 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 		char addr[18];
 		int addr_exists;
 	
-		
 		while ((len = read(dd, buf, sizeof(buf))) < 0) {
 			if (errno == EINTR && signal_received == SIGINT) {
 				len = 0;
@@ -249,9 +259,9 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 		if (meta->subevent != 0x02)
 			goto done;
 
-		/* Ignoring multiple reports */
+		
 		info = (le_advertising_info *) (meta->data + 1);
-		if (check_report_filter(filter_type, info)) {
+		if (check_report_filter(filter_type, info)) {					// Ignoring multiple reports
 			char name[30];
 
 			memset(name, 0, sizeof(name));
@@ -259,20 +269,14 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 			ba2str(&info->bdaddr, addr);
 			eir_parse_name(info->data, info->length,
 							name, sizeof(name) - 1);
-			//uint8_t *dat = info->data;
 			char rssi;
-			//printf("%d\n", rssi);
 			
 			if (strcmp("Pi", name) == 0) {
 				
 				char sec_addr[31];
-				printf("DEBUG ");
 				for (int i = 7; i < 24; i++) {
 					sec_addr[i-7] = info->data[i];
-					//printf("%c", sec_addr[i-7]);
-					//printf("%d ", rssi); 
 				}
-				//printf("\n");
 				if(sec_addr[2] == ':' && sec_addr[5] == ':'){
 					nb_object = ll_new(nb_object);
 					strcpy(nb_object->nb_bdaddr, addr);
@@ -281,29 +285,13 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 					nb_object = ll_new(nb_object);
 					strcpy(nb_object->nb_bdaddr, addr);
 				}
-				
-				
 			}
-		
 			printf("%s %s ", addr, name);
 			for (int i = 0; i < info->length; i++) {
 				rssi = info->data[i];
 				printf("%d ", rssi); 
 			}
 			printf("\n");
-	
-			//printf("%s %d %s\n", addr, rssi, name);
-			/*
-			addr_exists = 0; 
-			for (int i = 0; i < sizeof(addr_table)/sizeof(addr_table[0]); i++) {
-				if (strcmp(addr, addr_table[i]) == 0) {
-					addr_exists = 1;
-				}
-			}
-			if (addr_exists == 0) {strcpy(addr_table[addr_counter], addr);
-				list_node_t *a = list_node_new(addr_table[addr_counter]);
-				list_rpush(neighbours, a);
-			}*/
 			
 			addr_counter++;
 			if (addr_counter == (sizeof(addr_table)/sizeof(addr_table[0]) - 1)) addr_counter = 0;
@@ -313,11 +301,9 @@ struct nb_object* print_advertising_devices(int dd, uint8_t filter_type, struct 
 done:
 	setsockopt(dd, SOL_HCI, HCI_FILTER, &of, sizeof(of));
 
-	ll_foreach(nb_object, it) {
+	ll_foreach(nb_object, it) {											// ll for each iterates through the linked list
 		printf("My_Neighbour: %s", it->nb_bdaddr);
-		//printf("GOOD PRINT 2 %s\n", nan->addr_data);
 		printf(" Neighbours_Neighbour: %s\n", it->nb_nb_bdaddr);
-		
 	}
 	
 	if (len < 0) exit(-1);
@@ -325,8 +311,11 @@ done:
 	return nb_object;
 }
 
-int advertise(char *array) {
-	//------------------------ADVERTISE------------------------		
+
+/**
+Function to advertise with an input as the advertisement message 
+**/
+int advertise(char *array) {	
 	int ret, status;
 
 	const int device = hci_open_dev(hci_get_route(NULL));
@@ -335,9 +324,7 @@ int advertise(char *array) {
 		return 0; 
 	}
 
-	// Set BLE advertisement parameters.
-	
-	le_set_advertising_parameters_cp adv_params_cp;
+	le_set_advertising_parameters_cp adv_params_cp;							// Set BLE advertisement parameters.
 	memset(&adv_params_cp, 0, sizeof(adv_params_cp));
 	adv_params_cp.min_interval = htobs(0x0800);
 	adv_params_cp.max_interval = htobs(0x0800);
@@ -354,10 +341,7 @@ int advertise(char *array) {
 		return 0;
 	}
 	
-	// Set BLE advertisement data.
-	//struct neighbour *next = ll_next(neighbours);
-	
-	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", array);
+	le_set_advertising_data_cp adv_data_cp = ble_hci_params_for_set_adv_data("Pi", array);		// Set BLE advertisement data.
 	
 	struct hci_request adv_data_rq = ble_hci_request(
 		OCF_LE_SET_ADVERTISING_DATA,
@@ -370,9 +354,7 @@ int advertise(char *array) {
 		return 0;
 	}
 
-	// Enable advertising.
-
-	le_set_advertise_enable_cp advertise_cp;
+	le_set_advertise_enable_cp advertise_cp;							// Enable advertising.
 	memset(&advertise_cp, 0, sizeof(advertise_cp));
 	advertise_cp.enable = 0x01;
 
@@ -381,7 +363,7 @@ int advertise(char *array) {
 		LE_SET_ADVERTISE_ENABLE_CP_SIZE, &status, &advertise_cp);
 
 	ret = hci_send_req(device, &enable_adv_rq, 1000);
-	if ( ret < 0 ) {
+	if (ret < 0) {
 		hci_close_dev(device);
 		perror("Failed to enable advertising.");
 		return 0;
@@ -392,9 +374,10 @@ int advertise(char *array) {
 	return 0;
 }
 
+/**
+Function that scans for advertising devices 
+**/
 struct nb_object* scan(struct nb_object *nb_object) {
-//-----------------------------------------SCAN---------------------------
-	
 	int err, opt, dd, dev_id;
 	uint8_t own_type = LE_PUBLIC_ADDRESS;
 	uint8_t scan_type = 0x01;
@@ -403,18 +386,6 @@ struct nb_object* scan(struct nb_object *nb_object) {
 	uint16_t interval = htobs(0x0010);
 	uint16_t window = htobs(0x0010);
 	uint8_t filter_dup = 0x01;
-	
-	
-	// Might break comparisons because of the size/actual size
-	int address_dec [] = {66, 56, 58, 50, 55, 58, 69, 66, 58, 52, 70, 58, 68, 54, 58, 53, 54};
-	char address_ascii [18] = {0};
-	for (int i = 0; i < 17; i++) {
-				address_ascii[i] = address_dec[i];
-				printf("hardcoded %c\n", address_ascii[i]);
-			}
-	printf("hardcoded %s\n", address_ascii);
-	printf("%c\n", address_ascii[17]);
-	printf("xd\n");
 	
 	dev_id = hci_get_route(NULL);
 
@@ -447,6 +418,9 @@ struct nb_object* scan(struct nb_object *nb_object) {
 	return nb_object;
 }
 
+/**
+Function that adds to an array from a linked list struct 
+**/
 void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
 	for(int i = 0; i < *counter; i++){
 		if(0 == strcmp(arr[i], nb_object->nb_bdaddr)){
@@ -457,9 +431,14 @@ void add_to_array(char (*arr)[18], struct nb_object *nb_object, int *counter){
 	*counter++;
 }
 
+/**
+Main function that advertises own bluetooth address with no data at first, 
+then scans for neighbours for 20 seconds. It then refreshes its advertisement 
+data to one of its neighbours, then scans again for more neighbours, 
+and so on in a loop. 
+It then returns all its neighbours and their neighbours neighbours in a list. 
+**/
 int main(int argc, char *argv[]) {
-	
-	//strcpy(neighbours->addr_bt, "0"); 
 	time_t start = time(0);
 	
 	char arr[10][18];
@@ -489,36 +468,23 @@ int main(int argc, char *argv[]) {
 			add_to_array(arr, nb_object, &counter);
 		}
 		
-		if (time(0) - start >= 5) {
+		if (time(0) - start >= 20) {
 			break;
 		}
-
 	}
 	
-	printf("hi");
 	struct nb_object *ptr[16];
-	printf("bye");
 	*ptr = fill_entries(ptr, nb_object);
 	struct nb_object *rtn = NULL;
 	rtn = rtn_nb_ptr(ptr);
 	
 	printf("%d\n", rtn->nb_bdaddr);
 	
-	printf("dab on the haters\n");
+	printf("List of neighbours: \n");
 	ll_foreach(rtn, it){
-	printf("dont dab on the haters\n");
+	printf("Neighbour and their specific neighbours\n");
 		print_nb_nb(ptr, it->nb_bdaddr);
 	}
-	
-	
-	/**
-	for(int i = 0; i < 16; i++){
-		ll_foreach(ptr[i], it){
-			printf("nb: %s, nb_nb: %s\n", it->nb_bdaddr, it->nb_nb_bdaddr);
-		}
-	}
-	**/
-	
 	
 	return 0;
 }

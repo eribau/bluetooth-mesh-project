@@ -80,16 +80,6 @@ void print_nb_nb(struct nb_object **ptr, char *nb_bdaddr){
 	}
 }
 
-
-// Remove this later
-/** Adds all entries from list_ptr and stores them without duplicates in ptr **/
-/*void fill_entries(struct nb_object **ptr, struct nb_object *list_ptr){
-  while(ll_pop(list_ptr) != NULL){
-      add_nb_nb(ptr, list_ptr->nb_bdaddr, list_ptr->nb_nb_bdaddr);
-      ll_pop(list_ptr);
-  }
-}*/
-
 /** Adds all entries from list_ptr and stores them without duplicates in ptr **/
 struct nb_object* fill_entries(struct nb_object **ptr, struct nb_object *list_ptr){
   ll_foreach(list_ptr, it){
