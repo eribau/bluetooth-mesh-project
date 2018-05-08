@@ -546,6 +546,11 @@ struct nb_object* scan_adv(){
 		print_nb_nb(ptr, it->nb_bdaddr);
 	}
 	
+	ll_foreach(rtn, it){
+		printf("%s\n", it->nb_bdaddr);
+		printf("%s\n", it->nb_nb_bdaddr);
+	}
+	
 	
 	return nb_list;
 }
