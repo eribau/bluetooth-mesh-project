@@ -29,8 +29,10 @@ typedef enum {false, true} bool;
 extern bool g_connection_check;
 
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
+	init_gpio();
+	red_on();
+	delay(1000);
 	g_connection_check = true;
     struct sockaddr_l2 loc_addr = { 0 }; 													// Local bluetooth address
     struct sockaddr_l2 rem_addr = { 0 };													// Remote bluetooth address
@@ -67,8 +69,11 @@ int main(int argc, char **argv)
 	
 	listen(connection_socket, 10);
 	
+	red_off();
+	blue_on();
 	connection_fd = accept(connection_socket, (struct sockaddr *)&rem_addr, &opt);		// Accept a connection from the server
-	
+	blue_off();
+	green_on();
 	setsockopt(connection_socket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);	// Set socket options for read() to use a timeout
 	
 	ba2str( &rem_addr.l2_bdaddr, buf );													// Print bluetooth address of the server 
@@ -78,15 +83,6 @@ int main(int argc, char **argv)
     if (0 == (childpid = fork())) {
 		if (0 == (childpid = fork())) {
 			while(1) {
-				red_on();
-				delay(500);
-				red_off();
-				blue_on();
-				delay(500);
-				blue_off();
-				green_on();
-				delay(500);
-				green_off();
 				if(0 < connection_fd) {																	
 					memset(buf, 0, sizeof(buf));		
 					bytes_read = read(connection_fd, buf, sizeof(buf));							//Read a message from the server

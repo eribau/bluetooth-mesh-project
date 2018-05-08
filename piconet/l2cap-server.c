@@ -27,7 +27,7 @@
 #define KWHT  "\x1B[97m"
 #define BOLD  "\x1B[1m"
 #define UNBOLD  "\x1B[21m"
-#define NUM_OF_ENTRIES 6
+#define NUM_OF_ENTRIES 8
 
 void delay(unsigned int);
 typedef enum {false, true} bool;
@@ -108,9 +108,9 @@ int main(int argc, char *argv[]) {
 		"B8:27:EB:4F:D6:56", 	// pi4
 		"B8:27:EB:DD:39:F9", 	// pi5
 		"B8:27:EB:52:65:92", 	// pi6
-		//"B8:27:EB:EF:F7:B8", 	// pi7
+		"B8:27:EB:EF:F7:B8", 	// pi7
 		"B8:27:EB:F4:3B:BA", 	// pi8
-		//"B8:27:EB:15:3D:99"};	// pi9		
+		"B8:27:EB:15:3D:99"};	// pi9		
 	};	
 		
     loc_addr.l2_family = AF_BLUETOOTH; 									// Setup for local (server) BLE adapter
