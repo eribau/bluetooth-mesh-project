@@ -1,0 +1,2 @@
+![alt text](https://github.com/eribau/bluetooth-mesh-project/blob/feature/scatternet/piconet/UML1.PNG)
+![alt text](https://github.com/eribau/bluetooth-mesh-project/blob/feature/scatternet/piconet/UML2.PNG)
