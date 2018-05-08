@@ -32,8 +32,8 @@ void init_gpio(){
 
 /** Sets io pin 11 to high **/
 void red_on() {
-        printf("Turning on led");
-        if (wiringPiSetup() == -1) exit (1);
+    printf("Turning on led");
+    if (wiringPiSetup() == -1) exit (1);
 	pinMode(RED, OUTPUT);
 	printf("RED On\n");
 	digitalWrite(RED, HIGH);

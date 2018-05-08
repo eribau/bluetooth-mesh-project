@@ -31,6 +31,7 @@ extern bool g_connection_check;
 
 int main(int argc, char **argv) {
 	init_gpio();
+	delay(100);
 	red_on();
 	delay(1000);
 	g_connection_check = true;
@@ -92,7 +93,7 @@ int main(int argc, char **argv) {
 					}
 					
 					if(strstr(buf, "toggleLED")!=NULL) {                                    //Potentially toggle the LED
-						toggle_led();
+						//toggle_led();
 					}
 					delay(100);
 				} else {
@@ -100,6 +101,7 @@ int main(int argc, char **argv) {
 				}
 			}
 		} else {
+			/*
 			wiringPiSetup();
 			pinMode (2, INPUT);													// Sets button as an input
 			int prev_button = LOW;												// Last state of the pull-up circuit
@@ -115,7 +117,9 @@ int main(int argc, char **argv) {
 					prev_button = HIGH;
 				}
 				delay(100);
+				
 			}
+			* */
 		}
 	} else {
 		while(1) {
