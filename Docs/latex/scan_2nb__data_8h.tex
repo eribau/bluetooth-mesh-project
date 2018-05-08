@@ -1,0 +1,82 @@
+\hypertarget{scan_2nb__data_8h}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/nb\+\_\+data.h File Reference}
+\label{scan_2nb__data_8h}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/nb\+\_\+data.\+h@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/nb\+\_\+data.\+h}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{scan_2nb__data_8h_a31612b6e9ae9cab6d5fbc05147104fce}{add\+\_\+nb}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}}, char $\ast$nb\+\_\+bdaddr, char $\ast$nb\+\_\+nb\+\_\+bdaddr)
+\item 
+void \mbox{\hyperlink{scan_2nb__data_8h_ade7332fa98c63c7b04815b5fb8d527de}{add\+\_\+nb\+\_\+nb}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}}, char $\ast$nb\+\_\+bdaddr, char $\ast$nb\+\_\+nb\+\_\+bdaddr)
+\item 
+void \mbox{\hyperlink{scan_2nb__data_8h_a803a2dde959bc9b0c6e32b250172bb10}{print\+\_\+nb}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}})
+\item 
+void \mbox{\hyperlink{scan_2nb__data_8h_a0e387771750a4bec84cea3e9d41cad7b}{print\+\_\+nb\+\_\+nb}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}}, char $\ast$nb\+\_\+bdaddr)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan_2nb__data_8h_a853f12553b6e74faf296051e6d5be473}{fill\+\_\+entries}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}}, struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$list\+\_\+ptr)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan_2nb__data_8h_aac13ddabeffffb1690bb4e8605feabe2}{rtn\+\_\+nb\+\_\+ptr}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$\mbox{\hyperlink{scatternet_2nb__data_8c_a407d5bb00cd9b8566117dbc4b2c574e9}{ptr}})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scan_2nb__data_8h_a31612b6e9ae9cab6d5fbc05147104fce}\label{scan_2nb__data_8h_a31612b6e9ae9cab6d5fbc05147104fce}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!add\+\_\+nb@{add\+\_\+nb}}
+\index{add\+\_\+nb@{add\+\_\+nb}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{add\+\_\+nb()}{add\_nb()}}
+{\footnotesize\ttfamily void add\+\_\+nb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr,  }\item[{char $\ast$}]{nb\+\_\+bdaddr,  }\item[{char $\ast$}]{nb\+\_\+nb\+\_\+bdaddr }\end{DoxyParamCaption})}
+
+Adds a LL to an entry in the array 
+
+Definition at line 23 of file nb\+\_\+data.\+c.
+
+\mbox{\Hypertarget{scan_2nb__data_8h_ade7332fa98c63c7b04815b5fb8d527de}\label{scan_2nb__data_8h_ade7332fa98c63c7b04815b5fb8d527de}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!add\+\_\+nb\+\_\+nb@{add\+\_\+nb\+\_\+nb}}
+\index{add\+\_\+nb\+\_\+nb@{add\+\_\+nb\+\_\+nb}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{add\+\_\+nb\+\_\+nb()}{add\_nb\_nb()}}
+{\footnotesize\ttfamily void add\+\_\+nb\+\_\+nb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr,  }\item[{char $\ast$}]{nb\+\_\+bdaddr,  }\item[{char $\ast$}]{nb\+\_\+nb\+\_\+bdaddr }\end{DoxyParamCaption})}
+
+Adds new nb\+\_\+nb. If nb not found it runs add\+\_\+nb and then adds nb\+\_\+nb. 
+
+Definition at line 34 of file nb\+\_\+data.\+c.
+
+\mbox{\Hypertarget{scan_2nb__data_8h_a853f12553b6e74faf296051e6d5be473}\label{scan_2nb__data_8h_a853f12553b6e74faf296051e6d5be473}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!fill\+\_\+entries@{fill\+\_\+entries}}
+\index{fill\+\_\+entries@{fill\+\_\+entries}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{fill\+\_\+entries()}{fill\_entries()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ fill\+\_\+entries (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr,  }\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{list\+\_\+ptr }\end{DoxyParamCaption})}
+
+Adds all entries from list\+\_\+ptr and stores them without duplicates in ptr
+
+Adds all entries from list\+\_\+ptr and stores them without duplicates in ptr Adds all entries from list\+\_\+ptr and stores them without duplicates in ptr 
+
+Definition at line 84 of file nb\+\_\+data.\+c.
+
+\mbox{\Hypertarget{scan_2nb__data_8h_a803a2dde959bc9b0c6e32b250172bb10}\label{scan_2nb__data_8h_a803a2dde959bc9b0c6e32b250172bb10}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!print\+\_\+nb@{print\+\_\+nb}}
+\index{print\+\_\+nb@{print\+\_\+nb}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+nb()}{print\_nb()}}
+{\footnotesize\ttfamily void print\+\_\+nb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr }\end{DoxyParamCaption})}
+
+Prints all neighbours 
+
+Definition at line 57 of file nb\+\_\+data.\+c.
+
+\mbox{\Hypertarget{scan_2nb__data_8h_a0e387771750a4bec84cea3e9d41cad7b}\label{scan_2nb__data_8h_a0e387771750a4bec84cea3e9d41cad7b}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!print\+\_\+nb\+\_\+nb@{print\+\_\+nb\+\_\+nb}}
+\index{print\+\_\+nb\+\_\+nb@{print\+\_\+nb\+\_\+nb}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+nb\+\_\+nb()}{print\_nb\_nb()}}
+{\footnotesize\ttfamily void print\+\_\+nb\+\_\+nb (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr,  }\item[{char $\ast$}]{nb\+\_\+bdaddr }\end{DoxyParamCaption})}
+
+Prints all the neigbours of nb\+\_\+bdaddr 
+
+Definition at line 73 of file nb\+\_\+data.\+c.
+
+\mbox{\Hypertarget{scan_2nb__data_8h_aac13ddabeffffb1690bb4e8605feabe2}\label{scan_2nb__data_8h_aac13ddabeffffb1690bb4e8605feabe2}} 
+\index{scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}!rtn\+\_\+nb\+\_\+ptr@{rtn\+\_\+nb\+\_\+ptr}}
+\index{rtn\+\_\+nb\+\_\+ptr@{rtn\+\_\+nb\+\_\+ptr}!scan/nb\+\_\+data.\+h@{scan/nb\+\_\+data.\+h}}
+\subsubsection{\texorpdfstring{rtn\+\_\+nb\+\_\+ptr()}{rtn\_nb\_ptr()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ rtn\+\_\+nb\+\_\+ptr (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$$\ast$}]{ptr }\end{DoxyParamCaption})}
+
+
+
+Definition at line 63 of file nb\+\_\+data.\+c.
+

@@ -1,0 +1,254 @@
+\hypertarget{piconet_2iocontroller_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/piconet/iocontroller.c File Reference}
+\label{piconet_2iocontroller_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/piconet/iocontroller.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/piconet/iocontroller.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}iocontroller.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{piconet_2iocontroller_8c_a8d23feea868a983c8c2b661e1e16972f}{R\+ED}}~0
+\item 
+\#define \mbox{\hyperlink{piconet_2iocontroller_8c_acfbc006ea433ad708fdee3e82996e721}{G\+R\+E\+EN}}~2
+\item 
+\#define \mbox{\hyperlink{piconet_2iocontroller_8c_a79d10e672abb49ad63eeaa8aaef57c38}{B\+L\+UE}}~3
+\item 
+\#define \mbox{\hyperlink{piconet_2iocontroller_8c_a5bb885982ff66a2e0a0a45a8ee9c35e2}{H\+I\+GH}}~1
+\item 
+\#define \mbox{\hyperlink{piconet_2iocontroller_8c_ab811d8c6ff3a505312d3276590444289}{L\+OW}}~0
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a2ffbeae6c737f0ed50e4614eec56ef76}{init\+\_\+gpio}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a501391b8794d0beaeaf0dea7a3bdbbb3}{led\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_ac447096f73e78c9ca4d3dcf3d44af535}{red\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_aeea8c0867d710be4e9e2a857d47ff233}{red\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a7dd8b21ee2202f02ad54693938c0de2d}{green\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a8ddcb96204b02daf4bd531c2afced761}{green\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a54c72eaa14000850155090b9ace66a5e}{blue\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_abbca1a5c63c74514660ab8e2781bcb84}{blue\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}{turn\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}{turn\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_abd8c004ce2c450c601b79f2f3d832d19}{toggle\+\_\+led}} ()
+\item 
+void \mbox{\hyperlink{piconet_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}{button}} (int client\+\_\+fd)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \mbox{\hyperlink{piconet_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}{g\+\_\+connection\+\_\+check}}
+\item 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \mbox{\hyperlink{piconet_2iocontroller_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}{g\+\_\+toggle}} = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a79d10e672abb49ad63eeaa8aaef57c38}\label{piconet_2iocontroller_8c_a79d10e672abb49ad63eeaa8aaef57c38}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!B\+L\+UE@{B\+L\+UE}}
+\index{B\+L\+UE@{B\+L\+UE}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{B\+L\+UE}{BLUE}}
+{\footnotesize\ttfamily \#define B\+L\+UE~3}
+
+
+
+Definition at line 11 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_acfbc006ea433ad708fdee3e82996e721}\label{piconet_2iocontroller_8c_acfbc006ea433ad708fdee3e82996e721}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!G\+R\+E\+EN@{G\+R\+E\+EN}}
+\index{G\+R\+E\+EN@{G\+R\+E\+EN}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{G\+R\+E\+EN}{GREEN}}
+{\footnotesize\ttfamily \#define G\+R\+E\+EN~2}
+
+
+
+Definition at line 10 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a5bb885982ff66a2e0a0a45a8ee9c35e2}\label{piconet_2iocontroller_8c_a5bb885982ff66a2e0a0a45a8ee9c35e2}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!H\+I\+GH@{H\+I\+GH}}
+\index{H\+I\+GH@{H\+I\+GH}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{H\+I\+GH}{HIGH}}
+{\footnotesize\ttfamily \#define H\+I\+GH~1}
+
+
+
+Definition at line 12 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_ab811d8c6ff3a505312d3276590444289}\label{piconet_2iocontroller_8c_ab811d8c6ff3a505312d3276590444289}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!L\+OW@{L\+OW}}
+\index{L\+OW@{L\+OW}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{L\+OW}{LOW}}
+{\footnotesize\ttfamily \#define L\+OW~0}
+
+
+
+Definition at line 13 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a8d23feea868a983c8c2b661e1e16972f}\label{piconet_2iocontroller_8c_a8d23feea868a983c8c2b661e1e16972f}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!R\+ED@{R\+ED}}
+\index{R\+ED@{R\+ED}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{R\+ED}{RED}}
+{\footnotesize\ttfamily \#define R\+ED~0}
+
+
+
+Definition at line 9 of file iocontroller.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{piconet_2iocontroller_8c_abbca1a5c63c74514660ab8e2781bcb84}\label{piconet_2iocontroller_8c_abbca1a5c63c74514660ab8e2781bcb84}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!blue\+\_\+off@{blue\+\_\+off}}
+\index{blue\+\_\+off@{blue\+\_\+off}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{blue\+\_\+off()}{blue\_off()}}
+{\footnotesize\ttfamily void blue\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets pin 15 to low 
+
+Definition at line 85 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a54c72eaa14000850155090b9ace66a5e}\label{piconet_2iocontroller_8c_a54c72eaa14000850155090b9ace66a5e}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!blue\+\_\+on@{blue\+\_\+on}}
+\index{blue\+\_\+on@{blue\+\_\+on}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{blue\+\_\+on()}{blue\_on()}}
+{\footnotesize\ttfamily void blue\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets io pin 15 to high 
+
+Definition at line 76 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}\label{piconet_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!button@{button}}
+\index{button@{button}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{button()}{button()}}
+{\footnotesize\ttfamily void button (\begin{DoxyParamCaption}\item[{int}]{client\+\_\+fd }\end{DoxyParamCaption})}
+
+Responsible for processing sensor input (button in this case). When button pressed, send messages to server and client 
+
+Definition at line 136 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a8ddcb96204b02daf4bd531c2afced761}\label{piconet_2iocontroller_8c_a8ddcb96204b02daf4bd531c2afced761}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!green\+\_\+off@{green\+\_\+off}}
+\index{green\+\_\+off@{green\+\_\+off}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{green\+\_\+off()}{green\_off()}}
+{\footnotesize\ttfamily void green\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets io pin 13 to low 
+
+Definition at line 67 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a7dd8b21ee2202f02ad54693938c0de2d}\label{piconet_2iocontroller_8c_a7dd8b21ee2202f02ad54693938c0de2d}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!green\+\_\+on@{green\+\_\+on}}
+\index{green\+\_\+on@{green\+\_\+on}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{green\+\_\+on()}{green\_on()}}
+{\footnotesize\ttfamily void green\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets io pin 13 to high 
+
+Definition at line 58 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a2ffbeae6c737f0ed50e4614eec56ef76}\label{piconet_2iocontroller_8c_a2ffbeae6c737f0ed50e4614eec56ef76}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!init\+\_\+gpio@{init\+\_\+gpio}}
+\index{init\+\_\+gpio@{init\+\_\+gpio}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{init\+\_\+gpio()}{init\_gpio()}}
+{\footnotesize\ttfamily void init\+\_\+gpio (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 24 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a501391b8794d0beaeaf0dea7a3bdbbb3}\label{piconet_2iocontroller_8c_a501391b8794d0beaeaf0dea7a3bdbbb3}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!led\+\_\+off@{led\+\_\+off}}
+\index{led\+\_\+off@{led\+\_\+off}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{led\+\_\+off()}{led\_off()}}
+{\footnotesize\ttfamily void led\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_aeea8c0867d710be4e9e2a857d47ff233}\label{piconet_2iocontroller_8c_aeea8c0867d710be4e9e2a857d47ff233}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!red\+\_\+off@{red\+\_\+off}}
+\index{red\+\_\+off@{red\+\_\+off}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{red\+\_\+off()}{red\_off()}}
+{\footnotesize\ttfamily void red\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets io pin 11 to low 
+
+Definition at line 49 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_ac447096f73e78c9ca4d3dcf3d44af535}\label{piconet_2iocontroller_8c_ac447096f73e78c9ca4d3dcf3d44af535}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!red\+\_\+on@{red\+\_\+on}}
+\index{red\+\_\+on@{red\+\_\+on}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{red\+\_\+on()}{red\_on()}}
+{\footnotesize\ttfamily void red\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Sets io pin 11 to high 
+
+Definition at line 40 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_abd8c004ce2c450c601b79f2f3d832d19}\label{piconet_2iocontroller_8c_abd8c004ce2c450c601b79f2f3d832d19}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!toggle\+\_\+led@{toggle\+\_\+led}}
+\index{toggle\+\_\+led@{toggle\+\_\+led}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{toggle\+\_\+led()}{toggle\_led()}}
+{\footnotesize\ttfamily void toggle\+\_\+led (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 119 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}\label{piconet_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!turn\+\_\+off@{turn\+\_\+off}}
+\index{turn\+\_\+off@{turn\+\_\+off}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{turn\+\_\+off()}{turn\_off()}}
+{\footnotesize\ttfamily void turn\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Turns off L\+ED at a specific preprogrammed pin 
+
+Definition at line 110 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}\label{piconet_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!turn\+\_\+on@{turn\+\_\+on}}
+\index{turn\+\_\+on@{turn\+\_\+on}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{turn\+\_\+on()}{turn\_on()}}
+{\footnotesize\ttfamily void turn\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Responsible for processing user input. If the input is equal to the preset keyword, g\+\_\+toggle on/off lights, depending on the current state. Turns on L\+ED at a specific preprogrammed pin 
+
+Definition at line 100 of file iocontroller.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}\label{piconet_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}}
+\index{g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+connection\+\_\+check}{g\_connection\_check}}
+{\footnotesize\ttfamily \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} g\+\_\+connection\+\_\+check}
+
+
+
+Definition at line 15 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{piconet_2iocontroller_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}\label{piconet_2iocontroller_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}} 
+\index{piconet/iocontroller.\+c@{piconet/iocontroller.\+c}!g\+\_\+toggle@{g\+\_\+toggle}}
+\index{g\+\_\+toggle@{g\+\_\+toggle}!piconet/iocontroller.\+c@{piconet/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+toggle}{g\_toggle}}
+{\footnotesize\ttfamily \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} g\+\_\+toggle = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+
+
+Definition at line 17 of file iocontroller.\+c.
+

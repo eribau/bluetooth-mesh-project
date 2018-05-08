@@ -1,0 +1,101 @@
+\hypertarget{tcpserver_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/tcpserver.c File Reference}
+\label{tcpserver_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/tcpserver.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/tcpserver.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$sys/types.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}iocontroller.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}inputprocessing.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}l2cap-\/server.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tcpserver_8c_a6b20d41d6252e9871430c242cb1a56e7}{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}~1024
+\item 
+\#define \mbox{\hyperlink{tcpserver_8c_a548d181c6236781277e55e5726f8e9e3}{on\+\_\+error}}(...)~\{ fprintf(stderr, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+); fflush(stderr); exit(1); \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tcpserver_8c_aeae58e96477b1f8faa3a12ab348398db}{delay}} (int)
+\item 
+int \mbox{\hyperlink{tcpserver_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \mbox{\hyperlink{tcpserver_8c_a81bc6941c354c1be6ad9931b4f2b50bf}{g\+\_\+connection\+\_\+check}} = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\item 
+int \mbox{\hyperlink{tcpserver_8c_a91b37490a4d3abfda335e5a4c71933a0}{g\+\_\+ble\+\_\+client}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tcpserver_8c_a6b20d41d6252e9871430c242cb1a56e7}\label{tcpserver_8c_a6b20d41d6252e9871430c242cb1a56e7}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}
+\index{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}{BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE~1024}
+
+
+
+Definition at line 16 of file tcpserver.\+c.
+
+\mbox{\Hypertarget{tcpserver_8c_a548d181c6236781277e55e5726f8e9e3}\label{tcpserver_8c_a548d181c6236781277e55e5726f8e9e3}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!on\+\_\+error@{on\+\_\+error}}
+\index{on\+\_\+error@{on\+\_\+error}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{on\+\_\+error}{on\_error}}
+{\footnotesize\ttfamily \#define on\+\_\+error(\begin{DoxyParamCaption}\item[{}]{... }\end{DoxyParamCaption})~\{ fprintf(stderr, \+\_\+\+\_\+\+V\+A\+\_\+\+A\+R\+G\+S\+\_\+\+\_\+); fflush(stderr); exit(1); \}}
+
+
+
+Definition at line 17 of file tcpserver.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tcpserver_8c_aeae58e96477b1f8faa3a12ab348398db}\label{tcpserver_8c_aeae58e96477b1f8faa3a12ab348398db}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!delay@{delay}}
+\index{delay@{delay}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{delay()}{delay()}}
+{\footnotesize\ttfamily void delay (\begin{DoxyParamCaption}\item[{int}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{tcpserver_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{tcpserver_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!main@{main}}
+\index{main@{main}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+T\+CP R\+Pi server that works as a gateway between a T\+CP client and a B\+LE connected device. When running tcpserver it should take a port number as an argument. The T\+CP client should initiate connection by entering\+: I\+P\+A\+D\+R\+E\+SS P\+O\+R\+T\+N\+U\+M\+B\+ER In a network utility (such as telnet or netcat), where I\+P\+A\+D\+R\+E\+SS is the IP adress of the server; P\+O\+R\+T\+N\+U\+M\+B\+ER is the portnumber that the server has opened a socket at. 
+
+Definition at line 34 of file tcpserver.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{tcpserver_8c_a91b37490a4d3abfda335e5a4c71933a0}\label{tcpserver_8c_a91b37490a4d3abfda335e5a4c71933a0}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!g\+\_\+ble\+\_\+client@{g\+\_\+ble\+\_\+client}}
+\index{g\+\_\+ble\+\_\+client@{g\+\_\+ble\+\_\+client}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+ble\+\_\+client}{g\_ble\_client}}
+{\footnotesize\ttfamily int g\+\_\+ble\+\_\+client}
+
+
+
+Definition at line 22 of file tcpserver.\+c.
+
+\mbox{\Hypertarget{tcpserver_8c_a81bc6941c354c1be6ad9931b4f2b50bf}\label{tcpserver_8c_a81bc6941c354c1be6ad9931b4f2b50bf}} 
+\index{tcpserver.\+c@{tcpserver.\+c}!g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}}
+\index{g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}!tcpserver.\+c@{tcpserver.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+connection\+\_\+check}{g\_connection\_check}}
+{\footnotesize\ttfamily \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} g\+\_\+connection\+\_\+check = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+
+
+Definition at line 21 of file tcpserver.\+c.
+

@@ -1,0 +1,289 @@
+\hypertarget{connection__handler_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/connection\+\_\+handler.c File Reference}
+\label{connection__handler_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/connection\+\_\+handler.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/connection\+\_\+handler.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$sys/wait.\+h$>$}\newline
+{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/bluetooth.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/l2cap.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci\+\_\+lib.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a137aa83ec74421d226a90c92ec032ac9}{K\+N\+RM}}~\char`\"{}\textbackslash{}x1B\mbox{[}0m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a66290957baed5df3930ada4cb8caccf1}{K\+R\+ED}}~\char`\"{}\textbackslash{}x1B\mbox{[}91m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_ac081c83b067273757f7a2e54a5957d41}{K\+G\+RN}}~\char`\"{}\textbackslash{}x1B\mbox{[}92m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a897b10d246533c95ba86cb79f92e465a}{K\+Y\+EL}}~\char`\"{}\textbackslash{}x1B\mbox{[}93m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a3f838f2fc3a9a3b434be606fc908964b}{K\+B\+LU}}~\char`\"{}\textbackslash{}x1B\mbox{[}94m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a6825f05d3b9d619d91d79d0ef18bb8b2}{K\+M\+AG}}~\char`\"{}\textbackslash{}x1B\mbox{[}95m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a32036c94dbb166a3f874b7efc169841f}{K\+C\+YN}}~\char`\"{}\textbackslash{}x1B\mbox{[}96m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_af0036c8022c9980079ab17e5c87fd478}{K\+W\+HT}}~\char`\"{}\textbackslash{}x1B\mbox{[}97m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a26cdbb1a00213c810caccf21cd33a631}{B\+O\+LD}}~\char`\"{}\textbackslash{}x1B\mbox{[}1m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_a126e0efbf8aec03b757d2b41bfcd8382}{U\+N\+B\+O\+LD}}~\char`\"{}\textbackslash{}x1B\mbox{[}21m\char`\"{}
+\item 
+\#define \mbox{\hyperlink{connection__handler_8c_acd26973fe5a2cba0e34e0d81717c6bda}{A\+T\+T\+\_\+\+C\+ID}}~4
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \{ \newline
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}, 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}, 
+\mbox{\hyperlink{piconet_2l2cap-server_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}, 
+\mbox{\hyperlink{piconet_2l2cap-server_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}, 
+\newline
+\mbox{\hyperlink{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}, 
+\mbox{\hyperlink{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}, 
+\mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}, 
+\mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}{true}}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{connection__handler_8c_ab3c8f8e0f1f9dff62601907d999cf934}{delay}} (unsigned int)
+\item 
+int \mbox{\hyperlink{connection__handler_8c_a7395878df70bb0c43b83db8604495346}{socket\+\_\+creator}} (char $\ast$arr, struct sockaddr\+\_\+l2 loc\+\_\+addr, struct sockaddr\+\_\+l2 rem\+\_\+addr)
+\item 
+int $\ast$ \mbox{\hyperlink{connection__handler_8c_abdeedf9a4e4b1a7a92a9ebd4b07ad078}{connect\+\_\+to\+\_\+neighbour}} (char($\ast$array)\mbox{[}18\mbox{]})
+\item 
+int \mbox{\hyperlink{connection__handler_8c_a6410f59a816945dbe252be7686823492}{accept\+\_\+a\+\_\+neighbour}} ()
+\item 
+char $\ast$ \mbox{\hyperlink{connection__handler_8c_a31f9536cc0dc0399eccffa429052c66b}{print\+\_\+dev\+\_\+hdr}} (struct hci\+\_\+dev\+\_\+info $\ast$di)
+\item 
+char $\ast$ \mbox{\hyperlink{connection__handler_8c_a1054faa7364f39a71a24b6f797b43ff5}{print\+\_\+own\+\_\+bd\+\_\+addr}} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{connection__handler_8c_acd26973fe5a2cba0e34e0d81717c6bda}\label{connection__handler_8c_acd26973fe5a2cba0e34e0d81717c6bda}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!A\+T\+T\+\_\+\+C\+ID@{A\+T\+T\+\_\+\+C\+ID}}
+\index{A\+T\+T\+\_\+\+C\+ID@{A\+T\+T\+\_\+\+C\+ID}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{A\+T\+T\+\_\+\+C\+ID}{ATT\_CID}}
+{\footnotesize\ttfamily \#define A\+T\+T\+\_\+\+C\+ID~4}
+
+
+
+Definition at line 31 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a26cdbb1a00213c810caccf21cd33a631}\label{connection__handler_8c_a26cdbb1a00213c810caccf21cd33a631}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!B\+O\+LD@{B\+O\+LD}}
+\index{B\+O\+LD@{B\+O\+LD}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{B\+O\+LD}{BOLD}}
+{\footnotesize\ttfamily \#define B\+O\+LD~\char`\"{}\textbackslash{}x1B\mbox{[}1m\char`\"{}}
+
+
+
+Definition at line 28 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a3f838f2fc3a9a3b434be606fc908964b}\label{connection__handler_8c_a3f838f2fc3a9a3b434be606fc908964b}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+B\+LU@{K\+B\+LU}}
+\index{K\+B\+LU@{K\+B\+LU}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+B\+LU}{KBLU}}
+{\footnotesize\ttfamily \#define K\+B\+LU~\char`\"{}\textbackslash{}x1B\mbox{[}94m\char`\"{}}
+
+
+
+Definition at line 24 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a32036c94dbb166a3f874b7efc169841f}\label{connection__handler_8c_a32036c94dbb166a3f874b7efc169841f}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+C\+YN@{K\+C\+YN}}
+\index{K\+C\+YN@{K\+C\+YN}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+C\+YN}{KCYN}}
+{\footnotesize\ttfamily \#define K\+C\+YN~\char`\"{}\textbackslash{}x1B\mbox{[}96m\char`\"{}}
+
+
+
+Definition at line 26 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_ac081c83b067273757f7a2e54a5957d41}\label{connection__handler_8c_ac081c83b067273757f7a2e54a5957d41}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+G\+RN@{K\+G\+RN}}
+\index{K\+G\+RN@{K\+G\+RN}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+G\+RN}{KGRN}}
+{\footnotesize\ttfamily \#define K\+G\+RN~\char`\"{}\textbackslash{}x1B\mbox{[}92m\char`\"{}}
+
+
+
+Definition at line 22 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a6825f05d3b9d619d91d79d0ef18bb8b2}\label{connection__handler_8c_a6825f05d3b9d619d91d79d0ef18bb8b2}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+M\+AG@{K\+M\+AG}}
+\index{K\+M\+AG@{K\+M\+AG}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+M\+AG}{KMAG}}
+{\footnotesize\ttfamily \#define K\+M\+AG~\char`\"{}\textbackslash{}x1B\mbox{[}95m\char`\"{}}
+
+
+
+Definition at line 25 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a137aa83ec74421d226a90c92ec032ac9}\label{connection__handler_8c_a137aa83ec74421d226a90c92ec032ac9}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+N\+RM@{K\+N\+RM}}
+\index{K\+N\+RM@{K\+N\+RM}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+N\+RM}{KNRM}}
+{\footnotesize\ttfamily \#define K\+N\+RM~\char`\"{}\textbackslash{}x1B\mbox{[}0m\char`\"{}}
+
+
+
+Definition at line 20 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a66290957baed5df3930ada4cb8caccf1}\label{connection__handler_8c_a66290957baed5df3930ada4cb8caccf1}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+R\+ED@{K\+R\+ED}}
+\index{K\+R\+ED@{K\+R\+ED}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+R\+ED}{KRED}}
+{\footnotesize\ttfamily \#define K\+R\+ED~\char`\"{}\textbackslash{}x1B\mbox{[}91m\char`\"{}}
+
+
+
+Definition at line 21 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_af0036c8022c9980079ab17e5c87fd478}\label{connection__handler_8c_af0036c8022c9980079ab17e5c87fd478}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+W\+HT@{K\+W\+HT}}
+\index{K\+W\+HT@{K\+W\+HT}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+W\+HT}{KWHT}}
+{\footnotesize\ttfamily \#define K\+W\+HT~\char`\"{}\textbackslash{}x1B\mbox{[}97m\char`\"{}}
+
+
+
+Definition at line 27 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a897b10d246533c95ba86cb79f92e465a}\label{connection__handler_8c_a897b10d246533c95ba86cb79f92e465a}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!K\+Y\+EL@{K\+Y\+EL}}
+\index{K\+Y\+EL@{K\+Y\+EL}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{K\+Y\+EL}{KYEL}}
+{\footnotesize\ttfamily \#define K\+Y\+EL~\char`\"{}\textbackslash{}x1B\mbox{[}93m\char`\"{}}
+
+
+
+Definition at line 23 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a126e0efbf8aec03b757d2b41bfcd8382}\label{connection__handler_8c_a126e0efbf8aec03b757d2b41bfcd8382}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!U\+N\+B\+O\+LD@{U\+N\+B\+O\+LD}}
+\index{U\+N\+B\+O\+LD@{U\+N\+B\+O\+LD}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{U\+N\+B\+O\+LD}{UNBOLD}}
+{\footnotesize\ttfamily \#define U\+N\+B\+O\+LD~\char`\"{}\textbackslash{}x1B\mbox{[}21m\char`\"{}}
+
+
+
+Definition at line 29 of file connection\+\_\+handler.\+c.
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!bool@{bool}}
+\index{bool@{bool}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{bool}{bool}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{false@{false}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!false@{false}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}} 
+false&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{true@{true}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!true@{true}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}} 
+true&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{false@{false}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!false@{false}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}} 
+false&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{true@{true}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!true@{true}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}} 
+true&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{false@{false}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!false@{false}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}} 
+false&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{true@{true}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!true@{true}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}} 
+true&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{false@{false}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!false@{false}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}} 
+false&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{true@{true}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!true@{true}}}\mbox{\Hypertarget{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}\label{connection__handler_8c_af6a258d8f3ee5206d682d799316314b1a08f175a5505a10b9ed657defeb050e4b}} 
+true&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 34 of file connection\+\_\+handler.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{connection__handler_8c_a6410f59a816945dbe252be7686823492}\label{connection__handler_8c_a6410f59a816945dbe252be7686823492}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!accept\+\_\+a\+\_\+neighbour@{accept\+\_\+a\+\_\+neighbour}}
+\index{accept\+\_\+a\+\_\+neighbour@{accept\+\_\+a\+\_\+neighbour}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{accept\+\_\+a\+\_\+neighbour()}{accept\_a\_neighbour()}}
+{\footnotesize\ttfamily int accept\+\_\+a\+\_\+neighbour (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+The accept function does not take in any argument, if it is called it will be blocking and accept the first connection that is sent to it 
+
+Definition at line 124 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_abdeedf9a4e4b1a7a92a9ebd4b07ad078}\label{connection__handler_8c_abdeedf9a4e4b1a7a92a9ebd4b07ad078}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!connect\+\_\+to\+\_\+neighbour@{connect\+\_\+to\+\_\+neighbour}}
+\index{connect\+\_\+to\+\_\+neighbour@{connect\+\_\+to\+\_\+neighbour}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{connect\+\_\+to\+\_\+neighbour()}{connect\_to\_neighbour()}}
+{\footnotesize\ttfamily int$\ast$ connect\+\_\+to\+\_\+neighbour (\begin{DoxyParamCaption}\item[{char($\ast$)}]{array\mbox{[}18\mbox{]} }\end{DoxyParamCaption})}
+
+This method sets up its local bluetooth adapter and the type of the remote bluetooth adapter it will connect to. It then connects to all the bluetooth address given as the input 
+
+Definition at line 92 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_ab3c8f8e0f1f9dff62601907d999cf934}\label{connection__handler_8c_ab3c8f8e0f1f9dff62601907d999cf934}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!delay@{delay}}
+\index{delay@{delay}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{delay()}{delay()}}
+{\footnotesize\ttfamily void delay (\begin{DoxyParamCaption}\item[{unsigned}]{int }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{connection__handler_8c_a31f9536cc0dc0399eccffa429052c66b}\label{connection__handler_8c_a31f9536cc0dc0399eccffa429052c66b}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!print\+\_\+dev\+\_\+hdr@{print\+\_\+dev\+\_\+hdr}}
+\index{print\+\_\+dev\+\_\+hdr@{print\+\_\+dev\+\_\+hdr}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+dev\+\_\+hdr()}{print\_dev\_hdr()}}
+{\footnotesize\ttfamily char$\ast$ print\+\_\+dev\+\_\+hdr (\begin{DoxyParamCaption}\item[{struct hci\+\_\+dev\+\_\+info $\ast$}]{di }\end{DoxyParamCaption})}
+
+
+
+Definition at line 171 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a1054faa7364f39a71a24b6f797b43ff5}\label{connection__handler_8c_a1054faa7364f39a71a24b6f797b43ff5}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!print\+\_\+own\+\_\+bd\+\_\+addr@{print\+\_\+own\+\_\+bd\+\_\+addr}}
+\index{print\+\_\+own\+\_\+bd\+\_\+addr@{print\+\_\+own\+\_\+bd\+\_\+addr}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+own\+\_\+bd\+\_\+addr()}{print\_own\_bd\_addr()}}
+{\footnotesize\ttfamily char$\ast$ print\+\_\+own\+\_\+bd\+\_\+addr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 186 of file connection\+\_\+handler.\+c.
+
+\mbox{\Hypertarget{connection__handler_8c_a7395878df70bb0c43b83db8604495346}\label{connection__handler_8c_a7395878df70bb0c43b83db8604495346}} 
+\index{connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}!socket\+\_\+creator@{socket\+\_\+creator}}
+\index{socket\+\_\+creator@{socket\+\_\+creator}!connection\+\_\+handler.\+c@{connection\+\_\+handler.\+c}}
+\subsubsection{\texorpdfstring{socket\+\_\+creator()}{socket\_creator()}}
+{\footnotesize\ttfamily int socket\+\_\+creator (\begin{DoxyParamCaption}\item[{char $\ast$}]{arr,  }\item[{struct sockaddr\+\_\+l2}]{loc\+\_\+addr,  }\item[{struct sockaddr\+\_\+l2}]{rem\+\_\+addr }\end{DoxyParamCaption})}
+
+Takes in an array of bluetooth addresses, which are slaves to connect to. Creates a new socket for each connection. Returns a connection socket for each connection. 
+
+Definition at line 45 of file connection\+\_\+handler.\+c.
+

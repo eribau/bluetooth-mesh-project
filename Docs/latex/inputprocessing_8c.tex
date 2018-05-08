@@ -1,0 +1,44 @@
+\hypertarget{inputprocessing_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/inputprocessing.c File Reference}
+\label{inputprocessing_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/inputprocessing.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/inputprocessing.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}iocontroller.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}inputprocessing.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{inputprocessing_8c_a7c0b90faa1fd5f4cbe08da034b72685a}{toggle\+\_\+led}} (char buf\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \mbox{\hyperlink{inputprocessing_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}{g\+\_\+toggle}} = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{inputprocessing_8c_a7c0b90faa1fd5f4cbe08da034b72685a}\label{inputprocessing_8c_a7c0b90faa1fd5f4cbe08da034b72685a}} 
+\index{inputprocessing.\+c@{inputprocessing.\+c}!toggle\+\_\+led@{toggle\+\_\+led}}
+\index{toggle\+\_\+led@{toggle\+\_\+led}!inputprocessing.\+c@{inputprocessing.\+c}}
+\subsubsection{\texorpdfstring{toggle\+\_\+led()}{toggle\_led()}}
+{\footnotesize\ttfamily void toggle\+\_\+led (\begin{DoxyParamCaption}\item[{char}]{buf\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Responsible for processing user input. If the input is equal to the preset keyword, g\+\_\+toggle on/off lights, depending on the current state. 
+
+Definition at line 14 of file inputprocessing.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{inputprocessing_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}\label{inputprocessing_8c_a4074c1de7b699a7d38ab7cd41d8f0cb0}} 
+\index{inputprocessing.\+c@{inputprocessing.\+c}!g\+\_\+toggle@{g\+\_\+toggle}}
+\index{g\+\_\+toggle@{g\+\_\+toggle}!inputprocessing.\+c@{inputprocessing.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+toggle}{g\_toggle}}
+{\footnotesize\ttfamily \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} g\+\_\+toggle = \mbox{\hyperlink{tcpserver_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1ae9de385ef6fe9bf3360d1038396b884c}{false}}}
+
+
+
+Definition at line 8 of file inputprocessing.\+c.
+

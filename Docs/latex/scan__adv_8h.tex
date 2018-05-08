@@ -1,0 +1,77 @@
+\hypertarget{scan__adv_8h}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/scan\+\_\+adv.h File Reference}
+\label{scan__adv_8h}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/scan\+\_\+adv.\+h@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/scan\+\_\+adv.\+h}}
+{\ttfamily \#include $<$bluetooth/bluetooth.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/l2cap.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci\+\_\+lib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}ll.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}structs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nb\+\_\+data.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+le\+\_\+set\+\_\+advertising\+\_\+data\+\_\+cp \mbox{\hyperlink{scan__adv_8h_a220489d8e27cddcc092f9adc7eeb5540}{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}} (char $\ast$name, char $\ast$btaddr)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan__adv_8h_a9ed8193ef016bf2e85c78d6eacc2caf6}{print\+\_\+advertising\+\_\+devices}} (int dd, uint8\+\_\+t filter\+\_\+type, struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}})
+\item 
+int \mbox{\hyperlink{scan__adv_8h_af336b7876acfc459f4ff1a871ba9aab9}{advertise}} (char $\ast$array)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan__adv_8h_aa17a71c99b4021aa3c3ece883425bb24}{scan}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}})
+\item 
+void \mbox{\hyperlink{scan__adv_8h_ac44501fcb942a9c80404255067b2d1b2}{add\+\_\+to\+\_\+array}} (char($\ast$arr)\mbox{[}18\mbox{]}, struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}}, int $\ast$counter)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scan__adv_8h_ac44501fcb942a9c80404255067b2d1b2}\label{scan__adv_8h_ac44501fcb942a9c80404255067b2d1b2}} 
+\index{scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}!add\+\_\+to\+\_\+array@{add\+\_\+to\+\_\+array}}
+\index{add\+\_\+to\+\_\+array@{add\+\_\+to\+\_\+array}!scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}}
+\subsubsection{\texorpdfstring{add\+\_\+to\+\_\+array()}{add\_to\_array()}}
+{\footnotesize\ttfamily void add\+\_\+to\+\_\+array (\begin{DoxyParamCaption}\item[{char($\ast$)}]{arr\mbox{[}18\mbox{]},  }\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object,  }\item[{int $\ast$}]{counter }\end{DoxyParamCaption})}
+
+Function that adds to an array from a linked list struct 
+
+Definition at line 424 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan__adv_8h_af336b7876acfc459f4ff1a871ba9aab9}\label{scan__adv_8h_af336b7876acfc459f4ff1a871ba9aab9}} 
+\index{scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}!advertise@{advertise}}
+\index{advertise@{advertise}!scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}}
+\subsubsection{\texorpdfstring{advertise()}{advertise()}}
+{\footnotesize\ttfamily int advertise (\begin{DoxyParamCaption}\item[{char $\ast$}]{array }\end{DoxyParamCaption})}
+
+Function to advertise with an input as the advertisement message
+
+Advertise(char $\ast$array), takes a char array of maximum size 24 And advertises that, (u8bit) advertisement will look like\+: 2 bytes for name \char`\"{}pi\char`\"{} followed by 5 bytes for control and flags followed by the 24 byte message. 
+
+Definition at line 318 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan__adv_8h_a220489d8e27cddcc092f9adc7eeb5540}\label{scan__adv_8h_a220489d8e27cddcc092f9adc7eeb5540}} 
+\index{scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}!ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data@{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}}
+\index{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data@{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}!scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}}
+\subsubsection{\texorpdfstring{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data()}{ble\_hci\_params\_for\_set\_adv\_data()}}
+{\footnotesize\ttfamily le\+\_\+set\+\_\+advertising\+\_\+data\+\_\+cp ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{name,  }\item[{char $\ast$}]{btaddr }\end{DoxyParamCaption})}
+
+This function sets up the advertisement data 
+
+Definition at line 61 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan__adv_8h_a9ed8193ef016bf2e85c78d6eacc2caf6}\label{scan__adv_8h_a9ed8193ef016bf2e85c78d6eacc2caf6}} 
+\index{scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}!print\+\_\+advertising\+\_\+devices@{print\+\_\+advertising\+\_\+devices}}
+\index{print\+\_\+advertising\+\_\+devices@{print\+\_\+advertising\+\_\+devices}!scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}}
+\subsubsection{\texorpdfstring{print\+\_\+advertising\+\_\+devices()}{print\_advertising\_devices()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ print\+\_\+advertising\+\_\+devices (\begin{DoxyParamCaption}\item[{int}]{dd,  }\item[{uint8\+\_\+t}]{filter\+\_\+type,  }\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object }\end{DoxyParamCaption})}
+
+Detecting advertising devices and adding them to our struct function, modified from hcitool.\+c 
+
+Definition at line 197 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan__adv_8h_aa17a71c99b4021aa3c3ece883425bb24}\label{scan__adv_8h_aa17a71c99b4021aa3c3ece883425bb24}} 
+\index{scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}!scan@{scan}}
+\index{scan@{scan}!scan\+\_\+adv.\+h@{scan\+\_\+adv.\+h}}
+\subsubsection{\texorpdfstring{scan()}{scan()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ scan (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object }\end{DoxyParamCaption})}
+
+Function that scans for advertising devices 
+
+Definition at line 380 of file scan-\/adv.\+c.
+

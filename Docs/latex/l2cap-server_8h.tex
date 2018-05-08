@@ -1,0 +1,32 @@
+\hypertarget{l2cap-server_8h}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.h File Reference}
+\label{l2cap-server_8h}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.\+h@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.\+h}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{l2cap-server_8h_ad0f02beb64dd67c688103f2ebe24425c}{ble\+\_\+server}} ()
+\item 
+char $\ast$ \mbox{\hyperlink{l2cap-server_8h_a7d0e79796199af82d71dedbec03f1b4d}{ble\+\_\+read}} (int)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{l2cap-server_8h_a7d0e79796199af82d71dedbec03f1b4d}\label{l2cap-server_8h_a7d0e79796199af82d71dedbec03f1b4d}} 
+\index{l2cap-\/server.\+h@{l2cap-\/server.\+h}!ble\+\_\+read@{ble\+\_\+read}}
+\index{ble\+\_\+read@{ble\+\_\+read}!l2cap-\/server.\+h@{l2cap-\/server.\+h}}
+\subsubsection{\texorpdfstring{ble\+\_\+read()}{ble\_read()}}
+{\footnotesize\ttfamily char$\ast$ ble\+\_\+read (\begin{DoxyParamCaption}\item[{int}]{ble\+\_\+client }\end{DoxyParamCaption})}
+
+This method is called from tcpserver. It reads a message from a ble\+\_\+client and returns a pointer to the message. 
+
+Definition at line 56 of file l2cap-\/server.\+c.
+
+\mbox{\Hypertarget{l2cap-server_8h_ad0f02beb64dd67c688103f2ebe24425c}\label{l2cap-server_8h_ad0f02beb64dd67c688103f2ebe24425c}} 
+\index{l2cap-\/server.\+h@{l2cap-\/server.\+h}!ble\+\_\+server@{ble\+\_\+server}}
+\index{ble\+\_\+server@{ble\+\_\+server}!l2cap-\/server.\+h@{l2cap-\/server.\+h}}
+\subsubsection{\texorpdfstring{ble\+\_\+server()}{ble\_server()}}
+{\footnotesize\ttfamily int ble\+\_\+server (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This method first opens a ble socket, and then binds it to the first available physical bluetooth adapter on the chip. It then listens for a connection and creates a connection when a client connects. It can then read and write data over the connection with the client. 
+
+Definition at line 20 of file l2cap-\/server.\+c.
+

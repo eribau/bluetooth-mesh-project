@@ -1,0 +1,59 @@
+\hypertarget{tcpserver_2l2cap-server_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.c File Reference}
+\label{tcpserver_2l2cap-server_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/l2cap-\/server.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/bluetooth.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/l2cap.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci\+\_\+lib.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{tcpserver_2l2cap-server_8c_acd26973fe5a2cba0e34e0d81717c6bda}{A\+T\+T\+\_\+\+C\+ID}}~4
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{tcpserver_2l2cap-server_8c_ad0f02beb64dd67c688103f2ebe24425c}{ble\+\_\+server}} ()
+\item 
+char $\ast$ \mbox{\hyperlink{tcpserver_2l2cap-server_8c_a0dd2eff36cd18422cd52bee8b067010d}{ble\+\_\+read}} (int ble\+\_\+client)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{tcpserver_2l2cap-server_8c_acd26973fe5a2cba0e34e0d81717c6bda}\label{tcpserver_2l2cap-server_8c_acd26973fe5a2cba0e34e0d81717c6bda}} 
+\index{tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}!A\+T\+T\+\_\+\+C\+ID@{A\+T\+T\+\_\+\+C\+ID}}
+\index{A\+T\+T\+\_\+\+C\+ID@{A\+T\+T\+\_\+\+C\+ID}!tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}}
+\subsubsection{\texorpdfstring{A\+T\+T\+\_\+\+C\+ID}{ATT\_CID}}
+{\footnotesize\ttfamily \#define A\+T\+T\+\_\+\+C\+ID~4}
+
+
+
+Definition at line 12 of file l2cap-\/server.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tcpserver_2l2cap-server_8c_a0dd2eff36cd18422cd52bee8b067010d}\label{tcpserver_2l2cap-server_8c_a0dd2eff36cd18422cd52bee8b067010d}} 
+\index{tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}!ble\+\_\+read@{ble\+\_\+read}}
+\index{ble\+\_\+read@{ble\+\_\+read}!tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}}
+\subsubsection{\texorpdfstring{ble\+\_\+read()}{ble\_read()}}
+{\footnotesize\ttfamily char$\ast$ ble\+\_\+read (\begin{DoxyParamCaption}\item[{int}]{ble\+\_\+client }\end{DoxyParamCaption})}
+
+This method is called from tcpserver. It reads a message from a ble\+\_\+client and returns a pointer to the message. 
+
+Definition at line 56 of file l2cap-\/server.\+c.
+
+\mbox{\Hypertarget{tcpserver_2l2cap-server_8c_ad0f02beb64dd67c688103f2ebe24425c}\label{tcpserver_2l2cap-server_8c_ad0f02beb64dd67c688103f2ebe24425c}} 
+\index{tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}!ble\+\_\+server@{ble\+\_\+server}}
+\index{ble\+\_\+server@{ble\+\_\+server}!tcpserver/l2cap-\/server.\+c@{tcpserver/l2cap-\/server.\+c}}
+\subsubsection{\texorpdfstring{ble\+\_\+server()}{ble\_server()}}
+{\footnotesize\ttfamily int ble\+\_\+server (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This method first opens a ble socket, and then binds it to the first available physical bluetooth adapter on the chip. It then listens for a connection and creates a connection when a client connects. It can then read and write data over the connection with the client. 
+
+Definition at line 20 of file l2cap-\/server.\+c.
+

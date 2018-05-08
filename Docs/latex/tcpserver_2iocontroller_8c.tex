@@ -1,0 +1,68 @@
+\hypertarget{tcpserver_2iocontroller_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.c File Reference}
+\label{tcpserver_2iocontroller_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$stdbool.\+h$>$}\newline
+{\ttfamily \#include $<$wiring\+Pi.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}iocontroller.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}{turn\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}{turn\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}{button}} (int client\+\_\+fd)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} \mbox{\hyperlink{tcpserver_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}{g\+\_\+connection\+\_\+check}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tcpserver_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}\label{tcpserver_2iocontroller_8c_a170d29d80a4f3b591fa55ce77f70afdb}} 
+\index{tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}!button@{button}}
+\index{button@{button}!tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{button()}{button()}}
+{\footnotesize\ttfamily void button (\begin{DoxyParamCaption}\item[{int}]{client\+\_\+fd }\end{DoxyParamCaption})}
+
+Responsible for processing sensor input (button in this case). When button pressed, send messages to server and client 
+
+Definition at line 35 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{tcpserver_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}\label{tcpserver_2iocontroller_8c_ae61f42ef9dbb22ab1babc20f7604c6c7}} 
+\index{tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}!turn\+\_\+off@{turn\+\_\+off}}
+\index{turn\+\_\+off@{turn\+\_\+off}!tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{turn\+\_\+off()}{turn\_off()}}
+{\footnotesize\ttfamily void turn\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Turns off L\+ED at a specific preprogrammed pin 
+
+Definition at line 22 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{tcpserver_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}\label{tcpserver_2iocontroller_8c_a47239fde6b6a427776fe14750a5973c2}} 
+\index{tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}!turn\+\_\+on@{turn\+\_\+on}}
+\index{turn\+\_\+on@{turn\+\_\+on}!tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{turn\+\_\+on()}{turn\_on()}}
+{\footnotesize\ttfamily void turn\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Turns on L\+ED at a specific preprogrammed pin 
+
+Definition at line 12 of file iocontroller.\+c.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{tcpserver_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}\label{tcpserver_2iocontroller_8c_a81bc6941c354c1be6ad9931b4f2b50bf}} 
+\index{tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}!g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}}
+\index{g\+\_\+connection\+\_\+check@{g\+\_\+connection\+\_\+check}!tcpserver/iocontroller.\+c@{tcpserver/iocontroller.\+c}}
+\subsubsection{\texorpdfstring{g\+\_\+connection\+\_\+check}{g\_connection\_check}}
+{\footnotesize\ttfamily \mbox{\hyperlink{piconet_2l2cap-client_8c_af6a258d8f3ee5206d682d799316314b1}{bool}} g\+\_\+connection\+\_\+check}
+
+
+
+Definition at line 15 of file iocontroller.\+c.
+
