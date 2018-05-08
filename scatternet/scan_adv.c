@@ -523,16 +523,16 @@ struct nb_object* scan_adv(){
 		}
 
 	}
-	
+	/*
 	ll_foreach(nb_list, it){
 		printf("%s\n", it->nb_bdaddr);
 		printf("%c\n", it->de);
 	}
+	*/
 	
-	/*
 	struct nb_object *ptr[16];
 	
-	*ptr = fill_entries(ptr, nb_object);
+	*ptr = fill_entries(ptr, nb_list);
 	
 	struct nb_object *rtn = NULL;
 	rtn = rtn_nb_ptr(ptr);
@@ -545,22 +545,23 @@ struct nb_object* scan_adv(){
 		print_nb_nb(ptr, it->nb_bdaddr);
 		print_nb_nb(ptr, it->nb_bdaddr);
 	}
-	*/
+	
 	
 	return nb_list;
 }
 
-/*
+
 int main(int argc, char *argv[]) {	
-	struct nb_object *new = NULL;
-	new = scan(new);
-	
+	//struct nb_object *new = NULL;
+	//new = scan(new);
+	scan_adv();
+	/*
 	ll_foreach(new, it){
 		printf("%s\n", it->nb_bdaddr);
 		printf("%s\n", it->nb_nb_bdaddr);
 		printf("%c\n", it->de);
 	}
-	
+	*/
 	return 0;
 }
-*/
+
