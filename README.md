@@ -9,7 +9,7 @@ Implementing algorithm for scatternet generation based on BSF-UED.
 ### Project backlog
 1. Connect to a PI over bluetooth low energy to another PI connected to the internet, and vice versa. (FINISHED)
 2. Configure a static piconet of seven devices. (FINISHED)
-3. Configure a mesh network with more than seven devices. (FINISHED)
+3. Configure a BLE network with more than seven devices. (FINISHED)
 4. Implement routing algorithm. (WORKING ON)
 
 ### Contact
