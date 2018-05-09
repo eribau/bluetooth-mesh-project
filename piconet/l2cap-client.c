@@ -117,6 +117,9 @@ int main(int argc, char **argv) {
 				if(prev_button == HIGH && digitalRead(8) == LOW) {				// A falling edge
 					prev_button = LOW;
 					char reply[] = "button pressed\n";
+					led_off();
+					red_on();
+					delay(200);
 					write(connection_fd, reply, sizeof(reply));				// [Debugging] Send message to client (Maxsize 32)
 					printf("Server message\n");									// [Debugging] Send message to server
 				}
@@ -133,9 +136,9 @@ int main(int argc, char **argv) {
 			memset(buf_input, 0, sizeof(buf_input));						// Send messages to the server
 			fgets(buf_input, sizeof(buf_input), stdin);
 			led_off();		
+			blue_on();
 			red_on();
-			green_on();
-			delay(1000);
+			delay(200);
 			write(connection_fd, buf_input, strlen(buf_input));
 		}
 	}
