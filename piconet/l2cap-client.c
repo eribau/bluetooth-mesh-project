@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 						led_off();		
 						blue_on();
 						red_on();
-						delay(10);
+						delay(50);
 						led_off();
 						green_on();
 					}
