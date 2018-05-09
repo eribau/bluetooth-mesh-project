@@ -1,0 +1,75 @@
+\hypertarget{scatternet_2ll_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/ll.c File Reference}
+\label{scatternet_2ll_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/ll.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/ll.\+c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}ll.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structll}{ll}}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \mbox{\hyperlink{scatternet_2ll_8c_ae498ba1ecd6dec7882db6e31804be033}{\+\_\+ll\+\_\+new}} (void $\ast$next, size\+\_\+t size)
+\item 
+void $\ast$ \mbox{\hyperlink{scatternet_2ll_8c_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}} (void $\ast$\mbox{\hyperlink{structll}{ll}})
+\item 
+void $\ast$ \mbox{\hyperlink{scatternet_2ll_8c_a636443f516b5430c4005706f69d5e92e}{\+\_\+ll\+\_\+pop}} (void $\ast$\+\_\+ll)
+\item 
+void \mbox{\hyperlink{scatternet_2ll_8c_a7bd9e05c455ee84323298fb87c02dc0b}{ll\+\_\+free}} (void $\ast$\+\_\+ll)
+\item 
+void $\ast$ \mbox{\hyperlink{scatternet_2ll_8c_a52d671130437d45e1ace55d99817051b}{\+\_\+ll\+\_\+reduce}} (void $\ast$\+\_\+ll, int(fn)(void $\ast$, void $\ast$), void $\ast$value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scatternet_2ll_8c_ae498ba1ecd6dec7882db6e31804be033}\label{scatternet_2ll_8c_ae498ba1ecd6dec7882db6e31804be033}} 
+\index{scatternet/ll.\+c@{scatternet/ll.\+c}!\+\_\+ll\+\_\+new@{\+\_\+ll\+\_\+new}}
+\index{\+\_\+ll\+\_\+new@{\+\_\+ll\+\_\+new}!scatternet/ll.\+c@{scatternet/ll.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+new()}{\_ll\_new()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+new (\begin{DoxyParamCaption}\item[{void $\ast$}]{next,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Definition at line 29 of file ll.\+c.
+
+\mbox{\Hypertarget{scatternet_2ll_8c_a581f3c276d4dfe472d20be492e2251b1}\label{scatternet_2ll_8c_a581f3c276d4dfe472d20be492e2251b1}} 
+\index{scatternet/ll.\+c@{scatternet/ll.\+c}!\+\_\+ll\+\_\+next@{\+\_\+ll\+\_\+next}}
+\index{\+\_\+ll\+\_\+next@{\+\_\+ll\+\_\+next}!scatternet/ll.\+c@{scatternet/ll.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+next()}{\_ll\_next()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+next (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file ll.\+c.
+
+\mbox{\Hypertarget{scatternet_2ll_8c_a636443f516b5430c4005706f69d5e92e}\label{scatternet_2ll_8c_a636443f516b5430c4005706f69d5e92e}} 
+\index{scatternet/ll.\+c@{scatternet/ll.\+c}!\+\_\+ll\+\_\+pop@{\+\_\+ll\+\_\+pop}}
+\index{\+\_\+ll\+\_\+pop@{\+\_\+ll\+\_\+pop}!scatternet/ll.\+c@{scatternet/ll.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+pop()}{\_ll\_pop()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+pop (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 45 of file ll.\+c.
+
+\mbox{\Hypertarget{scatternet_2ll_8c_a52d671130437d45e1ace55d99817051b}\label{scatternet_2ll_8c_a52d671130437d45e1ace55d99817051b}} 
+\index{scatternet/ll.\+c@{scatternet/ll.\+c}!\+\_\+ll\+\_\+reduce@{\+\_\+ll\+\_\+reduce}}
+\index{\+\_\+ll\+\_\+reduce@{\+\_\+ll\+\_\+reduce}!scatternet/ll.\+c@{scatternet/ll.\+c}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+reduce()}{\_ll\_reduce()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+reduce (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+ll,  }\item[{int(fn)(void $\ast$, void $\ast$)}]{,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+
+
+
+Definition at line 69 of file ll.\+c.
+
+\mbox{\Hypertarget{scatternet_2ll_8c_a7bd9e05c455ee84323298fb87c02dc0b}\label{scatternet_2ll_8c_a7bd9e05c455ee84323298fb87c02dc0b}} 
+\index{scatternet/ll.\+c@{scatternet/ll.\+c}!ll\+\_\+free@{ll\+\_\+free}}
+\index{ll\+\_\+free@{ll\+\_\+free}!scatternet/ll.\+c@{scatternet/ll.\+c}}
+\subsubsection{\texorpdfstring{ll\+\_\+free()}{ll\_free()}}
+{\footnotesize\ttfamily void ll\+\_\+free (\begin{DoxyParamCaption}\item[{void $\ast$}]{\+\_\+ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 58 of file ll.\+c.
+

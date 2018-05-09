@@ -1,0 +1,1 @@
+![alt text](https://github.com/eribau/bluetooth-mesh-project/blob/feature/scatternet/scan/UML.PNG)

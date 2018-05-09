@@ -1,0 +1,148 @@
+\hypertarget{scan_2ll_8h}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/ll.h File Reference}
+\label{scan_2ll_8h}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/ll.\+h@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/ll.\+h}}
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_a8e6618f51f370abc046b8e94059143f7}{ll\+\_\+new}}(\mbox{\hyperlink{structll}{ll}})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a3895d6c3f934e3560d42c6860ebbf6d5}{\+\_\+ll\+\_\+new}}(\mbox{\hyperlink{structll}{ll}}, sizeof($\ast$\mbox{\hyperlink{structll}{ll}}))
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_a323b1da4b49df0e5076e0f66825c70e2}{ll\+\_\+pop}}(\mbox{\hyperlink{structll}{ll}})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a52fefb5cf6f4c6cce4355dc0f112b40e}{\+\_\+ll\+\_\+pop}}(\mbox{\hyperlink{structll}{ll}})
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_a94a6653aa9090a37f1ee26fb5b590628}{ll\+\_\+next}}(\mbox{\hyperlink{structll}{ll}})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}}(\mbox{\hyperlink{structll}{ll}})
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_aa9d748ebd84550f1c0374323b230402c}{ll\+\_\+reduce}}(\mbox{\hyperlink{structll}{ll}},  fn,  val)~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a859a8981326cace5ccafbc17c16f1ec8}{\+\_\+ll\+\_\+reduce}}(\mbox{\hyperlink{structll}{ll}}, fn, val)
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_a78f059d07773e811efe4361ea4b7856a}{ll\+\_\+foreach}}(\mbox{\hyperlink{structll}{ll}},  item)~for (typeof (\mbox{\hyperlink{structll}{ll}}) item = \mbox{\hyperlink{structll}{ll}}; item; item = \mbox{\hyperlink{scatternet_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}}(item))
+\item 
+\#define \mbox{\hyperlink{scan_2ll_8h_add1dea05db538acc8d17d5dbfe33530a}{L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN}}(type,  name1,  name2)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$ \mbox{\hyperlink{scan_2ll_8h_a3895d6c3f934e3560d42c6860ebbf6d5}{\+\_\+ll\+\_\+new}} (void $\ast$\mbox{\hyperlink{structll}{ll}}, size\+\_\+t size)
+\item 
+void $\ast$ \mbox{\hyperlink{scan_2ll_8h_a52fefb5cf6f4c6cce4355dc0f112b40e}{\+\_\+ll\+\_\+pop}} (void $\ast$\mbox{\hyperlink{structll}{ll}})
+\item 
+void $\ast$ \mbox{\hyperlink{scan_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}} (void $\ast$\mbox{\hyperlink{structll}{ll}})
+\item 
+void \mbox{\hyperlink{scan_2ll_8h_a0a70543e68aa33c65cd56fec9f80d3f3}{ll\+\_\+free}} (void $\ast$\mbox{\hyperlink{structll}{ll}})
+\item 
+void $\ast$ \mbox{\hyperlink{scan_2ll_8h_a859a8981326cace5ccafbc17c16f1ec8}{\+\_\+ll\+\_\+reduce}} (void $\ast$\mbox{\hyperlink{structll}{ll}}, int(void $\ast$, void $\ast$), void $\ast$value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scan_2ll_8h_a78f059d07773e811efe4361ea4b7856a}\label{scan_2ll_8h_a78f059d07773e811efe4361ea4b7856a}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+foreach@{ll\+\_\+foreach}}
+\index{ll\+\_\+foreach@{ll\+\_\+foreach}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+foreach}{ll\_foreach}}
+{\footnotesize\ttfamily \#define ll\+\_\+foreach(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{structll}{ll}},  }\item[{}]{item }\end{DoxyParamCaption})~for (typeof (\mbox{\hyperlink{structll}{ll}}) item = \mbox{\hyperlink{structll}{ll}}; item; item = \mbox{\hyperlink{scatternet_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}}(item))}
+
+
+
+Definition at line 30 of file ll.\+h.
+
+\mbox{\Hypertarget{scan_2ll_8h_a8e6618f51f370abc046b8e94059143f7}\label{scan_2ll_8h_a8e6618f51f370abc046b8e94059143f7}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+new@{ll\+\_\+new}}
+\index{ll\+\_\+new@{ll\+\_\+new}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+new}{ll\_new}}
+{\footnotesize\ttfamily \#define ll\+\_\+new(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{structll}{ll}} }\end{DoxyParamCaption})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a3895d6c3f934e3560d42c6860ebbf6d5}{\+\_\+ll\+\_\+new}}(\mbox{\hyperlink{structll}{ll}}, sizeof($\ast$\mbox{\hyperlink{structll}{ll}}))}
+
+
+
+Definition at line 25 of file ll.\+h.
+
+\mbox{\Hypertarget{scan_2ll_8h_a94a6653aa9090a37f1ee26fb5b590628}\label{scan_2ll_8h_a94a6653aa9090a37f1ee26fb5b590628}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+next@{ll\+\_\+next}}
+\index{ll\+\_\+next@{ll\+\_\+next}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+next}{ll\_next}}
+{\footnotesize\ttfamily \#define ll\+\_\+next(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{structll}{ll}} }\end{DoxyParamCaption})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}{\+\_\+ll\+\_\+next}}(\mbox{\hyperlink{structll}{ll}})}
+
+
+
+Definition at line 27 of file ll.\+h.
+
+\mbox{\Hypertarget{scan_2ll_8h_a323b1da4b49df0e5076e0f66825c70e2}\label{scan_2ll_8h_a323b1da4b49df0e5076e0f66825c70e2}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+pop@{ll\+\_\+pop}}
+\index{ll\+\_\+pop@{ll\+\_\+pop}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+pop}{ll\_pop}}
+{\footnotesize\ttfamily \#define ll\+\_\+pop(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{structll}{ll}} }\end{DoxyParamCaption})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a52fefb5cf6f4c6cce4355dc0f112b40e}{\+\_\+ll\+\_\+pop}}(\mbox{\hyperlink{structll}{ll}})}
+
+
+
+Definition at line 26 of file ll.\+h.
+
+\mbox{\Hypertarget{scan_2ll_8h_aa9d748ebd84550f1c0374323b230402c}\label{scan_2ll_8h_aa9d748ebd84550f1c0374323b230402c}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+reduce@{ll\+\_\+reduce}}
+\index{ll\+\_\+reduce@{ll\+\_\+reduce}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+reduce}{ll\_reduce}}
+{\footnotesize\ttfamily \#define ll\+\_\+reduce(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{structll}{ll}},  }\item[{}]{fn,  }\item[{}]{val }\end{DoxyParamCaption})~(typeof (\mbox{\hyperlink{structll}{ll}})) \mbox{\hyperlink{scatternet_2ll_8h_a859a8981326cace5ccafbc17c16f1ec8}{\+\_\+ll\+\_\+reduce}}(\mbox{\hyperlink{structll}{ll}}, fn, val)}
+
+
+
+Definition at line 28 of file ll.\+h.
+
+\mbox{\Hypertarget{scan_2ll_8h_add1dea05db538acc8d17d5dbfe33530a}\label{scan_2ll_8h_add1dea05db538acc8d17d5dbfe33530a}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN@{L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN}}
+\index{L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN@{L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN}{LL\_REDUCE\_FN}}
+{\footnotesize\ttfamily \#define L\+L\+\_\+\+R\+E\+D\+U\+C\+E\+\_\+\+FN(\begin{DoxyParamCaption}\item[{}]{type,  }\item[{}]{name1,  }\item[{}]{name2 }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+(\textcolor{keywordtype}{void} *\_a, \textcolor{keywordtype}{void} *\_b) \{ \(\backslash\)
+        type name1 = \_a, name2 = \_b;
+\end{DoxyCode}
+
+
+Definition at line 33 of file ll.\+h.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scan_2ll_8h_a3895d6c3f934e3560d42c6860ebbf6d5}\label{scan_2ll_8h_a3895d6c3f934e3560d42c6860ebbf6d5}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!\+\_\+ll\+\_\+new@{\+\_\+ll\+\_\+new}}
+\index{\+\_\+ll\+\_\+new@{\+\_\+ll\+\_\+new}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+new()}{\_ll\_new()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+new (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll,  }\item[{size\+\_\+t}]{size }\end{DoxyParamCaption})}
+
+
+
+Definition at line 29 of file ll.\+c.
+
+\mbox{\Hypertarget{scan_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}\label{scan_2ll_8h_a581f3c276d4dfe472d20be492e2251b1}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!\+\_\+ll\+\_\+next@{\+\_\+ll\+\_\+next}}
+\index{\+\_\+ll\+\_\+next@{\+\_\+ll\+\_\+next}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+next()}{\_ll\_next()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+next (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file ll.\+c.
+
+\mbox{\Hypertarget{scan_2ll_8h_a52fefb5cf6f4c6cce4355dc0f112b40e}\label{scan_2ll_8h_a52fefb5cf6f4c6cce4355dc0f112b40e}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!\+\_\+ll\+\_\+pop@{\+\_\+ll\+\_\+pop}}
+\index{\+\_\+ll\+\_\+pop@{\+\_\+ll\+\_\+pop}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+pop()}{\_ll\_pop()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+pop (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 45 of file ll.\+c.
+
+\mbox{\Hypertarget{scan_2ll_8h_a859a8981326cace5ccafbc17c16f1ec8}\label{scan_2ll_8h_a859a8981326cace5ccafbc17c16f1ec8}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!\+\_\+ll\+\_\+reduce@{\+\_\+ll\+\_\+reduce}}
+\index{\+\_\+ll\+\_\+reduce@{\+\_\+ll\+\_\+reduce}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{\+\_\+ll\+\_\+reduce()}{\_ll\_reduce()}}
+{\footnotesize\ttfamily void$\ast$ \+\_\+ll\+\_\+reduce (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll,  }\item[{int(void $\ast$, void $\ast$)}]{,  }\item[{void $\ast$}]{value }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scan_2ll_8h_a0a70543e68aa33c65cd56fec9f80d3f3}\label{scan_2ll_8h_a0a70543e68aa33c65cd56fec9f80d3f3}} 
+\index{scan/ll.\+h@{scan/ll.\+h}!ll\+\_\+free@{ll\+\_\+free}}
+\index{ll\+\_\+free@{ll\+\_\+free}!scan/ll.\+h@{scan/ll.\+h}}
+\subsubsection{\texorpdfstring{ll\+\_\+free()}{ll\_free()}}
+{\footnotesize\ttfamily void ll\+\_\+free (\begin{DoxyParamCaption}\item[{void $\ast$}]{ll }\end{DoxyParamCaption})}
+
+
+
+Definition at line 58 of file ll.\+c.
+

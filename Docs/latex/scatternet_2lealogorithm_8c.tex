@@ -1,0 +1,381 @@
+\hypertarget{scatternet_2lealogorithm_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/lealogorithm.c File Reference}
+\label{scatternet_2lealogorithm_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/lealogorithm.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scatternet/lealogorithm.\+c}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/bluetooth.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/l2cap.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci\+\_\+lib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}scan\+\_\+adv.\+h\char`\"{}}\newline
+\subsection*{Data Structures}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_state_machine_type}{State\+Machine\+Type}}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scatternet_2lealogorithm_8c_a7b69f1de4dfd1597ecef42dbca7a3ea8}{M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT}}~2
+\item 
+\#define \mbox{\hyperlink{scatternet_2lealogorithm_8c_a6b20d41d6252e9871430c242cb1a56e7}{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}~1024
+\item 
+\#define \mbox{\hyperlink{scatternet_2lealogorithm_8c_afb960163be7f3ba7435ef28d6a1a68c9}{T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS}}~20
+\end{DoxyCompactItemize}
+\subsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}{State\+Type}} \{ \newline
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}}, 
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}, 
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}{D\+E\+L\+E\+G\+A\+TE}}, 
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}{C\+O\+N\+N\+E\+CT}}, 
+\newline
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}{D\+O\+NE}}, 
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}, 
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}}, 
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}, 
+\newline
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}{D\+E\+L\+E\+G\+A\+TE}}, 
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}{C\+O\+N\+N\+E\+CT}}, 
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}{D\+O\+NE}}, 
+\mbox{\hyperlink{scan_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}, 
+\newline
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}, 
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}{D\+E\+L\+E\+G\+A\+TE}}, 
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf34c9fc7504c84f76c5b11a4c9333d42}{D\+E\+L\+E\+G\+A\+T\+ED}}, 
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}{C\+O\+N\+N\+E\+CT}}, 
+\newline
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}{D\+O\+NE}}, 
+\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}, 
+\mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}, 
+\mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}{D\+E\+L\+E\+G\+A\+TE}}, 
+\newline
+\mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}{C\+O\+N\+N\+E\+CT}}, 
+\mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}{D\+O\+NE}}, 
+\mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_a506aa8d344a0d04b21137c1090bc74f4}{adv\+\_\+own}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_a150cf843fff5b29b174758197f733477}{adv\+\_\+neighbour}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_a0ab76cec7bf19e56ddbfd32f46943b77}{delegate}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_af6d9d2bdb90095b66397046bbabc9815}{delegated}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_acffe90d03dab81dc3a1eae831edb31d9}{ble\+\_\+connect}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_aa73ac3671283e172d82ef8ebed3ebd46}{done}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_a3c76fcd46ea57fa788de1b40fd91c1c7}{common\+\_\+neighbours}} (void)
+\item 
+void \mbox{\hyperlink{scatternet_2lealogorithm_8c_afe8671c141ec871b1992e12e9b2cc513}{max\+\_\+neighbour}} (void)
+\item 
+int \mbox{\hyperlink{scatternet_2lealogorithm_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}{main}} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{scatternet_2lealogorithm_8c_ae05a2f06ae7d0c5408554f6a2d547c59}{N\+U\+M\+\_\+\+S\+T\+A\+TE}} = 6
+\item 
+void($\ast$ \mbox{\hyperlink{scatternet_2lealogorithm_8c_ac38fd3cd40ff32372a6063148d4121c4}{statefunc}} )() = \mbox{\hyperlink{scatternet_2skeleton_8c_a150cf843fff5b29b174758197f733477}{adv\+\_\+neighbour}}
+\item 
+\mbox{\hyperlink{struct_state_machine_type}{State\+Machine\+Type}} \mbox{\hyperlink{scatternet_2lealogorithm_8c_a92e04f4e5d336d00c0a428655b6f719c}{state\+\_\+machine}} \mbox{[}$\,$\mbox{]}
+\item 
+\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}{State\+Type}} \mbox{\hyperlink{scatternet_2lealogorithm_8c_a4d1aa26dcfa648e02cbb0964cddbdbfe}{state}} = \mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}
+\item 
+int \mbox{\hyperlink{scatternet_2lealogorithm_8c_a5997b256aab30d9a460db142f4fb101e}{i\+\_\+am\+\_\+prey}} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a6b20d41d6252e9871430c242cb1a56e7}\label{scatternet_2lealogorithm_8c_a6b20d41d6252e9871430c242cb1a56e7}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}}
+\index{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE@{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE}{BUFFER\_SIZE}}
+{\footnotesize\ttfamily \#define B\+U\+F\+F\+E\+R\+\_\+\+S\+I\+ZE~1024}
+
+
+
+Definition at line 12 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a7b69f1de4dfd1597ecef42dbca7a3ea8}\label{scatternet_2lealogorithm_8c_a7b69f1de4dfd1597ecef42dbca7a3ea8}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT@{M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT}}
+\index{M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT@{M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT}{MAX\_CONNECTION\_LIMIT}}
+{\footnotesize\ttfamily \#define M\+A\+X\+\_\+\+C\+O\+N\+N\+E\+C\+T\+I\+O\+N\+\_\+\+L\+I\+M\+IT~2}
+
+
+
+Definition at line 11 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_afb960163be7f3ba7435ef28d6a1a68c9}\label{scatternet_2lealogorithm_8c_afb960163be7f3ba7435ef28d6a1a68c9}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS@{T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS}}
+\index{T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS@{T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS}{TIMEOUT\_SECONDS}}
+{\footnotesize\ttfamily \#define T\+I\+M\+E\+O\+U\+T\+\_\+\+S\+E\+C\+O\+N\+DS~20}
+
+
+
+Definition at line 13 of file lealogorithm.\+c.
+
+
+
+\subsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!State\+Type@{State\+Type}}
+\index{State\+Type@{State\+Type}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{State\+Type}{StateType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}{State\+Type}}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}} 
+A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}} 
+A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}} 
+D\+E\+L\+E\+G\+A\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}} 
+C\+O\+N\+N\+E\+CT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+O\+NE@{D\+O\+NE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+O\+NE@{D\+O\+NE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}} 
+D\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}} 
+N\+U\+M\+\_\+\+S\+T\+A\+T\+ES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca7901614b53ef7775d6e01c19416e4941}} 
+A\+D\+V\+\_\+\+O\+W\+N\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}} 
+A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}} 
+D\+E\+L\+E\+G\+A\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}} 
+C\+O\+N\+N\+E\+CT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+O\+NE@{D\+O\+NE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+O\+NE@{D\+O\+NE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}} 
+D\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}} 
+N\+U\+M\+\_\+\+S\+T\+A\+T\+ES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}} 
+A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}} 
+D\+E\+L\+E\+G\+A\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+L\+E\+G\+A\+T\+ED@{D\+E\+L\+E\+G\+A\+T\+ED}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+E\+L\+E\+G\+A\+T\+ED@{D\+E\+L\+E\+G\+A\+T\+ED}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf34c9fc7504c84f76c5b11a4c9333d42}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf34c9fc7504c84f76c5b11a4c9333d42}} 
+D\+E\+L\+E\+G\+A\+T\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}} 
+C\+O\+N\+N\+E\+CT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+O\+NE@{D\+O\+NE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+O\+NE@{D\+O\+NE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}} 
+D\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}} 
+N\+U\+M\+\_\+\+S\+T\+A\+T\+ES&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR@{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}} 
+A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+E\+L\+E\+G\+A\+TE@{D\+E\+L\+E\+G\+A\+TE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}} 
+D\+E\+L\+E\+G\+A\+TE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!C\+O\+N\+N\+E\+CT@{C\+O\+N\+N\+E\+CT}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}} 
+C\+O\+N\+N\+E\+CT&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{D\+O\+NE@{D\+O\+NE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!D\+O\+NE@{D\+O\+NE}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}} 
+D\+O\+NE&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!N\+U\+M\+\_\+\+S\+T\+A\+T\+ES@{N\+U\+M\+\_\+\+S\+T\+A\+T\+ES}}}\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}\label{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca6d9af548db7288db997796afc88aa60d}} 
+N\+U\+M\+\_\+\+S\+T\+A\+T\+ES&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 28 of file lealogorithm.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a150cf843fff5b29b174758197f733477}\label{scatternet_2lealogorithm_8c_a150cf843fff5b29b174758197f733477}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!adv\+\_\+neighbour@{adv\+\_\+neighbour}}
+\index{adv\+\_\+neighbour@{adv\+\_\+neighbour}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{adv\+\_\+neighbour()}{adv\_neighbour()}}
+{\footnotesize\ttfamily void adv\+\_\+neighbour (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 64 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a506aa8d344a0d04b21137c1090bc74f4}\label{scatternet_2lealogorithm_8c_a506aa8d344a0d04b21137c1090bc74f4}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!adv\+\_\+own@{adv\+\_\+own}}
+\index{adv\+\_\+own@{adv\+\_\+own}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{adv\+\_\+own()}{adv\_own()}}
+{\footnotesize\ttfamily void adv\+\_\+own (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 57 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_acffe90d03dab81dc3a1eae831edb31d9}\label{scatternet_2lealogorithm_8c_acffe90d03dab81dc3a1eae831edb31d9}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!ble\+\_\+connect@{ble\+\_\+connect}}
+\index{ble\+\_\+connect@{ble\+\_\+connect}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{ble\+\_\+connect()}{ble\_connect()}}
+{\footnotesize\ttfamily void ble\+\_\+connect (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 190 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a3c76fcd46ea57fa788de1b40fd91c1c7}\label{scatternet_2lealogorithm_8c_a3c76fcd46ea57fa788de1b40fd91c1c7}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!common\+\_\+neighbours@{common\+\_\+neighbours}}
+\index{common\+\_\+neighbours@{common\+\_\+neighbours}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{common\+\_\+neighbours()}{common\_neighbours()}}
+{\footnotesize\ttfamily void common\+\_\+neighbours (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a0ab76cec7bf19e56ddbfd32f46943b77}\label{scatternet_2lealogorithm_8c_a0ab76cec7bf19e56ddbfd32f46943b77}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!delegate@{delegate}}
+\index{delegate@{delegate}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{delegate()}{delegate()}}
+{\footnotesize\ttfamily void delegate (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 171 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_af6d9d2bdb90095b66397046bbabc9815}\label{scatternet_2lealogorithm_8c_af6d9d2bdb90095b66397046bbabc9815}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!delegated@{delegated}}
+\index{delegated@{delegated}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{delegated()}{delegated()}}
+{\footnotesize\ttfamily void delegated (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 181 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_aa73ac3671283e172d82ef8ebed3ebd46}\label{scatternet_2lealogorithm_8c_aa73ac3671283e172d82ef8ebed3ebd46}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!done@{done}}
+\index{done@{done}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{done()}{done()}}
+{\footnotesize\ttfamily void done (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 198 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{scatternet_2lealogorithm_8c_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!main@{main}}
+\index{main@{main}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 202 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_afe8671c141ec871b1992e12e9b2cc513}\label{scatternet_2lealogorithm_8c_afe8671c141ec871b1992e12e9b2cc513}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!max\+\_\+neighbour@{max\+\_\+neighbour}}
+\index{max\+\_\+neighbour@{max\+\_\+neighbour}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{max\+\_\+neighbour()}{max\_neighbour()}}
+{\footnotesize\ttfamily void max\+\_\+neighbour (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a5997b256aab30d9a460db142f4fb101e}\label{scatternet_2lealogorithm_8c_a5997b256aab30d9a460db142f4fb101e}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!i\+\_\+am\+\_\+prey@{i\+\_\+am\+\_\+prey}}
+\index{i\+\_\+am\+\_\+prey@{i\+\_\+am\+\_\+prey}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{i\+\_\+am\+\_\+prey}{i\_am\_prey}}
+{\footnotesize\ttfamily int i\+\_\+am\+\_\+prey = 0}
+
+
+
+Definition at line 62 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_ae05a2f06ae7d0c5408554f6a2d547c59}\label{scatternet_2lealogorithm_8c_ae05a2f06ae7d0c5408554f6a2d547c59}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!N\+U\+M\+\_\+\+S\+T\+A\+TE@{N\+U\+M\+\_\+\+S\+T\+A\+TE}}
+\index{N\+U\+M\+\_\+\+S\+T\+A\+TE@{N\+U\+M\+\_\+\+S\+T\+A\+TE}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{N\+U\+M\+\_\+\+S\+T\+A\+TE}{NUM\_STATE}}
+{\footnotesize\ttfamily int N\+U\+M\+\_\+\+S\+T\+A\+TE = 6}
+
+
+
+Definition at line 16 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a4d1aa26dcfa648e02cbb0964cddbdbfe}\label{scatternet_2lealogorithm_8c_a4d1aa26dcfa648e02cbb0964cddbdbfe}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!state@{state}}
+\index{state@{state}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily \mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5c}{State\+Type}} state = \mbox{\hyperlink{scatternet_2skeleton_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{A\+D\+V\+\_\+\+N\+E\+I\+G\+H\+B\+O\+U\+R\+\_\+\+A\+D\+DR}}}
+
+
+
+Definition at line 60 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_a92e04f4e5d336d00c0a428655b6f719c}\label{scatternet_2lealogorithm_8c_a92e04f4e5d336d00c0a428655b6f719c}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!state\+\_\+machine@{state\+\_\+machine}}
+\index{state\+\_\+machine@{state\+\_\+machine}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{state\+\_\+machine}{state\_machine}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_state_machine_type}{State\+Machine\+Type}} state\+\_\+machine\mbox{[}$\,$\mbox{]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= 
+\{
+    \{\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca8853fcd7f72ff4a4c02769ad58f58ada}{ADV\_NEIGHBOUR\_ADDR}}, \mbox{\hyperlink{scan_2lealogorithm_8c_a150cf843fff5b29b174758197f733477}{adv\_neighbour}}\},
+    \{\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf42875187059b08987ce62331b77add3}{DELEGATE}}, \mbox{\hyperlink{scan_2lealogorithm_8c_a0ab76cec7bf19e56ddbfd32f46943b77}{delegate}}\},
+    \{\mbox{\hyperlink{scatternet_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5caf34c9fc7504c84f76c5b11a4c9333d42}{DELEGATED}}, \mbox{\hyperlink{scan_2lealogorithm_8c_af6d9d2bdb90095b66397046bbabc9815}{delegated}}\},
+    \{\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca20391dd2915a0e64343d24c2f2e40b95}{CONNECT}}, \mbox{\hyperlink{scatternet_2lealogorithm_8c_acffe90d03dab81dc3a1eae831edb31d9}{ble\_connect}}\},
+    \{\mbox{\hyperlink{scan_2lealogorithm_8c_a1615968a92950438f6e67a28e9d56e5ca9c954bcf443428c80b0f107b3bc48749}{DONE}}, \mbox{\hyperlink{scan_2lealogorithm_8c_aa73ac3671283e172d82ef8ebed3ebd46}{done}}\}
+\}
+\end{DoxyCode}
+
+
+Definition at line 45 of file lealogorithm.\+c.
+
+\mbox{\Hypertarget{scatternet_2lealogorithm_8c_ac38fd3cd40ff32372a6063148d4121c4}\label{scatternet_2lealogorithm_8c_ac38fd3cd40ff32372a6063148d4121c4}} 
+\index{scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}!statefunc@{statefunc}}
+\index{statefunc@{statefunc}!scatternet/lealogorithm.\+c@{scatternet/lealogorithm.\+c}}
+\subsubsection{\texorpdfstring{statefunc}{statefunc}}
+{\footnotesize\ttfamily void($\ast$ statefunc) () = \mbox{\hyperlink{scatternet_2skeleton_8c_a150cf843fff5b29b174758197f733477}{adv\+\_\+neighbour}}}
+
+
+
+Definition at line 42 of file lealogorithm.\+c.
+

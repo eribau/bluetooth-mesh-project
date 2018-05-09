@@ -1,0 +1,286 @@
+\hypertarget{scan-adv_8c}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/scan-\/adv.c File Reference}
+\label{scan-adv_8c}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/scan-\/adv.\+c@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/scan/scan-\/adv.\+c}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$errno.\+h$>$}\newline
+{\ttfamily \#include $<$ctype.\+h$>$}\newline
+{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+{\ttfamily \#include $<$unistd.\+h$>$}\newline
+{\ttfamily \#include $<$stdlib.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include $<$getopt.\+h$>$}\newline
+{\ttfamily \#include $<$signal.\+h$>$}\newline
+{\ttfamily \#include $<$time.\+h$>$}\newline
+{\ttfamily \#include $<$sys/param.\+h$>$}\newline
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
+{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/bluetooth.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/l2cap.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci.\+h$>$}\newline
+{\ttfamily \#include $<$bluetooth/hci\+\_\+lib.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}ll.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}structs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}nb\+\_\+data.\+h\char`\"{}}\newline
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a2361e23842880e5ef5da114d12ddcd12}{F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE}}~0x01
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a7a6adbb2c3b6a0f37dbdb0aed46c4378}{F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}}~0x01
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a53bfaf11bd7045e3de1c6b5f11422594}{F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}}~0x02
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_ab0f0f27f554b4403b5c9889a3e721f06}{E\+I\+R\+\_\+\+F\+L\+A\+GS}}~0x01  /$\ast$ flags $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_ad416fbd7a7fdf82686104a2bd2a35194}{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME}}~0x02  /$\ast$ 16-\/bit U\+U\+I\+D, more available $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a899c3d3975f53fb8f01b2c74c30a504f}{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL}}~0x03  /$\ast$ 16-\/bit U\+U\+I\+D, all listed $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_ab2aaed942da905e72b3326f5182990a7}{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME}}~0x04  /$\ast$ 32-\/bit U\+U\+I\+D, more available $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_af765f674c624a9f70ceb7c8386285e30}{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL}}~0x05  /$\ast$ 32-\/bit U\+U\+I\+D, all listed $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a585c785ae936c7fcbbd505605dcf2659}{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME}}~0x06  /$\ast$ 128-\/bit U\+U\+I\+D, more available $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_ac66121ee9f8cd90bd5fa8af19e48f818}{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL}}~0x07  /$\ast$ 128-\/bit U\+U\+I\+D, all listed $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_aa8df6441cf5c8e669d6c2951f32ad1e8}{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT}}~0x08  /$\ast$ shortened local name $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_acf6ccd1a728c71874c21b07ea57916aa}{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE}}~0x09  /$\ast$ complete local name $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_a61a43f30af5173e0409b901d2899e72a}{E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER}}~0x0\+A  /$\ast$ transmit power level $\ast$/
+\item 
+\#define \mbox{\hyperlink{scan-adv_8c_ad046894fb11af9945b332bf79e643bc2}{E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID}}~0x10  /$\ast$ device I\+D $\ast$/
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+struct hci\+\_\+request \mbox{\hyperlink{scan-adv_8c_a1c2cdca7577ed9775b53dbee4b82c28b}{ble\+\_\+hci\+\_\+request}} (uint16\+\_\+t ocf, int clen, void $\ast$status, void $\ast$cparam)
+\item 
+le\+\_\+set\+\_\+advertising\+\_\+data\+\_\+cp \mbox{\hyperlink{scan-adv_8c_a220489d8e27cddcc092f9adc7eeb5540}{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}} (char $\ast$name, char $\ast$btaddr)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan-adv_8c_a9ed8193ef016bf2e85c78d6eacc2caf6}{print\+\_\+advertising\+\_\+devices}} (int dd, uint8\+\_\+t filter\+\_\+type, struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}})
+\item 
+int \mbox{\hyperlink{scan-adv_8c_af336b7876acfc459f4ff1a871ba9aab9}{advertise}} (char $\ast$array)
+\item 
+struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$ \mbox{\hyperlink{scan-adv_8c_aa17a71c99b4021aa3c3ece883425bb24}{scan}} (struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}})
+\item 
+void \mbox{\hyperlink{scan-adv_8c_ac44501fcb942a9c80404255067b2d1b2}{add\+\_\+to\+\_\+array}} (char($\ast$arr)\mbox{[}18\mbox{]}, struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$\mbox{\hyperlink{structnb__object}{nb\+\_\+object}}, int $\ast$counter)
+\item 
+int \mbox{\hyperlink{scan-adv_8c_a0ddf1224851353fc92bfbff6f499fa97}{main}} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{scan-adv_8c_ad046894fb11af9945b332bf79e643bc2}\label{scan-adv_8c_ad046894fb11af9945b332bf79e643bc2}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID@{E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID}}
+\index{E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID@{E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID}{EIR\_DEVICE\_ID}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+D\+E\+V\+I\+C\+E\+\_\+\+ID~0x10  /$\ast$ device I\+D $\ast$/}
+
+
+
+Definition at line 39 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_ab0f0f27f554b4403b5c9889a3e721f06}\label{scan-adv_8c_ab0f0f27f554b4403b5c9889a3e721f06}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+F\+L\+A\+GS@{E\+I\+R\+\_\+\+F\+L\+A\+GS}}
+\index{E\+I\+R\+\_\+\+F\+L\+A\+GS@{E\+I\+R\+\_\+\+F\+L\+A\+GS}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+F\+L\+A\+GS}{EIR\_FLAGS}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+F\+L\+A\+GS~0x01  /$\ast$ flags $\ast$/}
+
+
+
+Definition at line 29 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_acf6ccd1a728c71874c21b07ea57916aa}\label{scan-adv_8c_acf6ccd1a728c71874c21b07ea57916aa}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE@{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE}}
+\index{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE@{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE}{EIR\_NAME\_COMPLETE}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+C\+O\+M\+P\+L\+E\+TE~0x09  /$\ast$ complete local name $\ast$/}
+
+
+
+Definition at line 37 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_aa8df6441cf5c8e669d6c2951f32ad1e8}\label{scan-adv_8c_aa8df6441cf5c8e669d6c2951f32ad1e8}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT@{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT}}
+\index{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT@{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT}{EIR\_NAME\_SHORT}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+N\+A\+M\+E\+\_\+\+S\+H\+O\+RT~0x08  /$\ast$ shortened local name $\ast$/}
+
+
+
+Definition at line 36 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a61a43f30af5173e0409b901d2899e72a}\label{scan-adv_8c_a61a43f30af5173e0409b901d2899e72a}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER@{E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER}}
+\index{E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER@{E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER}{EIR\_TX\_POWER}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+T\+X\+\_\+\+P\+O\+W\+ER~0x0\+A  /$\ast$ transmit power level $\ast$/}
+
+
+
+Definition at line 38 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_ac66121ee9f8cd90bd5fa8af19e48f818}\label{scan-adv_8c_ac66121ee9f8cd90bd5fa8af19e48f818}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL}{EIR\_UUID128\_ALL}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+A\+LL~0x07  /$\ast$ 128-\/bit U\+U\+I\+D, all listed $\ast$/}
+
+
+
+Definition at line 35 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a585c785ae936c7fcbbd505605dcf2659}\label{scan-adv_8c_a585c785ae936c7fcbbd505605dcf2659}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME}{EIR\_UUID128\_SOME}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D128\+\_\+\+S\+O\+ME~0x06  /$\ast$ 128-\/bit U\+U\+I\+D, more available $\ast$/}
+
+
+
+Definition at line 34 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a899c3d3975f53fb8f01b2c74c30a504f}\label{scan-adv_8c_a899c3d3975f53fb8f01b2c74c30a504f}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL}{EIR\_UUID16\_ALL}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+A\+LL~0x03  /$\ast$ 16-\/bit U\+U\+I\+D, all listed $\ast$/}
+
+
+
+Definition at line 31 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_ad416fbd7a7fdf82686104a2bd2a35194}\label{scan-adv_8c_ad416fbd7a7fdf82686104a2bd2a35194}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME}{EIR\_UUID16\_SOME}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D16\+\_\+\+S\+O\+ME~0x02  /$\ast$ 16-\/bit U\+U\+I\+D, more available $\ast$/}
+
+
+
+Definition at line 30 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_af765f674c624a9f70ceb7c8386285e30}\label{scan-adv_8c_af765f674c624a9f70ceb7c8386285e30}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL@{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL}{EIR\_UUID32\_ALL}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+A\+LL~0x05  /$\ast$ 32-\/bit U\+U\+I\+D, all listed $\ast$/}
+
+
+
+Definition at line 33 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_ab2aaed942da905e72b3326f5182990a7}\label{scan-adv_8c_ab2aaed942da905e72b3326f5182990a7}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME}}
+\index{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME@{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME}{EIR\_UUID32\_SOME}}
+{\footnotesize\ttfamily \#define E\+I\+R\+\_\+\+U\+U\+I\+D32\+\_\+\+S\+O\+ME~0x04  /$\ast$ 32-\/bit U\+U\+I\+D, more available $\ast$/}
+
+
+
+Definition at line 32 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a2361e23842880e5ef5da114d12ddcd12}\label{scan-adv_8c_a2361e23842880e5ef5da114d12ddcd12}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE@{F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE}}
+\index{F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE@{F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE}{FLAGS\_AD\_TYPE}}
+{\footnotesize\ttfamily \#define F\+L\+A\+G\+S\+\_\+\+A\+D\+\_\+\+T\+Y\+PE~0x01}
+
+
+
+Definition at line 25 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a53bfaf11bd7045e3de1c6b5f11422594}\label{scan-adv_8c_a53bfaf11bd7045e3de1c6b5f11422594}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT@{F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}}
+\index{F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT@{F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}{FLAGS\_GENERAL\_MODE\_BIT}}
+{\footnotesize\ttfamily \#define F\+L\+A\+G\+S\+\_\+\+G\+E\+N\+E\+R\+A\+L\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT~0x02}
+
+
+
+Definition at line 27 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a7a6adbb2c3b6a0f37dbdb0aed46c4378}\label{scan-adv_8c_a7a6adbb2c3b6a0f37dbdb0aed46c4378}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT@{F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}}
+\index{F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT@{F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT}{FLAGS\_LIMITED\_MODE\_BIT}}
+{\footnotesize\ttfamily \#define F\+L\+A\+G\+S\+\_\+\+L\+I\+M\+I\+T\+E\+D\+\_\+\+M\+O\+D\+E\+\_\+\+B\+IT~0x01}
+
+
+
+Definition at line 26 of file scan-\/adv.\+c.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{scan-adv_8c_ac44501fcb942a9c80404255067b2d1b2}\label{scan-adv_8c_ac44501fcb942a9c80404255067b2d1b2}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!add\+\_\+to\+\_\+array@{add\+\_\+to\+\_\+array}}
+\index{add\+\_\+to\+\_\+array@{add\+\_\+to\+\_\+array}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{add\+\_\+to\+\_\+array()}{add\_to\_array()}}
+{\footnotesize\ttfamily void add\+\_\+to\+\_\+array (\begin{DoxyParamCaption}\item[{char($\ast$)}]{arr\mbox{[}18\mbox{]},  }\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object,  }\item[{int $\ast$}]{counter }\end{DoxyParamCaption})}
+
+Function that adds to an array from a linked list struct 
+
+Definition at line 424 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_af336b7876acfc459f4ff1a871ba9aab9}\label{scan-adv_8c_af336b7876acfc459f4ff1a871ba9aab9}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!advertise@{advertise}}
+\index{advertise@{advertise}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{advertise()}{advertise()}}
+{\footnotesize\ttfamily int advertise (\begin{DoxyParamCaption}\item[{char $\ast$}]{array }\end{DoxyParamCaption})}
+
+Function to advertise with an input as the advertisement message 
+
+Definition at line 318 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a220489d8e27cddcc092f9adc7eeb5540}\label{scan-adv_8c_a220489d8e27cddcc092f9adc7eeb5540}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data@{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}}
+\index{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data@{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data()}{ble\_hci\_params\_for\_set\_adv\_data()}}
+{\footnotesize\ttfamily le\+\_\+set\+\_\+advertising\+\_\+data\+\_\+cp ble\+\_\+hci\+\_\+params\+\_\+for\+\_\+set\+\_\+adv\+\_\+data (\begin{DoxyParamCaption}\item[{char $\ast$}]{name,  }\item[{char $\ast$}]{btaddr }\end{DoxyParamCaption})}
+
+This function sets up the advertisement data 
+
+Definition at line 61 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a1c2cdca7577ed9775b53dbee4b82c28b}\label{scan-adv_8c_a1c2cdca7577ed9775b53dbee4b82c28b}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!ble\+\_\+hci\+\_\+request@{ble\+\_\+hci\+\_\+request}}
+\index{ble\+\_\+hci\+\_\+request@{ble\+\_\+hci\+\_\+request}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{ble\+\_\+hci\+\_\+request()}{ble\_hci\_request()}}
+{\footnotesize\ttfamily struct hci\+\_\+request ble\+\_\+hci\+\_\+request (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{ocf,  }\item[{int}]{clen,  }\item[{void $\ast$}]{status,  }\item[{void $\ast$}]{cparam }\end{DoxyParamCaption})}
+
+This function sets up hci flags for B\+LE 
+
+Definition at line 46 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a0ddf1224851353fc92bfbff6f499fa97}\label{scan-adv_8c_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!main@{main}}
+\index{main@{main}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+Main function that advertises own bluetooth address with no data at first, then scans for neighbours for 20 seconds. It then refreshes its advertisement data to one of its neighbours, then scans again for more neighbours, and so on in a loop. It then returns all its neighbours and their neighbours neighbours in a list. 
+
+Definition at line 441 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_a9ed8193ef016bf2e85c78d6eacc2caf6}\label{scan-adv_8c_a9ed8193ef016bf2e85c78d6eacc2caf6}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!print\+\_\+advertising\+\_\+devices@{print\+\_\+advertising\+\_\+devices}}
+\index{print\+\_\+advertising\+\_\+devices@{print\+\_\+advertising\+\_\+devices}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{print\+\_\+advertising\+\_\+devices()}{print\_advertising\_devices()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ print\+\_\+advertising\+\_\+devices (\begin{DoxyParamCaption}\item[{int}]{dd,  }\item[{uint8\+\_\+t}]{filter\+\_\+type,  }\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object }\end{DoxyParamCaption})}
+
+Detecting advertising devices and adding them to our struct function, modified from hcitool.\+c 
+
+Definition at line 197 of file scan-\/adv.\+c.
+
+\mbox{\Hypertarget{scan-adv_8c_aa17a71c99b4021aa3c3ece883425bb24}\label{scan-adv_8c_aa17a71c99b4021aa3c3ece883425bb24}} 
+\index{scan-\/adv.\+c@{scan-\/adv.\+c}!scan@{scan}}
+\index{scan@{scan}!scan-\/adv.\+c@{scan-\/adv.\+c}}
+\subsubsection{\texorpdfstring{scan()}{scan()}}
+{\footnotesize\ttfamily struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}}$\ast$ scan (\begin{DoxyParamCaption}\item[{struct \mbox{\hyperlink{structnb__object}{nb\+\_\+object}} $\ast$}]{nb\+\_\+object }\end{DoxyParamCaption})}
+
+Function that scans for advertising devices 
+
+Definition at line 380 of file scan-\/adv.\+c.
+

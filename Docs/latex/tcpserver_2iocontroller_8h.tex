@@ -1,0 +1,46 @@
+\hypertarget{tcpserver_2iocontroller_8h}{}\section{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.h File Reference}
+\label{tcpserver_2iocontroller_8h}\index{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.\+h@{C\+:/\+Git\+Hub\+Repo/bluetooth-\/mesh-\/project/tcpserver/iocontroller.\+h}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8h_a47239fde6b6a427776fe14750a5973c2}{turn\+\_\+on}} ()
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8h_ae61f42ef9dbb22ab1babc20f7604c6c7}{turn\+\_\+off}} ()
+\item 
+void \mbox{\hyperlink{tcpserver_2iocontroller_8h_a95e487334203a42475d71eb2c4196b8a}{button}} (int)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{tcpserver_2iocontroller_8h_a95e487334203a42475d71eb2c4196b8a}\label{tcpserver_2iocontroller_8h_a95e487334203a42475d71eb2c4196b8a}} 
+\index{tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}!button@{button}}
+\index{button@{button}!tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}}
+\subsubsection{\texorpdfstring{button()}{button()}}
+{\footnotesize\ttfamily void button (\begin{DoxyParamCaption}\item[{int}]{client\+\_\+fd }\end{DoxyParamCaption})}
+
+Responsible for processing sensor input (button in this case). When button pressed, send messages to server and client 
+
+Definition at line 136 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{tcpserver_2iocontroller_8h_ae61f42ef9dbb22ab1babc20f7604c6c7}\label{tcpserver_2iocontroller_8h_ae61f42ef9dbb22ab1babc20f7604c6c7}} 
+\index{tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}!turn\+\_\+off@{turn\+\_\+off}}
+\index{turn\+\_\+off@{turn\+\_\+off}!tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}}
+\subsubsection{\texorpdfstring{turn\+\_\+off()}{turn\_off()}}
+{\footnotesize\ttfamily void turn\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Turns off L\+ED at a specific preprogrammed pin 
+
+Definition at line 110 of file iocontroller.\+c.
+
+\mbox{\Hypertarget{tcpserver_2iocontroller_8h_a47239fde6b6a427776fe14750a5973c2}\label{tcpserver_2iocontroller_8h_a47239fde6b6a427776fe14750a5973c2}} 
+\index{tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}!turn\+\_\+on@{turn\+\_\+on}}
+\index{turn\+\_\+on@{turn\+\_\+on}!tcpserver/iocontroller.\+h@{tcpserver/iocontroller.\+h}}
+\subsubsection{\texorpdfstring{turn\+\_\+on()}{turn\_on()}}
+{\footnotesize\ttfamily void turn\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Responsible for processing user input. If the input is equal to the preset keyword, g\+\_\+toggle on/off lights, depending on the current state. Turns on L\+ED at a specific preprogrammed pin
+
+Turns on L\+ED at a specific preprogrammed pin 
+
+Definition at line 100 of file iocontroller.\+c.
+
