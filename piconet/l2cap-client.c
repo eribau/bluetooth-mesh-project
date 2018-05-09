@@ -135,8 +135,7 @@ int main(int argc, char **argv) {
 			led_off();		
 			red_on();
 			green_on();
-			delay(200);
-			led_off();
+			delay(1000);
 			write(connection_fd, buf_input, strlen(buf_input));
 		}
 	}
