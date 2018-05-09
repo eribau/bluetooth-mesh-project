@@ -21,6 +21,7 @@
 #include "ll.h"
 #include "structs.h"
 #include "nb_data.h"
+#include <wiringPi.h>
 
 #define FLAGS_AD_TYPE 0x01
 #define FLAGS_LIMITED_MODE_BIT 0x01
@@ -38,7 +39,7 @@
 #define EIR_TX_POWER                0x0A  /* transmit power level */
 #define EIR_DEVICE_ID               0x10  /* device ID */
 
-
+void delay(unsigned int);
 
 /**
  This function sets up hci flags for BLE 
@@ -439,6 +440,7 @@ and so on in a loop.
 It then returns all its neighbours and their neighbours neighbours in a list. 
 **/
 int main(int argc, char *argv[]) {
+	while(1){
 	time_t start = time(0);
 	
 	char arr[10][18];
@@ -485,6 +487,7 @@ int main(int argc, char *argv[]) {
 	printf("Neighbour and their specific neighbours\n");
 		print_nb_nb(ptr, it->nb_bdaddr);
 	}
-	
+	delay(20000);
+}
 	return 0;
 }

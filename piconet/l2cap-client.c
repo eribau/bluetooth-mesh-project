@@ -140,6 +140,8 @@ int main(int argc, char **argv) {
 			red_on();
 			delay(200);
 			write(connection_fd, buf_input, strlen(buf_input));
+			led_off();
+			green_on();
 		}
 	}
 }

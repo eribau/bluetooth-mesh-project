@@ -101,6 +101,7 @@ int main(int argc, char *argv[]) {
     bool single_pi_message = false;
     pid_t childpid;
     char temp [1024];
+    char temp2 [20];
     char arr [NUM_OF_ENTRIES][18] = {
 		"B8:27:EB:9B:D4:87", 	// pi1 
 		//"B8:27:EB:E4:D7:BF", 	// pi2
@@ -170,8 +171,10 @@ int main(int argc, char *argv[]) {
 					printf(KWHT "%s: %s\n" KNRM,arr[i], buf);
 					//strtok(buf, "\n");
 					global_message = true;
-					for (int j = 0; j < NUM_OF_ENTRIES; j++) {			
-						if (0 == strcmp(buf, arr[j])) {								// Check if message is for a specific client
+					for (int j = 0; j < NUM_OF_ENTRIES; j++) {	
+						strcpy(temp2, arr[j]);
+						strcat(temp2, "\n");		
+						if (0 == strcmp(buf, temp2)) {								// Check if message is for a specific client
 							printf("Writing to: %s \n", arr[j]);
 							global_message = false;
 							while(1){
