@@ -95,7 +95,7 @@ int main(int argc, char **argv) {
 						led_off();		
 						blue_on();
 						red_on();
-						delay(50);
+						delay(200);
 						led_off();
 						green_on();
 					}
@@ -132,6 +132,11 @@ int main(int argc, char **argv) {
 		while(1) {
 			memset(buf_input, 0, sizeof(buf_input));						// Send messages to the server
 			fgets(buf_input, sizeof(buf_input), stdin);
+			led_off();		
+			red_on();
+			green_on();
+			delay(200);
+			led_off();
 			write(connection_fd, buf_input, strlen(buf_input));
 		}
 	}
